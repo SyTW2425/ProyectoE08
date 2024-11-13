@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose"
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
   name: { type: String, required: true },
   password: { type: String, match: "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", required: true },
   pfpURL: { type: String },
@@ -8,3 +8,8 @@ const userSchema = new Schema({
   createdAt: { type: Date, required: true },
   lastConnected: { type: Date}
 })
+
+export const User = new model(
+  "User",
+  UserSchema
+)
