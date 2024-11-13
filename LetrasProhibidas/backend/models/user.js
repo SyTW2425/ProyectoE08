@@ -12,4 +12,4 @@ const UserSchema = new Schema({
 export const User = new model(
   "User",
   UserSchema
-)
+);
