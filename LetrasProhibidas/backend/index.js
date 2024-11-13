@@ -1,1 +1,1 @@
-import "./db/config.js"
+import "./db/config.js";

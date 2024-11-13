@@ -1,0 +1,5 @@
+.eslint.config.js
+.prettierignore
+.prettierrc.json
+package-lock.json
+package.json
