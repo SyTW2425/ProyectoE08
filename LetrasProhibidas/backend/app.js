@@ -2,10 +2,10 @@ import express from "express";
 import { createServer } from "http"
 import { Server } from "socket.io"
 import "./db/config.js";
-import { gameRouter } from "./routes/game.js";
-import { userRouter } from "./routes/user.js";
-import { lobbyRouter } from "./routes/lobby.js";
-import { defaultRouter } from "./routes/default.js";
+import { gameRouter } from "./routers/game.js";
+import { userRouter } from "./routers/user.js";
+import { lobbyRouter } from "./routers/lobby.js";
+import { defaultRouter } from "./routers/default.js";
 
 export const app = express();
 
