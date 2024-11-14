@@ -1,16 +1,63 @@
 import { model, Schema } from "mongoose";
+import validator from "validator";
+import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcrypt";
 
 const UserSchema = new Schema({
-  name: { type: String, required: true },
-  password: {
+  id: {
     type: String,
-    match: "^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,}$",
+    required: true,
+    unique: true,
+    default: uuidv4,
+    validate: {
+      validator: (value) => validator.isUUID(value),
+      message: "Invalid ID",
+    },
+  },
+  name: {
+    type: String,
     required: true,
   },
-  pfpURL: { type: String },
-  id: { type: String, required: true },
-  createdAt: { type: Date, required: true },
-  lastConnected: { type: Date },
+  password: {
+    type: String,
+    required: true,
+    match: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+  },
+  pfpURL: {
+    type: String,
+    validate: {
+      validator: (value) => validator.isURL(value),
+      message: "Invalid URL",
+    },
+  },
+  createdAt: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+  lastConnected: {
+    type: Date,
+  },
 });
 
-export const User = new model("User", UserSchema);
+// Middleware para hashear la contraseña antes de guardarla
+UserSchema.pre("save", async function (next) {
+  // Solo hashea si la contraseña ha sido modificada o es nueva
+  if (!this.isModified("password")) return next();
+
+  try {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+    next();
+  } catch (err) {
+    return next(err);
+  }
+});
+
+// Método para comparar la contraseña ingresada con el hash almacenado
+UserSchema.methods.comparePassword = async function (inputPassword) {
+  return await bcrypt.compare(inputPassword, this.password);
+};
+
+
+export const User = model("User", UserSchema);
