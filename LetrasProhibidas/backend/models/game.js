@@ -8,4 +8,4 @@ const GameSchema = new Schema({
   createdAt: { type: Date, required: true },
 });
 
-export const User = new model("User", UserSchema);
+export const Game = new model("Game", GameSchema);
