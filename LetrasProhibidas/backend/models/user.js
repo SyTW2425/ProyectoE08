@@ -23,13 +23,6 @@ const UserSchema = new Schema({
     required: true,
     match: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
   },
-  pfpURL: {
-    type: String,
-    validate: {
-      validator: (value) => validator.isURL(value),
-      message: "Invalid URL",
-    },
-  },
   createdAt: {
     type: Date,
     required: true,
