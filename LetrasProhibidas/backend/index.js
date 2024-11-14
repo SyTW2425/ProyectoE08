@@ -1,4 +1,5 @@
 import { httpServer } from "./app.js"
+import "./sockets/events.js"
 
 const port = process.env.PORT || 5000;
 

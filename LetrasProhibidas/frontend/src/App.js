@@ -1,7 +1,15 @@
 import logo from "./logo.svg";
+import { useEffect } from "react"
 import "./App.css";
+import { io } from "socket.io-client"
 
 function App() {
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+    socket.on("connect", () => {
+      console.log("Conectado al servidor")
+    })
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
