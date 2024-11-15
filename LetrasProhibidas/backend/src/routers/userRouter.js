@@ -89,6 +89,7 @@ userRouter.patch("/user", (req, res) => {
       return user ? res.status(200).send(user) : res.status(400).send("Could not update password");
     }).catch((err) => {
       res.status(400).send(err);
+      console.log(err);
     })
   }
   else if (id) {

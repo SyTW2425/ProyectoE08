@@ -17,11 +17,12 @@ const UserSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true
   },
   password: {
     type: String,
     required: true,
-    match: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    match: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()-_+={}[\]:;'"<>,.?/~`|\\]{8,}$/,
   },
   createdAt: {
     type: Date,

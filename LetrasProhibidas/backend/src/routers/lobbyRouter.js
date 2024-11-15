@@ -17,7 +17,7 @@ lobbyRouter.get("/lobby/all", (_, res) => {
   lobbyService.getAllLobbies().then((lobbies) => {
     return lobbies ? res.status(200).send(lobbies) : res.status(400).send("Lobbies not found");
   }).catch((err) => {
-    res.status(404).send(err)
+    res.status(400).send(err)
   });
 });
 
