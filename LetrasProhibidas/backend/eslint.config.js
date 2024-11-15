@@ -6,9 +6,6 @@ export default [
   {
     rules: {
       "no-unused-vars": "warn",
-    },
-    extends: {
-      prettier: true,
-    },
+    }
   },
 ];

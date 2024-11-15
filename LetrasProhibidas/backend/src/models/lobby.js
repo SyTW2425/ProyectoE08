@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 import validator from "validator";
-import { v4 as uuidv4, validate } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 const LobbySchema = new Schema({
   id: {

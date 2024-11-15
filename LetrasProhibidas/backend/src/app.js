@@ -1,6 +1,6 @@
 import express from "express";
-import { createServer } from "http"
-import { Server } from "socket.io"
+import { createServer } from "http";
+import { Server } from "socket.io";
 import "./db/config.js";
 import { gameRouter } from "./routers/gameRouter.js";
 import { userRouter } from "./routers/userRouter.js";

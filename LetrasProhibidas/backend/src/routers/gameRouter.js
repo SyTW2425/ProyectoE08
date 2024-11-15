@@ -10,9 +10,9 @@ const gameService = GameServices.getInstance()
 gameRouter.get("/game", (req, res) => {
   const id = req.query.id;
   gameService.getGameById(id).then((game) => {
-    res.status(200).send(game)
+    return game ? res.status(200).send(game) : res.status(400).send("Game not found");
   }).catch((err) => {
-    res.status(400).send(err)
+    res.status(400).send(err);
   });
 });
 
@@ -22,7 +22,7 @@ gameRouter.get("/game/:id", (req, res) => {
   gameService.getGameByMongoId(id).then((game) => {
     return game ? res.status(200).send(game) : res.status(400).send("Game not found");
   }).catch((err) => {
-    res.status(400).send(err)
+    res.status(400).send(err);
   });
 });
 
@@ -32,7 +32,7 @@ gameRouter.post("/game", (req, res) => {
   gameService.createGame(id, players).then((game) => {
     return game ? res.status(200).send(game) : res.status(400).send("Could not create game");
   }).catch((err) => {
-    res.status(400).send(err)
+    res.status(400).send(err);
   });
 });
 
