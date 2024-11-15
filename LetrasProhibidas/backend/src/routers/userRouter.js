@@ -23,6 +23,15 @@ userRouter.get("/user", (req, res) => {
   }
 });
 
+userRouter.get("/user/all", (req, res) => {
+  userService.getAllUsers().then((users) => {
+    return users ? res.status(200).send(users) : res.status(400).send("Could not get users");
+  }).catch((err) => {
+    res.status(400).send(err);
+  });
+});
+
+
 userRouter.get("/user/:id", (req, res) => {
   const id = req.params.id;
   userService.getUserByMongoId(id).then((user) => {
@@ -32,13 +41,6 @@ userRouter.get("/user/:id", (req, res) => {
   });
 });
 
-userRouter.get("/user/all", (req, res) => {
-  userService.getAllUsers().then((users) => {
-    return users ? res.status(200).send(users) : res.status(400).send("Could not get users");
-  }).catch((err) => {
-    res.status(400).send(err);
-  });
-});
 
 userRouter.post("/user", (req, res) => {
   const name = req.body.name;

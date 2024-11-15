@@ -13,19 +13,18 @@ lobbyRouter.get("/lobby", (req, res) => {
   });
 });
 
+lobbyRouter.get("/lobby/all", (_, res) => {
+  lobbyService.getAllLobbies().then((lobbies) => {
+    return lobbies ? res.status(200).send(lobbies) : res.status(400).send("Lobbies not found");
+  }).catch((err) => {
+    res.status(404).send(err)
+  });
+});
+
 lobbyRouter.get("/lobby/:id", (req, res) => {
   const id = req.params.id;
   lobbyService.getLobbyByMongoId(id).then((lobby) => {
     return lobby ? res.status(200).send(lobby) : res.status(400).send("Lobby not found");
-  }).catch((err) => {
-    res.status(400).send(err)
-  });
-});
-
-// Todas las lobbies
-lobbyRouter.get("/lobby/all", (req, res) => {
-  lobbyService.getAllLobbies().then((lobbies) => {
-    return lobbies ? res.status(200).send(lobbies) : res.status(400).send("Could not get lobbies");
   }).catch((err) => {
     res.status(400).send(err)
   });
@@ -55,7 +54,7 @@ lobbyRouter.post("/lobby", (req, res) => {
 
 lobbyRouter.patch("/lobby", (req, res) => {
   const id = req.query.id;
-  const players = req.query.players;
+  const players = req.body.players;
   lobbyService.updateLobbyPlayers(id, players).then((lobby) => {
     return lobby ? res.status(200).send(lobby) : res.status(400).send("Could not update");
   }).catch((err) => {
