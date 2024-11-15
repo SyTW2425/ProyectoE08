@@ -42,13 +42,14 @@ lobbyRouter.get("/lobby/all/:id", (req, res) => {
 });
 
 lobbyRouter.post("/lobby", (req, res) => {
-  const hostID = req.body.lobbyID;
+  const hostID = req.body.hostID;
   const players = req.body.players;
   const maxPlayers = req.body.maxPlayers;
   lobbyService.createLobby(hostID, players, maxPlayers).then((lobby) => {
     return lobby ? res.status(200).send(lobby) : res.status(400).send("Could not create lobby");
   }).catch((err) => {
     res.status(400).send(err)
+    console.log(err)
   });
 });
 
