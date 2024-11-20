@@ -1,43 +1,14 @@
-import Particles from "react-tsparticles"
+import { Meteors } from "./Meteors";
 
 export const Background = ({children}) => {
   return (
-    <div className="bg-gradient-to-bl from-primaryPurple to-secondaryBlue w-full h-screen">
-      <Particles
-      id="particles-js"
-      options={{
-        particles: {
-          number: {
-            value: 100, // Número de partículas
-            density: {
-              enable: true,
-              value_area: 800, // Densidad de las partículas
-            },
-          },
-          shape: {
-            type: "circle", // Forma de las partículas
-          },
-          opacity: {
-            value: 0.5, // Opacidad de las partículas
-            random: true,
-          },
-          size: {
-            value: 10, // Tamaño de las partículas
-            random: true,
-          },
-          move: {
-            enable: true,
-            speed: 5, // Velocidad de movimiento de las partículas
-            direction: "bottom-left", // Dirección de las partículas (meteorito caído)
-            random: true,
-            out_mode: "out", // Cómo se comportan las partículas fuera del área
-          },
-        },
-      }}
-      className="h-full w-full"/>
-      <div className="bg-[url('/public/pattern.jpg')] w-full h-full opacity-[.02]">
+    <div className="relative w-full h-screen overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-bl from-primaryPurple to-secondaryBlue -z-20" />
+      <div className="absolute inset-0 bg-[url('/public/pattern.jpg')] opacity-[.02] -z-10" />
+      <div className="flex items-center justify-center w-full h-full z-10">
         {children}
       </div>
+      <Meteors number={30} className="w-full h-full absolute -z-10"/>
     </div>
-  )
-}
+  );
+};
