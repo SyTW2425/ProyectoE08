@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { cn } from "../utils/cn.js";
+import { cn } from "../../utils/cn.js";
 
 export const Meteors = ({ number = 20 }) => {
   const [meteorStyles, setMeteorStyles] = useState(
