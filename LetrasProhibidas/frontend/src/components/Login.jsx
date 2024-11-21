@@ -15,8 +15,8 @@ export const Login = () => {
       </div>
 
       <div className="flex flex-col justify-center">
-        <UserInput text="NOMBRE DE USUARIO" />
-        <UserInput text="CONTRASEÑA" />
+        <UserInput text="NOMBRE DE USUARIO" type="text" />
+        <UserInput text="CONTRASEÑA" type="password"/>
         <ConfirmButton text="¡JUGAR!" />
       </div>
     </div>

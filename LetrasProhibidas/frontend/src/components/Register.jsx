@@ -14,9 +14,9 @@ export const Register = () => {
       </div>
 
       <div className="flex flex-col justify-center">
-        <UserInput text="CORREO ELECTRÓNICO" />
-        <UserInput text="NOMBRE DE USUARIO" />
-        <UserInput text="CONTRASEÑA" />
+        <UserInput text="CORREO ELECTRÓNICO" type="text" />
+        <UserInput text="NOMBRE DE USUARIO" type="email" />
+        <UserInput text="CONTRASEÑA" type="password" />
         <ConfirmButton text="VALE" />
       </div>
     </div>
