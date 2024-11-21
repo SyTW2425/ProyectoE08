@@ -2,8 +2,7 @@ import { ConfirmButton } from "./assets/ConfirmButton"
 import { RandomButton } from "./assets/RandomButton"
 import { UserInput } from "./assets/UserInput"
 
-
-export const Login = () => {
+export const Register = () => {
   return (
     <div className="flex flex-row items-center gap-10">
       <div className="relative">
@@ -15,9 +14,10 @@ export const Login = () => {
       </div>
 
       <div className="flex flex-col justify-center">
+        <UserInput text="CORREO ELECTRÓNICO"/>
         <UserInput text="NOMBRE DE USUARIO"/>
         <UserInput text="CONTRASEÑA"/>
-        <ConfirmButton text="¡JUGAR!"/>
+        <ConfirmButton text="VALE"/>
       </div>
     </div>
   )
