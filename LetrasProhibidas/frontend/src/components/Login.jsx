@@ -4,40 +4,13 @@ import { UserInput } from "./assets/UserInput"
 import { useState } from "react"
 
 
-export const Login = () => {
+export const Login = ({onLogin}) => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-    console.log("Starting login process...");
-
-    try {
-      // Verificamos que el usuario existe
-      const response = await fetch(`http://localhost:5000/user?name=${username}`);
-      if (response.ok) {
-        const user = await response.json();
-
-        // Verificamos la contraseña
-        const response2 = await fetch(`http://localhost:5000/user/password`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ name: username, password })
-        });
-
-        if (response2.ok) {
-          console.log("User logged in:");
-        } else {
-          console.error("Failed to login:", response2.statusText);
-        }
-      } else {
-        console.error("User not found");
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-    }
+    onLogin({username, password})
   };
 
   return (

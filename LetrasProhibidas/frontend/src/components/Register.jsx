@@ -3,31 +3,13 @@ import { RandomButton } from "./assets/RandomButton"
 import { UserInput } from "./assets/UserInput"
 import { useState } from "react"
 
-export const Register = () => {
+export const Register = ({onRegister}) => {
   const [email, setEmail] = useState("");
   const [name, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegister = async () => {
-    console.log("Starting registration process...");
-    try {
-      const response = await fetch("http://localhost:5000/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, name, password })
-      });
-
-      if (response.ok) {
-        const user = await response.json();
-        console.log("User registered:");
-      } else {
-        console.error("Failed to register user:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error during registration:", error);
-    }
+    onRegister({email, name, password})
   };
 
   return (

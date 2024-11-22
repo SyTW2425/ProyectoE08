@@ -4,7 +4,7 @@ import { LoginButton } from "../assets/LoginButton"
 import { Login } from "../Login"
 import { Register } from "../Register"
 
-export const LoginPage = () => {
+export const LoginPage = ({onLogin, onRegister}) => {
   const [activeLogin, setActiveLogin] = useState(true)
   return (
     <Background>
@@ -26,9 +26,9 @@ export const LoginPage = () => {
             </div>
             <div className="flex-1 flex justify-center">
               {activeLogin ? (
-                <Login />
+                <Login onLogin={onLogin}/>
               ) : (
-                <Register />
+                <Register onRegister={onRegister} />
               )}
             </div>
           </div>
