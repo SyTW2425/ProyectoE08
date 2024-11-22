@@ -54,6 +54,11 @@ userRouter.post("/user", (req, res) => {
   const name = req.body.name;
   const password = req.body.password;
   const email = req.body.email;
+
+  // Imprimimos el body para verificar que los datos se recibieron correctamente
+  console.log(req.body);
+
+  console.log(name, password, email);
   userService.createUser(name, password, email).then((user) => {
     return user ? res.status(200).send(user) : res.status(400).send("Could not create user");
   }).catch((err) => {
@@ -116,3 +121,19 @@ userRouter.patch("/user", (req, res) => {
     })
   }
 })
+
+// Endpoint para comprobar que una contraseña pertenece a un usuario
+userRouter.post("/user/password", async (req, res) => {
+  const { name, password } = req.body;
+  try {
+    const user = await userService.getUserByName(name);
+    if (!user) {
+      return res.status(400).send("User not found");
+    }
+    const isMatch = await userService.comparePassword(user, password);
+    return isMatch ? res.status(200).send("Password matches") : res.status(400).send("Password does not match");
+  } catch (err) {
+    console.error("Error in /user/password:", err);
+    res.status(500).send(err);
+  }
+});

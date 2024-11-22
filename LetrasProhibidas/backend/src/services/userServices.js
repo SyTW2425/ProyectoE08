@@ -161,7 +161,12 @@ export class UserServices {
      * @returns {Promise<boolean>} El resultado de la comparación.
      */
     async comparePassword(user, inputPassword) {
-        return await user.comparePassword(inputPassword);
+        try {
+          return await user.comparePassword(inputPassword);
+        } catch (err) {
+          console.error("Error in comparePassword:", err);
+          throw err;
+        }
     }
 
     /**
