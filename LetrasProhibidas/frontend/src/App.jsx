@@ -24,11 +24,11 @@ function App() {
 }
 
 const AuthWrapper = () => {
-  const {isAuthenticaded, login, register} = useAuth()
+  const {isAuthenticated, login, register} = useAuth()
   return (
     <div>
       {
-        isAuthenticaded ?
+        isAuthenticated ?
           <Home/>
           :
           <LoginPage onLogin={login} onRegister={register}/>
