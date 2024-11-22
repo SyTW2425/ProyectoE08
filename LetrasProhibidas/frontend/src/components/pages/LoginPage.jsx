@@ -7,7 +7,6 @@ import { Register } from "../Register"
 export const LoginPage = ({onLogin, onRegister}) => {
   const [activeLogin, setActiveLogin] = useState(true)
   return (
-    <Background>
       <div className="h-[40rem] w-[60rem] border-[10px] p-5 rounded-xl border-white/10 backdrop-blur-xl flex flex-col items-center justify-start shadow-xl font-poppins text-white">
         <h1 className="text-[64px] font-black"><span className="text-white">LETRAS</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">PROHIBIDAS</span></h1>
         <div className="h-full w-[50rem] flex flex-row gap-4 items-center justify-start p-3">
@@ -43,6 +42,5 @@ export const LoginPage = ({onLogin, onRegister}) => {
           </div>
         </div>
       </div>
-    </Background>
   )
 }

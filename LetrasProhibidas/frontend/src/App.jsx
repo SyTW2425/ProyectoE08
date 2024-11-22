@@ -9,16 +9,19 @@ import "@fontsource/poppins/400.css"; // Normal
 import "@fontsource/poppins/500.css"; // Normal
 import "@fontsource/poppins/600.css"; // Normal
 import "@fontsource/poppins/900.css"; // Black
+import { Background } from "./components/pages/Background";
 
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-            <Route path="/" element={<AuthWrapper />} />
-        </Routes>
-      </Router>
+      <Background>
+        <Router>
+          <Routes>
+              <Route path="/" element={<AuthWrapper />} />
+          </Routes>
+        </Router>
+      </Background>
     </AuthProvider>
   );
 }
