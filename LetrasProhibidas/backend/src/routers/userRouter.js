@@ -7,6 +7,7 @@ const userService = UserServices.getInstance();
 userRouter.get("/user", (req, res) => {
   const name = req.query.name;
   const id = req.query.id;
+  const email = req.query.email;
   if (name) {
     userService.getUserByName(name).then((user) => {
       return user ? res.status(200).send(user) : res.status(400).send("User not found");
@@ -14,13 +15,20 @@ userRouter.get("/user", (req, res) => {
       res.status(400).send(err);
     });
   }
-  else {
+  else if (id) {
     userService.getUserById(id).then((user) => {
       return user ? res.status(200).send(user) : res.status(400).send("User not found");
     }).catch((err) => {
       res.status(400).send(err);
     });
+  } else {
+    userService.getUserByEmail(email).then((user) => {
+      return user ? res.status(200).send(user) : res.status(400).send("User not found");
+    }).catch((err) => {
+      res.status(400).send(err);
+    });
   }
+
 });
 
 userRouter.get("/user/all", (req, res) => {
@@ -45,7 +53,8 @@ userRouter.get("/user/:id", (req, res) => {
 userRouter.post("/user", (req, res) => {
   const name = req.body.name;
   const password = req.body.password;
-  userService.createUser(name, password).then((user) => {
+  const email = req.body.email;
+  userService.createUser(name, password, email).then((user) => {
     return user ? res.status(200).send(user) : res.status(400).send("Could not create user");
   }).catch((err) => {
     res.status(400).send(err);
@@ -55,6 +64,7 @@ userRouter.post("/user", (req, res) => {
 userRouter.delete("/user", (req, res) => {
   const name = req.query.name;
   const id = req.query.id;
+  const email = req.query.email;
   if (name) {
     userService.deleteUserByName(name).then((user) => {
       return user ? res.status(200).send(user) : res.status(400).send("Could not delete user");
@@ -62,8 +72,14 @@ userRouter.delete("/user", (req, res) => {
       res.status(400).send(err);
     });
   }
-  else {
+  else if (id) {
     userService.deleteUser(id).then((user) => {
+      return user ? res.status(200).send(user) : res.status(400).send("Could not delete user");
+    }).catch((err) => {
+      res.status(400).send(err);
+    });
+  } else {
+    userService.deleteUserByEmail(email).then((user) => {
       return user ? res.status(200).send(user) : res.status(400).send("Could not delete user");
     }).catch((err) => {
       res.status(400).send(err);

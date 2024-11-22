@@ -14,6 +14,15 @@ const UserSchema = new Schema({
       message: "Invalid ID",
     },
   },
+  email:{
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: (value) => validator.isEmail(value),
+      message: "Invalid email",
+    },
+  },
   name: {
     type: String,
     required: true,

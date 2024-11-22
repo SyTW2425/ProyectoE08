@@ -24,11 +24,12 @@ export class UserServices {
      * Crea un nuevo usuario.
      * @param {string} name - El nombre del usuario.
      * @param {string} password - La contraseña del usuario.
+     * @param {string} email - El correo electrónico del usuario.
      * @returns {Promise<User>} El usuario creado.
      * @throws {Error} Si ocurre un error al guardar el usuario.
      */
-    async createUser(name, password) {
-        const user = new User({ name, password });
+    async createUser(name, password, email) {
+        const user = new User({ name, password, email });
         return await user.save().catch((err) => {
             throw new Error(err.message);
         });
@@ -54,6 +55,18 @@ export class UserServices {
      */
     async getUserById(id) {
         return await User.findOne({ id }).catch((err) => {
+            throw new Error(err.message);
+        });
+    }
+
+    /**
+     * Obtiene un usuario por su correo electrónico.
+     * @param {string} email - El correo electrónico del usuario.
+     * @returns {Promise<User>} El usuario encontrado.
+     * @throws {Error} Si ocurre un error al buscar el usuario.
+     */
+    async getUserByEmail(email) {
+        return await User.findOne({ email }).catch((err) => {
             throw new Error(err.message);
         });
     }
@@ -102,6 +115,18 @@ export class UserServices {
      */
     async deleteUserByName(name) {
         return await User.deleteOne({ name }).catch((err) => {
+            throw new Error(err.message);
+        });
+    }
+
+    /**
+     * Elimina un usuario por su correo electrónico.
+     * @param {string} email - El correo electrónico del usuario.
+     * @returns {Promise<DeleteResult>} El resultado de la eliminación.
+     * @throws {Error} Si ocurre un error al eliminar el usuario.
+     */
+    async deleteUserByEmail(email) {
+        return await User.deleteOne({ email }).catch((err) => {
             throw new Error(err.message);
         });
     }
