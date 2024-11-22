@@ -3,3 +3,4 @@
 - Meter el formulario en componente <form>
 - Crear eventos de sockets
 - Crear pagina de home, perfil, partida, fin de partida
+- Estado loading (para saber cuando se están cargando las peticiones)
