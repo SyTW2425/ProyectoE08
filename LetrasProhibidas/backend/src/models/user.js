@@ -59,7 +59,12 @@ UserSchema.pre("save", async function (next) {
 
 // Método para comparar la contraseña ingresada con el hash almacenado
 UserSchema.methods.comparePassword = async function (inputPassword) {
-  return await bcrypt.compare(inputPassword, this.password);
+  try {
+    return await bcrypt.compare(inputPassword, this.password);
+  } catch (err) {
+    console.error("Error in comparePassword method:", err);
+    throw err;
+  }
 };
 
 
