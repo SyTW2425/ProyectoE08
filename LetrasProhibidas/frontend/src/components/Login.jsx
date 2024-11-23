@@ -2,15 +2,38 @@ import { ConfirmButton } from "./assets/ConfirmButton"
 import { RandomButton } from "./assets/RandomButton"
 import { UserInput } from "./assets/UserInput"
 import { useState } from "react"
+import Modal from "./Modal"
 
 
 export const Login = ({onLogin}) => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
-    onLogin({username, password})
+    const error = validateInputs();
+    if (error) {
+      setErrorMessage(error);
+      setIsModalOpen(true);
+      return;
+    }
+
+    try {
+      await onLogin({ username, password });
+    } catch (error) {
+      setErrorMessage("Usuario o contraseña incorrectos.");
+      setIsModalOpen(true);
+    }
+      
+  };
+
+  const validateInputs = () => {
+    if (!username || !password) {
+      return "Todos los campos son obligatorios.";
+    }
+    return null;
   };
 
   return (
@@ -28,6 +51,10 @@ export const Login = ({onLogin}) => {
         <UserInput text="CONTRASEÑA" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <ConfirmButton text="¡JUGAR!" onClick={handleLogin} />
       </div>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error">
+        <p>{errorMessage}</p>
+      </Modal>
     </div>
   )
 }

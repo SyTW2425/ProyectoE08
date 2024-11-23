@@ -2,14 +2,46 @@ import { ConfirmButton } from "./assets/ConfirmButton"
 import { RandomButton } from "./assets/RandomButton"
 import { UserInput } from "./assets/UserInput"
 import { useState } from "react"
+import Modal from "./Modal"
+import validator from "validator"
 
 export const Register = ({onRegister}) => {
   const [email, setEmail] = useState("");
   const [name, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const validateInputs = () => {
+    if (!email || !name || !password) {
+      return "Todos los campos son obligatorios.";
+    }
+    if (!validator.isEmail(email)) {
+      return "El correo electrónico no es válido.";
+    }
+    if (password.length < 8) {
+      return "La contraseña debe tener al menos 8 caracteres.";
+    }
+    if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()-_+={}[\]:;'"<>,.?/~`|\\]{8,}$/.test(password)) {
+      return "La contraseña debe contener al menos una letra mayuscula y un número.";
+    }
+    return null;
+  };
 
   const handleRegister = async () => {
-    onRegister({email, name, password})
+    const error = validateInputs();
+    if (error) {
+      setErrorMessage(error);
+      setIsModalOpen(true);
+      return;
+    }
+
+    try {
+      await onRegister({ email, name, password });
+    } catch (error) {
+      setErrorMessage(error.message); // Actualiza el mensaje de error
+      setIsModalOpen(true); // Muestra el modal
+    }
   };
 
   return (
@@ -28,6 +60,11 @@ export const Register = ({onRegister}) => {
         <UserInput text="CONTRASEÑA" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <ConfirmButton text="VALE" onClick={handleRegister} />
       </div>
+
+    
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error">
+        <p>{errorMessage}</p>
+      </Modal>
     </div>
   )
 }
