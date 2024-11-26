@@ -52,7 +52,7 @@ export const Login = ({onLogin}) => {
         <ConfirmButton text="¡JUGAR!" onClick={handleLogin} />
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error">
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error inesperado">
         <p>{errorMessage}</p>
       </Modal>
     </div>

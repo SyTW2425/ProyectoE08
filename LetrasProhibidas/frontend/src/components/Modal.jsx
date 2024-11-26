@@ -64,17 +64,17 @@ export default function Modal({
                 <div className="text-center">
                     <h2 className="text-2xl font-bold tracking-tight">
                         <span className="text-white">{title.split(' ')[0]} </span>
-                        <span className="text-[#7CD3E3]">
+                        <span className="text-primaryBlue">
                             {title.split(' ').slice(1).join(' ')}
                         </span>
                     </h2>
                     
-                    <div className="mt-4 text-gray-100">
+                    <div className="m-4 text-gray-100">
                         {children}
                     </div>
                     
 
-                    <ConfirmButton text={buttonText} onClick={handleButtonClick}/>
+                    <ConfirmButton text={buttonText} onClick={handleButtonClick} className="pl-2 pr-2"/>
                 </div>
             </div>
         </div>
