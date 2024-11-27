@@ -122,22 +122,6 @@ userRouter.patch("/user", (req, res) => {
   }
 })
 
-// Endpoint para comprobar que una contraseña pertenece a un usuario
-userRouter.post("/user/password", async (req, res) => {
-  const { name, password } = req.body;
-  try {
-    const user = await userService.getUserByName(name);
-    if (!user) {
-      return res.status(400).send("User not found");
-    }
-    const isMatch = await userService.comparePassword(user, password);
-    return isMatch ? res.status(200).send("Password matches") : res.status(400).send("Password does not match");
-  } catch (err) {
-    console.error("Error in /user/password:", err);
-    res.status(500).send(err);
-  }
-});
-
 // Endpoint para logearse 
 
 userRouter.post("/user/login", async (req, res) => {
