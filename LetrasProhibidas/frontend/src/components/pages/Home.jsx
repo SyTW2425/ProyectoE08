@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 // Esto es una prueba para lo de la autenticacion
-export const Home = () => {
+export const Home = ({onLogout}) => {
   const [userData, setUserData] = useState(null);
   useEffect(() =>  {
     const fetchData = async () => {
@@ -30,10 +30,19 @@ export const Home = () => {
     fetchData()
   }, [])
   return (
-    <p>
-      {
-        userData ? JSON.stringify(userData) : "Cargando.."
-      }
-    </p>
+    <div>
+      <div>
+        {
+          userData ? 
+          <div>
+            {JSON.stringify(userData)}
+            <button onClick={() => onLogout()}>Logout</button>
+          </div>
+          : 
+          <p>"Cargando.."</p>
+        }
+      </div>
+    </div>
+
   )
 }

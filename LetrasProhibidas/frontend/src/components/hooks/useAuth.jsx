@@ -1,5 +1,5 @@
-import { Fence } from "lucide-react";
-import { useContext, createContext, useState, Children } from "react";
+import { useContext, createContext, useState, Children, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 export const useAuth = () => useContext(AuthContext)
 
@@ -7,6 +7,37 @@ const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [loading, setLoading] = useState(true)
+  // Vamos a hacer que el usuario solo tenga que iniciar sesion cuando no tiene un jwt o no esté vigente.
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("userID");
+      if (token){
+          try {
+            const response = await fetch(`http://localhost:5000/user/${id}`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
+            if (response.ok) {
+              setIsAuthenticated(true)
+            }
+            else {
+              logout()
+            }
+          }
+          catch (err) {
+            console.log(err)
+            logout()
+          }
+        }
+        else logout()
+        setLoading(false)
+    }
+    fetchData()
+  }, [])
 
   const login = async({username, password}) => {
     console.log("Starting login process...");
@@ -57,8 +88,25 @@ export const AuthProvider = ({children}) => {
       console.error("Error during registration:", error);
     }
   }
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userID");
+    setIsAuthenticated(false);
+  }
+
+  const isTokenValid = (token) => {
+    try {
+      const { exp } = jwtDecode(token);
+      const currentTime = Date.now() / 1000; // Convertir a segundos
+      return exp > currentTime; // El token sigue siendo válido
+    } catch (error) {
+      return false; // Token no válido
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{isAuthenticated, login, register}}>
+    <AuthContext.Provider value={{isAuthenticated, loading, login, register, logout}}>
       {children}
     </AuthContext.Provider>
   )
