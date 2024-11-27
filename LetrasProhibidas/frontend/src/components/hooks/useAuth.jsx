@@ -20,8 +20,11 @@ export const AuthProvider = ({children}) => {
       });
       
       if (response.ok) {
-        console.log("User logged in:")
+        const { token, message, userID } = await response.json();
         setIsAuthenticated(true)
+        localStorage.setItem("token", token)
+        localStorage.setItem("userID", userID)
+        console.log(message)
       } else {
         console.log("Usuario o contraseña incorrecta")
       }

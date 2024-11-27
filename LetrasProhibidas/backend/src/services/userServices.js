@@ -1,5 +1,8 @@
 import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv";
+dotenv.config();
 
 
 
@@ -191,7 +194,10 @@ export class UserServices {
             const user = await this.getUserByName(name);
             const isValidPassword = await bcrypt.compare(password, user.password);
             if (!isValidPassword) throw new Error("Contraseña incorrecta");
-            return true;
+            const token = jwt.sign({ userID: user.id, username: user.username }, process.env.SECRET_KEY, {
+                expiresIn: "24h"
+            })
+            return { token: token, id: user.id };
         } catch(err) {
             throw err;
         }

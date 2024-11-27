@@ -1,5 +1,8 @@
 import express from "express";
 import { UserServices } from "../services/userServices.js";
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv";
+dotenv.config();
 
 export const userRouter = express.Router();
 const userService = UserServices.getInstance();
@@ -41,12 +44,31 @@ userRouter.get("/user/all", (req, res) => {
 
 
 userRouter.get("/user/:id", (req, res) => {
-  const id = req.params.id;
-  userService.getUserByMongoId(id).then((user) => {
-    return user ? res.status(200).send(user) : res.status(400).send("User not found");
-  }).catch((err) => {
-    res.status(400).send(err);
-  });
+  // Primero comprobamos que se envíe un token y este sea válido
+  const authHeader = req.headers.authorization
+  if (!authHeader) return res.status(401).send("No autorizado");
+
+  const token = authHeader.split(" ")[1]
+
+  try {
+    // Decodificamos la información del token
+    const decoded = jwt.verify(token, process.env.SECRET_KEY)
+    const tokenId = decoded.userID
+    const id = req.params.id;
+    // Comparamos que la informacion coincida
+    if (tokenId !== id) return res.status(403).send("No tienes permiso para acceder a esta informacion")
+    
+    // Una vez coincida, devolvemos la informacion del usuario
+    userService.getUserById(id).then((user) => {
+      return user ? res.status(200).send(user) : res.status(400).send("User not found");
+    }).catch((err) => {
+      return res.status(400).send(err);
+    });
+  }
+  catch (err) {
+    console.log(err)
+    return res.status(400).send(err)
+  }
 });
 
 
@@ -127,9 +149,10 @@ userRouter.patch("/user", (req, res) => {
 userRouter.post("/user/login", async (req, res) => {
   const {name, password} = req.body;
   try {
-    const isLogged = await userService.login(name, password);
-    return res.status(200).send("Login OK")
-  } catch (err) {
+    const {token, id} = await userService.login(name, password);
+    return res.status(200).json({token, message: "Usario logeado correctamente", userID: id})
+  } 
+  catch (err) {
     console.log(err.message);
     return res.status(400).send("Could not login")
   }
