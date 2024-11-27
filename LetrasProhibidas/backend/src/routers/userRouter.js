@@ -137,3 +137,16 @@ userRouter.post("/user/password", async (req, res) => {
     res.status(500).send(err);
   }
 });
+
+// Endpoint para logearse 
+
+userRouter.post("/user/login", async (req, res) => {
+  const {name, password} = req.body;
+  try {
+    const isLogged = await userService.login(name, password);
+    return res.status(200).send("Login OK")
+  } catch (err) {
+    console.log(err.message);
+    return res.status(400).send("Could not login")
+  }
+})

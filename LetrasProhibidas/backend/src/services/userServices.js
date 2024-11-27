@@ -1,4 +1,6 @@
 import { User } from "../models/user.js";
+import bcrypt from "bcrypt";
+
 
 
 /**
@@ -182,5 +184,16 @@ export class UserServices {
         return await user.save().catch((err) => {
             throw new Error(err.message);
         });
+    }
+
+    async login(name, password) {
+        try {
+            const user = await this.getUserByName(name);
+            const isValidPassword = await bcrypt.compare(password, user.password);
+            if (!isValidPassword) throw new Error("Contraseña incorrecta");
+            return true;
+        } catch(err) {
+            throw err;
+        }
     }
 }

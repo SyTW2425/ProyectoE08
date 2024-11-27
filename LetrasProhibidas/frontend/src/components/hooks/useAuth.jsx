@@ -1,3 +1,4 @@
+import { Fence } from "lucide-react";
 import { useContext, createContext, useState, Children } from "react";
 
 export const useAuth = () => useContext(AuthContext)
@@ -10,31 +11,22 @@ export const AuthProvider = ({children}) => {
   const login = async({username, password}) => {
     console.log("Starting login process...");
     try {
-      // Verificamos que el usuario existe
-      const response = await fetch(`http://localhost:5000/user?name=${username}`);
+      const response = await fetch("http://localhost:5000/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: username, password})
+      });
+      
       if (response.ok) {
-        const user = await response.json();
-
-        // Verificamos la contraseña
-        const response2 = await fetch(`http://localhost:5000/user/password`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ name: username, password })
-        });
-
-        if (response2.ok) {
-          console.log("User logged in:");
-          setIsAuthenticated(true)
-        } else {
-          console.error("Failed to login:", response2.statusText);
-        }
+        console.log("User logged in:")
+        setIsAuthenticated(true)
       } else {
-        console.error("User not found");
+        console.log("Usuario o contraseña incorrecta")
       }
     } catch (error) {
-      console.error("Error during login:", error);
+        console.error("Error during login:", error);
     }
   }
 
