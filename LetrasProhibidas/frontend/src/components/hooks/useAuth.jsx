@@ -6,39 +6,8 @@ export const useAuth = () => useContext(AuthContext)
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
   // Vamos a hacer que el usuario solo tenga que iniciar sesion cuando no tiene un jwt o no esté vigente.
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem("token");
-      const id = localStorage.getItem("userID");
-      if (token){
-          try {
-            const response = await fetch(`http://localhost:5000/user/${id}`, {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            })
-            if (response.ok) {
-              setIsAuthenticated(true)
-            }
-            else {
-              logout()
-            }
-          }
-          catch (err) {
-            console.log(err)
-            logout()
-          }
-        }
-        else logout()
-        setLoading(false)
-    }
-    fetchData()
-  }, [])
-
   const login = async({username, password}) => {
     console.log("Starting login process...");
     try {
@@ -106,7 +75,7 @@ export const AuthProvider = ({children}) => {
   }
 
   return (
-    <AuthContext.Provider value={{isAuthenticated, loading, login, register, logout}}>
+    <AuthContext.Provider value={{isAuthenticated, login, register, logout}}>
       {children}
     </AuthContext.Provider>
   )

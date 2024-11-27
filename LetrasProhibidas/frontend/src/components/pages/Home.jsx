@@ -6,26 +6,28 @@ export const Home = ({onLogout}) => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("userID");
-      if (!token) console.log("No hay token")
-
-      try {
-        const response = await fetch(`http://localhost:5000/user/${id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`
+      if (token){
+          try {
+            const response = await fetch(`http://localhost:5000/user/${id}`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
+            if (response.ok) {
+              const result = await response.json()
+              setUserData(result)
+            }
+            else {
+              onLogout()
+            }
           }
-        })
-        if (response.ok) {
-          const result = await response.json();
-          setUserData(result)
+          catch (err) {
+            console.log(err)
+            onLogout()
+          }
         }
-        else {
-          console.log("error")
-        }
-      }
-      catch (err) {
-        console.log(err)
-      }
+        else onLogout()
     }
     fetchData()
   }, [])
