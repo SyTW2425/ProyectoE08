@@ -81,8 +81,8 @@ userRouter.post("/user", (req, res) => {
   console.log(req.body);
 
   console.log(name, password, email);
-  userService.createUser(name, password, email).then((user) => {
-    return user ? res.status(200).send(user) : res.status(400).send("Could not create user");
+  userService.createUser(name, password, email).then(({token, id}) => {
+    return res.status(200).json({token: token, message: "Usuario registrado correctamente", userID: id});
   }).catch((err) => {
     res.status(400).send(err);
   });

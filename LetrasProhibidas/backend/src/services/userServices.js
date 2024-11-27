@@ -35,9 +35,13 @@ export class UserServices {
      */
     async createUser(name, password, email) {
         const user = new User({ name, password, email });
-        return await user.save().catch((err) => {
-            throw new Error(err.message);
-        });
+        await user.save().catch((err) => {
+            throw new Error(err.message)
+        })
+        const token = jwt.sign({ userID: user.id, username: user.username }, process.env.SECRET_KEY, {
+            expiresIn: "24h"
+        })
+        return { token: token, id: user.id };
     }
 
     /**

@@ -45,8 +45,10 @@ export const AuthProvider = ({children}) => {
       });
 
       if (response.ok) {
-        const user = await response.json();
-        console.log("User registered:");
+        const { token, message, userID } = await response.json();
+        localStorage.setItem("token", token)
+        localStorage.setItem("userID", userID)
+        console.log(message)
         setIsAuthenticated(true)
       } else {
         console.error("Failed to register user:", response.statusText);
