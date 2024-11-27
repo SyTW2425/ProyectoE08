@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react"
-
-// const response = await axios.get("http://localhost:5000/protected", {
-//   headers: {
-//     Authorization: `Bearer ${token}`,
-//   },
-
+// Esto es una prueba para lo de la autenticacion
 export const Home = () => {
   const [userData, setUserData] = useState(null);
   useEffect(() =>  {
