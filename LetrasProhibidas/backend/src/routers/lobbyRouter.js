@@ -8,7 +8,7 @@ lobbyRouter.get("/lobby", (req, res) => {
   const id = req.query.id;
 
   if (!id) {
-    return res.status(400).send("No id provided");
+    return res.status(400).send("No se proporcionó el ID");
   }
 
   lobbyService
@@ -16,10 +16,10 @@ lobbyRouter.get("/lobby", (req, res) => {
     .then((lobby) => {
       return lobby
         ? res.status(200).send(lobby)
-        : res.status(404).send("Lobby not found");
+        : res.status(404).send("Lobby no encontrado");
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res.status(500).send("Error al intentar obtener el lobby por su ID");
     });
 });
 
@@ -29,10 +29,10 @@ lobbyRouter.get("/lobby/all", (_, res) => {
     .then((lobbies) => {
       return lobbies
         ? res.status(200).send(lobbies)
-        : res.status(404).send("Lobbies not found");
+        : res.status(404).send("Lobby no encontrado");
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res.status(500).send("Error al intentar obtener todos los lobbies");
     });
 });
 
@@ -40,7 +40,7 @@ lobbyRouter.get("/lobby/:id", (req, res) => {
   const id = req.params.id;
 
   if (!id) {
-    return res.status(400).send("No id provided");
+    return res.status(400).send("No se proporcionó el ID");
   }
 
   lobbyService
@@ -48,10 +48,12 @@ lobbyRouter.get("/lobby/:id", (req, res) => {
     .then((lobby) => {
       return lobby
         ? res.status(200).send(lobby)
-        : res.status(404).send("Lobby not found");
+        : res.status(404).send("Lobby no encontrado");
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res
+        .status(500)
+        .send("Error al intentar obtener el lobby por su ID de MongoDB");
     });
 });
 
@@ -59,7 +61,7 @@ lobbyRouter.get("/lobby/all/:id", (req, res) => {
   const id = req.params.id;
 
   if (!id) {
-    return res.status(400).send("No id provided");
+    return res.status(400).send("No se proporcionó el ID");
   }
 
   lobbyService
@@ -67,10 +69,10 @@ lobbyRouter.get("/lobby/all/:id", (req, res) => {
     .then((lobbies) => {
       return lobbies
         ? res.status(200).send(lobbies)
-        : res.status(404).send("Could not get lobbies");
+        : res.status(404).send("No se pudieron obtener los lobbies");
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res.status(500).send("Error al intentar obtener los lobbies del usuario");
     });
 });
 
@@ -88,10 +90,10 @@ lobbyRouter.post("/lobby", (req, res) => {
     .then((lobby) => {
       return lobby
         ? res.status(200).send(lobby)
-        : res.status(404).send("Could not create lobby");
+        : res.status(404).send("No se pudo crear el lobby");
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res.status(500).send("Error al intentar crear el lobby");
     });
 });
 
@@ -100,7 +102,7 @@ lobbyRouter.patch("/lobby", (req, res) => {
   const players = req.body.players;
 
   if (!id || !players) {
-    return res.status(400).send("Missing parameters");
+    return res.status(400).send("No se proporcionó el ID o los jugadores");
   }
 
   lobbyService
@@ -108,10 +110,10 @@ lobbyRouter.patch("/lobby", (req, res) => {
     .then((lobby) => {
       return lobby
         ? res.status(200).send(lobby)
-        : res.status(404).send("Could not update");
+        : res.status(404).send("No se pudo actualizar el lobby");
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res.status(500).send("Error al intentar actualizar el lobby");
     });
 });
 
@@ -119,7 +121,7 @@ lobbyRouter.delete("/lobby", (req, res) => {
   const id = req.query.id;
 
   if (!id) {
-    return res.status(400).send("No id provided");
+    return res.status(400).send("No se proporcionó el ID");
   }
 
   lobbyService
@@ -127,10 +129,10 @@ lobbyRouter.delete("/lobby", (req, res) => {
     .then((lobby) => {
       return lobby
         ? res.status(200).send(lobby)
-        : res.status(404).send("Could not update");
+        : res.status(404).send("No se pudo eliminar");
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res.status(500).send("Error al intentar eliminar el lobby");
     });
 });
 
@@ -138,7 +140,7 @@ lobbyRouter.delete("/lobby/:id", (req, res) => {
   const id = req.params.id;
 
   if (!id) {
-    return res.status(400).send("No id provided");
+    return res.status(400).send("No se proporcionó el ID");
   }
 
   lobbyService
@@ -146,9 +148,13 @@ lobbyRouter.delete("/lobby/:id", (req, res) => {
     .then((lobby) => {
       return lobby
         ? res.status(200).send(lobby)
-        : res.status(404).send("Could not update");
+        : res
+            .status(404)
+            .send("No se pudo eliminar el lobby por su ID de MongoDB");
     })
     .catch((err) => {
-      res.status(500).send(err);
+      res
+        .status(500)
+        .send("Error al intentar eliminar el lobby por su ID de MongoDB");
     });
 });
