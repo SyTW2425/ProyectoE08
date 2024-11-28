@@ -2,7 +2,6 @@ import { Schema, model } from "mongoose";
 import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
 
-
 const GameSchema = new Schema({
   id: {
     type: String,

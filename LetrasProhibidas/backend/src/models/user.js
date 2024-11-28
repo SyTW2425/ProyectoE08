@@ -14,7 +14,7 @@ const UserSchema = new Schema({
       message: "Invalid ID",
     },
   },
-  email:{
+  email: {
     type: String,
     required: true,
     unique: true,
@@ -26,12 +26,13 @@ const UserSchema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
     required: true,
-    match: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()-_+={}[\]:;'"<>,.?/~`|\\]{8,}$/,
+    match:
+      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()-_+={}[\]:;'"<>,.?/~`|\\]{8,}$/,
   },
   createdAt: {
     type: Date,
@@ -66,6 +67,5 @@ UserSchema.methods.comparePassword = async function (inputPassword) {
     throw err;
   }
 };
-
 
 export const User = model("User", UserSchema);
