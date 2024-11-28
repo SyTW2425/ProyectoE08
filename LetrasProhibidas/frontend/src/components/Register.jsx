@@ -4,6 +4,8 @@ import { UserInput } from "./assets/UserInput"
 import { useState } from "react"
 import Modal from "./Modal"
 import validator from "validator"
+import { avatars } from "../utils/avatars"
+
 
 export const Register = ({onRegister}) => {
   const [email, setEmail] = useState("");
@@ -11,6 +13,8 @@ export const Register = ({onRegister}) => {
   const [password, setPassword] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [avatar, setAvatar] = useState(avatars[0]);
+
 
   const validateInputs = () => {
     if (!email || !name || !password) {
@@ -44,25 +48,38 @@ export const Register = ({onRegister}) => {
     }
   };
 
+  const handleClick = () => {
+    let index = 0
+    while (avatars[index] === avatar) {
+      index = Math.floor(Math.random() * avatars.length)
+    }
+    setAvatar(avatars[index])
+  }
+
   return (
     <div className="flex flex-row items-center gap-10">
       <div className="relative">
         <img
-          src="/avatar.jpg"
+          src={avatar}
           className="rounded-full border-white border-[7px] max-w-56 max-h-56"
         />
-        <RandomButton className="top-1 right-4 absolute" />
+        <RandomButton className="top-1 right-4 absolute" onClick={handleClick} />
       </div>
 
-      <div className="flex flex-col justify-center">
+      <form className="flex flex-col justify-center" onSubmit={ (e) => {
+        e.preventDefault()
+        handleRegister()
+      }
+
+      }>
         <UserInput text="CORREO ELECTRÓNICO" type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         <UserInput text="NOMBRE DE USUARIO" type="text" value={name} onChange={(e) => setUsername(e.target.value)} />
         <UserInput text="CONTRASEÑA" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <ConfirmButton text="VALE" onClick={handleRegister} />
-      </div>
+        <ConfirmButton text="VALE" type="submit" />
+      </form>
 
     
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error">
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error inesperado">
         <p>{errorMessage}</p>
       </Modal>
     </div>

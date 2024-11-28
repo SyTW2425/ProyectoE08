@@ -12,6 +12,7 @@ export default function Modal({
     onButtonClick
 }) {
     const [isAnimating, setIsAnimating] = useState(false)
+    const upperTitle = title.toUpperCase()
 
     useEffect(() => {
         if (isOpen) {
@@ -63,9 +64,9 @@ export default function Modal({
 
                 <div className="text-center">
                     <h2 className="text-2xl font-bold tracking-tight">
-                        <span className="text-white">{title.split(' ')[0]} </span>
+                        <span className="text-white">{upperTitle.split(' ')[0]} </span>
                         <span className="text-primaryBlue">
-                            {title.split(' ').slice(1).join(' ')}
+                            {upperTitle.split(' ').slice(1)}
                         </span>
                     </h2>
                     

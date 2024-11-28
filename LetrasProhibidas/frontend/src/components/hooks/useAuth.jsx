@@ -27,9 +27,11 @@ export const AuthProvider = ({children}) => {
         console.log(message)
       } else {
         console.log("Usuario o contraseña incorrecta")
+        throw new Error("Usuario o contraseña incorrecta")
       }
     } catch (error) {
         console.error("Error during login:", error);
+        throw new Error(error)
     }
   }
 
@@ -52,9 +54,11 @@ export const AuthProvider = ({children}) => {
         setIsAuthenticated(true)
       } else {
         console.error("Failed to register user:", response.statusText);
+        throw new Error(response.statusText)
       }
     } catch (error) {
       console.error("Error during registration:", error);
+      throw new Error(error)
     }
   }
 

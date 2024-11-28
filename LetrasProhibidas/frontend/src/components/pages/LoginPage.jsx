@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { Background } from "./Background"
 import { LoginButton } from "../assets/LoginButton"
 import { Login } from "../Login"
 import { Register } from "../Register"
