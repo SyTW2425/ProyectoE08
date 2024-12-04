@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        directory: [LetrasProhibidas/frontend, LetrasProhibidas/backend] # Directorios con lógica separada para tests
+        directory: [frontend, backend] # Directorios con lógica separada para tests
 
     steps:
       - name: Checkout code
@@ -26,11 +26,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd ${{ matrix.directory }}
+          cd LetrasProhibidas/${{ matrix.directory }}
           npm install
 
       - name: Run Tests
         run: |
-          cd ${{ matrix.directory }}
+          cd LetrasProhibidas/${{ matrix.directory }}
           npm test
 
