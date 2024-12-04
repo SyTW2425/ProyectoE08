@@ -1,0 +1,36 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+
+jobs:
+  test:
+    name: Run Frontend and Backend Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        directory: [frontend, backend] # Directorios con lógica separada para tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Especifica la versión de Node.js necesaria
+
+      - name: Install dependencies
+        run: |
+          cd ${{ matrix.directory }}
+          npm install
+
+      - name: Run Tests
+        run: |
+          cd ${{ matrix.directory }}
+          npm test
+
