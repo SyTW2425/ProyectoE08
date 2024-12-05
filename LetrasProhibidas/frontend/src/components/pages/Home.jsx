@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import { BentoItem } from "../assets/BentoItem";
+import { useAuth } from "../hooks/useAuth";
 // Esto es una prueba para lo de la autenticacion
-export const Home = ({ onLogout }) => {
+export const Home = ({}) => {
   const [userData, setUserData] = useState(null);
+  const { logout } = useAuth()
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
@@ -20,15 +22,15 @@ export const Home = ({ onLogout }) => {
             setUserData(result)
           }
           else {
-            onLogout()
+            logout()
           }
         }
         catch (err) {
           console.log(err)
-          onLogout()
+          logout()
         }
       }
-      else onLogout()
+      else logout()
     }
     fetchData()
   }, [])
@@ -43,7 +45,7 @@ export const Home = ({ onLogout }) => {
                 <div className="flex h-full w-full items-center justify-center">
                   <div className="grid h-full w-full gap-4 p-2 grid-cols-5 grid-rows-4 rounded-lg shadow-md">
                     <div className="col-span-2 row-span-2 rounded-lg shadow-md flex items-center justify-center">
-                      <BentoItem title="PERFIL" description="Echa un vistazo a tus partidas ganadas, estadísticas y logros." background="bento/profile.webp"/>
+                      <BentoItem title="PERFIL" description="Echa un vistazo a tus partidas ganadas, estadísticas y logros." background="bento/profile.webp" route="/profile"/>
                     </div>
                     <div className="col-span-3 row-span-2 rounded-lg shadow-md flex items-center justify-center">
                       <BentoItem title="JUGAR" description="¿No tienes con quién jugar? No hay problema, busca una partida y conoce gente nueva." background="bento/play.webp"/>
@@ -57,6 +59,9 @@ export const Home = ({ onLogout }) => {
                   </div>
                 </div>
               </div>
+              <button onClick={logout}>
+                Logout
+              </button>
             </div>
             :
             <p>"Cargando.."</p>

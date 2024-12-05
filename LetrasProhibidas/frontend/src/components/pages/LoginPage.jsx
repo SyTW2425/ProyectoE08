@@ -3,7 +3,7 @@ import { LoginButton } from "../assets/LoginButton"
 import { Login } from "../Login"
 import { Register } from "../Register"
 
-export const LoginPage = ({onLogin, onRegister}) => {
+export const LoginPage = () => {
   const [activeLogin, setActiveLogin] = useState(true)
   return (
       <div className="h-[40rem] w-[60rem] border-[10px] p-5 rounded-xl border-white/10 backdrop-blur-xl flex flex-col items-center justify-start shadow-xl font-poppins text-white">
@@ -24,9 +24,9 @@ export const LoginPage = ({onLogin, onRegister}) => {
             </div>
             <div className="flex-1 flex justify-center">
               {activeLogin ? (
-                <Login onLogin={onLogin}/>
+                <Login/>
               ) : (
-                <Register onRegister={onRegister} />
+                <Register/>
               )}
             </div>
           </div>

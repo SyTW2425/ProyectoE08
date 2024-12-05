@@ -4,15 +4,19 @@ import { UserInput } from "./assets/UserInput"
 import { useState } from "react"
 import Modal from "./Modal"
 import { avatars } from "../utils/avatars"
+import { useAuth } from "./hooks/useAuth"
+import { useNavigate } from "react-router-dom"
 
 
-export const Login = ({onLogin}) => {
+export const Login = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [avatar, setAvatar] = useState(avatars[0]);
+  const {login} = useAuth()
+  const navigate = useNavigate()
 
   const handleLogin = async () => {
     const error = validateInputs();
@@ -21,9 +25,10 @@ export const Login = ({onLogin}) => {
       setIsModalOpen(true);
       return;
     }
-
+    
     try {
-      await onLogin({ username, password });
+      await login({ username, password });
+      navigate("/")
     } catch (error) {
       setErrorMessage("Usuario o contraseña incorrectos.");
       setIsModalOpen(true);

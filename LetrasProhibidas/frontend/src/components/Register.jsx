@@ -5,6 +5,8 @@ import { useState } from "react"
 import Modal from "./Modal"
 import validator from "validator"
 import { avatars } from "../utils/avatars"
+import { useAuth } from "./hooks/useAuth"
+import { useNavigate } from "react-router-dom"
 
 
 export const Register = ({onRegister}) => {
@@ -14,6 +16,8 @@ export const Register = ({onRegister}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [avatar, setAvatar] = useState(avatars[0]);
+  const {register} = useAuth();
+  const navigate = useNavigate()
 
 
   const validateInputs = () => {
@@ -41,7 +45,8 @@ export const Register = ({onRegister}) => {
     }
 
     try {
-      await onRegister({ email, name, password });
+      await register({ email, name, password });
+      navigate("/")
     } catch (error) {
       setErrorMessage(error.message); // Actualiza el mensaje de error
       setIsModalOpen(true); // Muestra el modal

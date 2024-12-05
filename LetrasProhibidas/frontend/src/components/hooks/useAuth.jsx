@@ -1,12 +1,12 @@
 import { useContext, createContext, useState, Children, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 export const useAuth = () => useContext(AuthContext)
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   // Vamos a hacer que el usuario solo tenga que iniciar sesion cuando no tiene un jwt o no esté vigente.
   const login = async({username, password}) => {
     console.log("Starting login process...");
@@ -66,16 +66,6 @@ export const AuthProvider = ({children}) => {
     localStorage.removeItem("token");
     localStorage.removeItem("userID");
     setIsAuthenticated(false);
-  }
-
-  const isTokenValid = (token) => {
-    try {
-      const { exp } = jwtDecode(token);
-      const currentTime = Date.now() / 1000; // Convertir a segundos
-      return exp > currentTime; // El token sigue siendo válido
-    } catch (error) {
-      return false; // Token no válido
-    }
   }
 
   return (

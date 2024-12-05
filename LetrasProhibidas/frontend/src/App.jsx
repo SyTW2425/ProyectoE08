@@ -1,7 +1,9 @@
 import { LoginPage } from "./components/pages/LoginPage";
+import { Home } from "./components/pages/Home";
+import { Profile } from "./components/pages/Profile"
+import { PrivateRoute } from "./components/PrivateRoute";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import { Home } from "./components/pages/Home";
 import { AuthProvider, useAuth } from "./components/hooks/useAuth";
 
 import "@fontsource/poppins/200.css"
@@ -14,32 +16,42 @@ import { Background } from "./components/pages/Background";
 
 function App() {
   return (
-    <AuthProvider>
+    <Router>
       <Background>
-        <Router>
+        <AuthProvider>
           <Routes>
-              <Route path="/" element={<AuthWrapper />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
           </Routes>
-        </Router>
+        </AuthProvider>
       </Background>
-    </AuthProvider>
+    </Router>
   );
 }
 
-const AuthWrapper = () => {
-  const {isAuthenticated, login, register, logout} = useAuth()
-  return (
-    <div>
-        {
-          isAuthenticated ?
-            <Home onLogout={logout}/>
-            :
-            <LoginPage onLogin={login} onRegister={register}/>
-        }
-    </div>
 
-    
-  )
-}
 
 export default App;
