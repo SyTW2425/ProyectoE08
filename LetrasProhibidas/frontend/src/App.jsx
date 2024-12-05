@@ -17,8 +17,8 @@ import { Background } from "./components/pages/Background";
 function App() {
   return (
     <Router>
-      <Background>
-        <AuthProvider>
+      <AuthProvider>
+        <Background>
           <Routes>
             <Route
               path="/"
@@ -46,8 +46,8 @@ function App() {
               }
             />
           </Routes>
-        </AuthProvider>
-      </Background>
+        </Background>
+      </AuthProvider>
     </Router>
   );
 }

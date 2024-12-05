@@ -1,44 +1,11 @@
-import { useEffect, useState } from "react"
 import { BentoItem } from "../assets/BentoItem";
 import { useAuth } from "../hooks/useAuth";
-// Esto es una prueba para lo de la autenticacion
 export const Home = ({}) => {
-  const [userData, setUserData] = useState(null);
   const { logout } = useAuth()
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem("token");
-      const id = localStorage.getItem("userID");
-      if (token) {
-        try {
-          const response = await fetch(`http://localhost:5000/user/${id}`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          })
-          if (response.ok) {
-            const result = await response.json()
-            setUserData(result)
-          }
-          else {
-            logout()
-          }
-        }
-        catch (err) {
-          console.log(err)
-          logout()
-        }
-      }
-      else logout()
-    }
-    fetchData()
-  }, [])
+  
   return (
     <div>
       <div>
-        {
-          userData ?
             <div className="h-[40rem] w-[60rem] border-[10px] p-5 rounded-xl border-white/10 backdrop-blur-xl flex flex-col items-center justify-start shadow-xl font-poppins text-white">
               <h1 className="text-[64px] font-black"><span className="text-white">LETRAS</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">PROHIBIDAS</span></h1>
               <div className="h-full w-[50rem] flex flex-row gap-4 items-center justify-start p-3">
@@ -63,9 +30,6 @@ export const Home = ({}) => {
                 Logout
               </button>
             </div>
-            :
-            <p>"Cargando.."</p>
-        }
       </div>
     </div>
 

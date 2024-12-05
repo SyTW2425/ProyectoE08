@@ -6,7 +6,10 @@ export const useAuth = () => useContext(AuthContext)
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+      const token = localStorage.getItem("token");
+      return token ? true : false; // Si el token existe, esAuthenticated será true
+    });
   // Vamos a hacer que el usuario solo tenga que iniciar sesion cuando no tiene un jwt o no esté vigente.
   const login = async({username, password}) => {
     console.log("Starting login process...");
