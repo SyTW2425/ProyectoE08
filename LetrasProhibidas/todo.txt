@@ -1,4 +1,3 @@
-- Modales del login
 - Elección de avatar (Falta pasarlo al backend)
 - Crear eventos de sockets
 - Crear pagina de home, perfil, partida, fin de partida
