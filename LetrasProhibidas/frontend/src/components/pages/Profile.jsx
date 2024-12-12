@@ -32,7 +32,16 @@ export const Profile = () => {
   }, [])
   return (
     <div>
-      HOLA
+      {userData ? 
+        <div>
+          <p>{userData.name}</p>
+          <p>Partidas jugadas: {userData.gamesPlayed}</p>
+          <p>Palabras acertadas:{userData.wordsGuessed}</p>
+          <p>Partidas ganadas:{userData.gamesWon}</p>
+        </div>
+        :
+        "cargando"
+      }
     </div>
   )
 }
