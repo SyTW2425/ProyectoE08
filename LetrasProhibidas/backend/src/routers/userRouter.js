@@ -111,6 +111,8 @@ userRouter.post("/user", (req, res) => {
   const name = req.body.name;
   const password = req.body.password;
   const email = req.body.email;
+  const avatar = req.body.avatarSrc;
+  console.log(avatar)
 
   if (!name || !password || !email) {
     return res
@@ -119,7 +121,7 @@ userRouter.post("/user", (req, res) => {
   }
 
   userService
-    .createUser(name, password, email)
+    .createUser(name, password, email, avatar)
     .then(({ token, id }) => {
       return res.status(200)
                 .json({ token, message: "Usario logeado correctamente", userID: id });
@@ -233,9 +235,9 @@ userRouter.patch("/user", (req, res) => {
 
 // Endpoint para logearse
 userRouter.post("/user/login", async (req, res) => {
-  const { name, password } = req.body;
+  const { name, password, avatarSrc } = req.body;
   try {
-    const { token, id } = await userService.login(name, password);
+    const { token, id } = await userService.login(name, password, avatarSrc);
     return res
       .status(200)
       .json({ token, message: "Usario logeado correctamente", userID: id });

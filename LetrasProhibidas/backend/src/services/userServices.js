@@ -31,8 +31,8 @@ export class UserServices {
    * @returns {Promise<User>} El usuario creado.
    * @throws {Error} Si ocurre un error al guardar el usuario.
    */
-  async createUser(name, password, email) {
-    const user = new User({ name, password, email });
+  async createUser(name, password, email, avatarSrc) {
+    const user = new User({ name, password, email, avatarSrc });
     // Verificar si el nombre de usuario existe
     const existingUser = await User.findOne({ name })
     if (existingUser) throw new Error("El nombre de usuario ya existe")
@@ -211,9 +211,13 @@ export class UserServices {
    * @returns {Promise<Object>} Un objeto que contiene el token de autenticación y el ID del usuario.
    * @throws {Error} Si la contraseña es incorrecta o ocurre algún otro error durante el proceso de inicio de sesión.
    */
-  async login(name, password) {
+  async login(name, password, newAvatar) {
     try {
       const user = await this.getUserByName(name);
+      if (user.avatarSrc !== newAvatar) {
+        user.avatarSrc = newAvatar  
+        await user.save()
+      } 
       const isValidPassword = await bcrypt.compare(password, user.password);
       if (!isValidPassword) throw new Error("Contraseña incorrecta");
       const token = jwt.sign(
