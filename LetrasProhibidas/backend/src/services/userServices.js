@@ -33,8 +33,14 @@ export class UserServices {
    */
   async createUser(name, password, email) {
     const user = new User({ name, password, email });
+    // Verificar si el nombre de usuario existe
+    const existingUser = await User.findOne({ name })
+    if (existingUser) throw new Error("El nombre de usuario ya existe")
+    const existingEmail = await User.findOne({ email })
+    if (existingEmail) throw new Error("El correo electrónico ya está registrado")
     await user.save().catch((err) => {
-      throw new Error(err.message);
+      console.log(err)
+      throw new Error(err);
     });
     const token = jwt.sign(
       { userID: user.id, username: user.username },

@@ -56,12 +56,13 @@ export const AuthProvider = ({children}) => {
         console.log(message)
         setIsAuthenticated(true)
       } else {
-        console.error("Failed to register user:", response.statusText);
-        throw new Error(response.statusText)
+        const error = await response.json();
+        console.error("Failed to register user:", error.message);
+        throw new Error(error.message)
       }
     } catch (error) {
-      console.error("Error during registration:", error);
-      throw new Error(error)
+      console.error("Error during registration:", error.message);
+      throw new Error(error.message)
     }
   }
 

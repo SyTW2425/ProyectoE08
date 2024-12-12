@@ -113,8 +113,8 @@ userRouter.post("/user", (req, res) => {
   const email = req.body.email;
 
   // Imprimimos el body para verificar que los datos se recibieron correctamente
-  // console.log(req.body);
-  // console.log(name, password, email);
+  console.log(req.body);
+  console.log(name, password, email);
 
   if (!name || !password || !email) {
     return res
@@ -125,10 +125,11 @@ userRouter.post("/user", (req, res) => {
   userService
     .createUser(name, password, email)
     .then(({ token, id }) => {
-      return res.status(200).send("Usuario creado correctamente");
+      return res.status(200)
+                .json({ token, message: "Usario logeado correctamente", userID: id });
     })
     .catch((err) => {
-      res.status(500).send("Error al intentar crear el usuario");
+      res.status(500).json({message: err.message});
     });
 });
 

@@ -42,6 +42,21 @@ const UserSchema = new Schema({
   lastConnected: {
     type: Date,
   },
+  gamesPlayed: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  wordsGuessed: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  gamesWon: {
+    type: Number,
+    required: true,
+    default: 0
+  }
 });
 
 // Middleware para hashear la contraseña antes de guardarla
