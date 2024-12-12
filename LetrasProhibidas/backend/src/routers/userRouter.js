@@ -112,10 +112,6 @@ userRouter.post("/user", (req, res) => {
   const password = req.body.password;
   const email = req.body.email;
 
-  // Imprimimos el body para verificar que los datos se recibieron correctamente
-  console.log(req.body);
-  console.log(name, password, email);
-
   if (!name || !password || !email) {
     return res
       .status(400)

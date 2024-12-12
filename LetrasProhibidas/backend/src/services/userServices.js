@@ -39,7 +39,6 @@ export class UserServices {
     const existingEmail = await User.findOne({ email })
     if (existingEmail) throw new Error("El correo electrónico ya está registrado")
     await user.save().catch((err) => {
-      console.log(err)
       throw new Error(err);
     });
     const token = jwt.sign(
