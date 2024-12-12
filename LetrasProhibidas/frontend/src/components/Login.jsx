@@ -27,7 +27,7 @@ export const Login = () => {
     }
     
     try {
-      await login({ username, password });
+      await login({ username, password, avatar });
       navigate("/")
     } catch (error) {
       setErrorMessage("Usuario o contraseña incorrectos.");

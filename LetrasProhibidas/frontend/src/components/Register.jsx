@@ -45,7 +45,7 @@ export const Register = ({onRegister}) => {
     }
 
     try {
-      await register({ email, name, password });
+      await register({ email, name, password, avatar });
       navigate("/")
     } catch (error) {
       setErrorMessage(error.message); // Actualiza el mensaje de error

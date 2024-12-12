@@ -11,7 +11,7 @@ export const AuthProvider = ({children}) => {
       return token ? true : false; // Si el token existe, esAuthenticated será true
     });
   // Vamos a hacer que el usuario solo tenga que iniciar sesion cuando no tiene un jwt o no esté vigente.
-  const login = async({username, password}) => {
+  const login = async({username, password, avatar}) => {
     console.log("Starting login process...");
     try {
       const response = await fetch("http://localhost:5000/user/login", {
@@ -19,7 +19,7 @@ export const AuthProvider = ({children}) => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name: username, password})
+        body: JSON.stringify({ name: username, password, avatarSrc: avatar})
       });
       
       if (response.ok) {
@@ -38,7 +38,7 @@ export const AuthProvider = ({children}) => {
     }
   }
 
-  const register = async ({email, name, password}) => {
+  const register = async ({email, name, password, avatar}) => {
     console.log("Starting registration process...");
     try {
       const response = await fetch("http://localhost:5000/user", {
@@ -46,8 +46,9 @@ export const AuthProvider = ({children}) => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, name, password })
+        body: JSON.stringify({ email, name, password, avatarSrc: avatar })
       });
+      console.log(avatar)
 
       if (response.ok) {
         const { token, message, userID } = await response.json();
