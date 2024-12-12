@@ -26,7 +26,7 @@ export const Home = ({}) => {
                   </div>
                 </div>
               </div>
-              <button onClick={logout}>
+              <button onClick={logout} className="bg-black/25 rounded-xl p-2 hover:bg-black/50">
                 Logout
               </button>
             </div>
