@@ -35,6 +35,11 @@ const LobbySchema = new Schema({
     required: true,
     default: Date.now,
   },
+  joinable: {
+    type: Boolean,
+    required: true,
+    default: true
+  }
 });
 
 export const Lobby = model("Lobby", LobbySchema);

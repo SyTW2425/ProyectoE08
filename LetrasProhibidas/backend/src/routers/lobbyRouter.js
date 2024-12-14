@@ -158,3 +158,29 @@ lobbyRouter.delete("/lobby/:id", (req, res) => {
         .send("Error al intentar eliminar el lobby por su ID de MongoDB");
     });
 });
+
+lobbyRouter.get("/lobby/status", async (req, res) => {
+  const { id } = req.body;
+  try {
+    const lobbyStatus = await lobbyService.getLobbyStatus(id)
+    res.status(200)
+    .send(lobbyStatus)
+  } catch(err) {
+    res.status(400)
+    .send(Err)
+  }
+})
+
+lobbyRouter.patch("/lobby/status", async (req, res) => {
+  const { id, lobbyStatus } = req.body;
+  try {
+    const lobby = await lobbyService.getLobbyById(id)
+    lobby.status = lobbyStatus
+    await lobby.save()
+    res.status(200)
+    .send("Estado actualizado correctamente")
+  } catch(err) {
+    res.status(400)
+    .send(Err)
+  }
+})

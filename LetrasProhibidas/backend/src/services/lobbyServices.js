@@ -128,6 +128,7 @@ export class LobbyServices {
   async addPlayerToLobby(id, playerID) {
     const lobby = await this.getLobbyById(id);
     if (lobby.players.length >= lobby.maxPlayers) {
+      this.setLobbyStatus(id, false)
       throw new Error("Lobby is full");
     }
     lobby.players.push(playerID);
@@ -162,5 +163,23 @@ export class LobbyServices {
     return await Lobby.findOne({ hostID }).catch((err) => {
       throw new Error(err.message);
     });
+  }
+
+  async getLobbyStatus(id) {
+    try {
+      return { joinable } = await this.getLobbyById(id);
+    } catch (err) {
+      throw(err)
+    }
+  }
+
+  async setLobbyStatus(id, status) {
+    try {
+      const lobby = await this.getLobbyById(id);
+      lobby.joinable = status;
+      await lobby.save()
+    } catch(err) {
+      throw(err)
+    }
   }
 }
