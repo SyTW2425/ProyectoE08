@@ -246,3 +246,17 @@ userRouter.post("/user/login", async (req, res) => {
     return res.status(400).send("Could not login");
   }
 });
+
+userRouter.patch("/user/stats", async (req, res) => {
+  const { addGamesWon, addGamesPlayed, addWordsGuessed, id } = req.body;
+  try {
+    await userService.sumStats(addGamesWon, addGamesPlayed, addWordsGuessed, id)
+    return res
+      .status(200)
+      .send("Estadisticas actualizadas")
+  } catch (err) {
+    return res
+      .status(400)
+      .send(err)
+  }
+});

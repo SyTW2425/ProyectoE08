@@ -232,4 +232,16 @@ export class UserServices {
       throw err;
     }
   }
+
+  async sumStats(addGamesWon, addGamesPlayed, addWordsGuessed, id) {
+    try {
+      const user = await this.getUserById(id)
+      user.gamesWon += addGamesWon
+      user.gamesPlayed += addGamesPlayed
+      user.wordsGuessed += addWordsGuessed
+      await user.save()
+    } catch (err) {
+      throw err;
+    }
+  }
 }
