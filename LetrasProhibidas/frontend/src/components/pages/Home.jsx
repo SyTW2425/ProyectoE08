@@ -7,6 +7,31 @@ export const Home = ({}) => {
   const navigate = useNavigate()
   const { logout } = useAuth()
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCreateLobby = async () => {
+    try {
+      const userID = localStorage.getItem("userID")
+      const response = await fetch(`http://localhost:5000/lobby`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              "hostID": userID,
+              "players": [
+                userID
+              ],
+              "maxPlayers": 4
+            })
+      })
+      const data = await response.json()
+      const lobbyID = data.id
+      navigate(`/lobby/${lobbyID}`)
+    } catch (err) {
+      console.log(err)
+    }
+    
+  }
   
   return (
     <div>
@@ -26,7 +51,7 @@ export const Home = ({}) => {
                       <BentoItem title="UNIRSE" description="Pide a tus amigos el código de la sala y juega junto a ellos." background="bento/join.webp" onClick={() => setIsModalOpen(true)}/>
                     </div>
                     <div className="col-span-2 row-span-2 rounded-lg shadow-md flex items-center justify-center">
-                      <BentoItem title="CREAR SALA" description="Crea una sala con tus propias reglas, ¡no te olvides de invitar a tus amigos!" background="bento/create.webp"/>
+                      <BentoItem title="CREAR SALA" description="Crea una sala con tus propias reglas, ¡no te olvides de invitar a tus amigos!" background="bento/create.webp" onClick={() => handleCreateLobby()}/>
                     </div>
                   </div>
                 </div>

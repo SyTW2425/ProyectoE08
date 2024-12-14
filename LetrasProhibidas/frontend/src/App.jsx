@@ -1,6 +1,7 @@
 import { LoginPage } from "./components/pages/LoginPage";
 import { Home } from "./components/pages/Home";
 import { Profile } from "./components/pages/Profile"
+import { Lobby } from "./components/pages/Lobby"
 import { PrivateRoute } from "./components/PrivateRoute";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
@@ -42,6 +43,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Profile />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/lobby/:id"
+              element={
+                <PrivateRoute>
+                  <Lobby />
                 </PrivateRoute>
               }
             />

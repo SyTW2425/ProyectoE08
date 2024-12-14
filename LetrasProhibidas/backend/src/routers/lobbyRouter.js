@@ -80,6 +80,7 @@ lobbyRouter.post("/lobby", (req, res) => {
   const hostID = req.body.hostID;
   const players = req.body.players;
   const maxPlayers = req.body.maxPlayers;
+  console.log(req.body)
 
   if (!hostID || !players || !maxPlayers) {
     return res.status(400).send("Missing parameters");
