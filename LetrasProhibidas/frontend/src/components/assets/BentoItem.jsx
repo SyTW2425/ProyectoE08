@@ -1,16 +1,12 @@
 import { useNavigate } from "react-router-dom"
 
 
-export const BentoItem = ({title, description, background, route}) => {
-  const navigate = useNavigate()
+export const BentoItem = ({title, description, background, onClick}) => {
 
-  const handleClick = () => {
-    navigate(route)
-  }
   return (
     <button style={{ backgroundImage: `url(${background})` }} 
             className="bg-cover bg-center w-full h-full rounded-lg flex flex-col justify-end border-[4px] grayscale hover:grayscale-0 transition duration-150 ease-in-out border-white"
-            onClick={() => handleClick()}
+            onClick={() => onClick()}
             >
       
       <div className="p-2 bg-gradient-to-t from-black to-transparent rounded-lg w-full text-left">

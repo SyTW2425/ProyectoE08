@@ -1,4 +1,2 @@
-- Elección de avatar (Falta pasarlo al backend)
 - Crear eventos de sockets
-- Crear pagina de home, perfil, partida, fin de partida
-- Estado loading (para saber cuando se están cargando las peticiones)
+- Crear pagina de partida, fin de partida

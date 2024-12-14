@@ -2,7 +2,7 @@ import { ConfirmButton } from "./assets/ConfirmButton"
 import { RandomButton } from "./assets/RandomButton"
 import { UserInput } from "./assets/UserInput"
 import { useState } from "react"
-import Modal from "./Modal"
+import { WarningModal } from "./WarningModal"
 import { avatars } from "../utils/avatars"
 import { useAuth } from "./hooks/useAuth"
 import { useNavigate } from "react-router-dom"
@@ -71,9 +71,9 @@ export const Login = () => {
         <ConfirmButton text="¡JUGAR!" type="submit" />
       </form>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error Inesperado">
+      <WarningModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error Inesperado">
         <p>{errorMessage}</p>
-      </Modal>
+      </WarningModal>
     </div>
   )
 }

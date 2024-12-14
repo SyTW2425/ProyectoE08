@@ -1,18 +1,20 @@
 import { X } from 'lucide-react'
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { ConfirmButton } from './assets/ConfirmButton'
+import { UserInput } from './assets/UserInput'
 
-export default function Modal({ 
+export const InputModal = ({ 
     isOpen, 
     onClose, 
     title, 
-    children,
     showCloseButton = true,
     buttonText = "VALE",
-    onButtonClick
-}) {
+}) => {
     const [isAnimating, setIsAnimating] = useState(false)
+    const [inputValue, setInputValue] = useState("") // Estado para el texto ingresado
     const upperTitle = title.toUpperCase()
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (isOpen) {
@@ -23,7 +25,7 @@ export default function Modal({
         }
     }, [isOpen])
 
-    // Close on escape key press
+    // Cerrar con tecla Escape
     useEffect(() => {
         const handleEscape = (e) => {
             if (e.key === 'Escape') onClose()
@@ -36,10 +38,10 @@ export default function Modal({
     if (!isOpen && !isAnimating) return null
 
     const handleButtonClick = () => {
-        if (onButtonClick) {
-            onButtonClick()
+        if (inputValue.trim()) { // Navegar solo si el valor no está vacío
+            navigate(`/lobby/${inputValue.trim()}`)
         } else {
-            onClose()
+            alert("Por favor ingresa un texto antes de continuar.")
         }
     }
 
@@ -66,18 +68,22 @@ export default function Modal({
                     <h2 className="text-2xl font-bold tracking-tight">
                         <span className="text-white">{upperTitle.split(' ')[0]} </span>
                         <span className="text-primaryBlue">
-                            {upperTitle.split(' ').slice(1)}
+                            {upperTitle.split(' ').slice(1).join(' ')}
                         </span>
                     </h2>
                     
                     <div className="m-4 text-gray-100">
-                        {children}
+                      <UserInput type={"text"} value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
                     </div>
-                    
 
-                    <ConfirmButton text={buttonText} onClick={handleButtonClick} className="pl-2 pr-2"/>
+                    <ConfirmButton 
+                        text={buttonText} 
+                        onClick={handleButtonClick} 
+                        className="pl-2 pr-2"
+                    />
                 </div>
             </div>
         </div>
     )
 }
+

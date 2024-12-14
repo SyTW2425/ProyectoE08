@@ -1,7 +1,12 @@
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { BentoItem } from "../assets/BentoItem";
 import { useAuth } from "../hooks/useAuth";
+import { InputModal } from "../InputModal";
 export const Home = ({}) => {
+  const navigate = useNavigate()
   const { logout } = useAuth()
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   return (
     <div>
@@ -12,13 +17,13 @@ export const Home = ({}) => {
                 <div className="flex h-full w-full items-center justify-center">
                   <div className="grid h-full w-full gap-4 p-2 grid-cols-5 grid-rows-4 rounded-lg shadow-md">
                     <div className="col-span-2 row-span-2 rounded-lg shadow-md flex items-center justify-center">
-                      <BentoItem title="PERFIL" description="Echa un vistazo a tus partidas ganadas, estadísticas y logros." background="bento/profile.webp" route="/profile"/>
+                      <BentoItem title="PERFIL" description="Echa un vistazo a tus partidas ganadas, estadísticas y logros." background="bento/profile.webp" onClick={() => navigate("/profile")}/>
                     </div>
                     <div className="col-span-3 row-span-2 rounded-lg shadow-md flex items-center justify-center">
                       <BentoItem title="JUGAR" description="¿No tienes con quién jugar? No hay problema, busca una partida y conoce gente nueva." background="bento/play.webp"/>
                     </div>
                     <div className="col-span-3 row-span-2 rounded-lg shadow-md flex items-center justify-center">
-                      <BentoItem title="UNIRSE" description="Pide a tus amigos el código de la sala y juega junto a ellos." background="bento/join.webp"/>
+                      <BentoItem title="UNIRSE" description="Pide a tus amigos el código de la sala y juega junto a ellos." background="bento/join.webp" onClick={() => setIsModalOpen(true)}/>
                     </div>
                     <div className="col-span-2 row-span-2 rounded-lg shadow-md flex items-center justify-center">
                       <BentoItem title="CREAR SALA" description="Crea una sala con tus propias reglas, ¡no te olvides de invitar a tus amigos!" background="bento/create.webp"/>
@@ -29,6 +34,7 @@ export const Home = ({}) => {
               <button onClick={logout} className="bg-black/25 rounded-xl p-2 hover:bg-black/50">
                 Logout
               </button>
+              <InputModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Introduce Código"/>
             </div>
       </div>
     </div>

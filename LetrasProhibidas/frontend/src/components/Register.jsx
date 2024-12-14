@@ -2,7 +2,7 @@ import { ConfirmButton } from "./assets/ConfirmButton"
 import { RandomButton } from "./assets/RandomButton"
 import { UserInput } from "./assets/UserInput"
 import { useState } from "react"
-import Modal from "./Modal"
+import { WarningModal } from "./WarningModal"
 import validator from "validator"
 import { avatars } from "../utils/avatars"
 import { useAuth } from "./hooks/useAuth"
@@ -84,9 +84,9 @@ export const Register = ({onRegister}) => {
       </form>
 
     
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error inesperado">
+      <WarningModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error inesperado">
         <p>{errorMessage}</p>
-      </Modal>
+      </WarningModal>
     </div>
   )
 }
