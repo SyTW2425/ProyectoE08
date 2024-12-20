@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom"
 
 export const Register = ({onRegister}) => {
   const [email, setEmail] = useState("");
-  const [name, setUsername] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -21,7 +21,7 @@ export const Register = ({onRegister}) => {
 
 
   const validateInputs = () => {
-    if (!email || !name || !password) {
+    if (!email || !username || !password) {
       return "Todos los campos son obligatorios.";
     }
     if (!validator.isEmail(email)) {
@@ -45,7 +45,7 @@ export const Register = ({onRegister}) => {
     }
 
     try {
-      await register({ email, name, password, avatar });
+      await register({ email, username, password, avatar });
       navigate("/")
     } catch (error) {
       setErrorMessage(error.message); // Actualiza el mensaje de error
@@ -78,7 +78,7 @@ export const Register = ({onRegister}) => {
 
       }>
         <UserInput text="CORREO ELECTRÓNICO" type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <UserInput text="NOMBRE DE USUARIO" type="text" value={name} onChange={(e) => setUsername(e.target.value)} />
+        <UserInput text="NOMBRE DE USUARIO" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         <UserInput text="CONTRASEÑA" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <ConfirmButton text="VALE" type="submit" />
       </form>

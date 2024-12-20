@@ -15,7 +15,7 @@ export const Login = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [avatar, setAvatar] = useState(avatars[0]);
-  const {login} = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
 
   const handleLogin = async () => {

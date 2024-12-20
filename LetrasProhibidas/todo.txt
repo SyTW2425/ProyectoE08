@@ -1,3 +1,2 @@
-- Crear eventos de sockets
 - Crear pagina de partida, fin de partida
 - Al unirse a lobby, hay que comprobar que existe la lobby y que es apta para unirse (valor joinable del modelo lobby)

@@ -31,10 +31,10 @@ export class UserServices {
    * @returns {Promise<User>} El usuario creado.
    * @throws {Error} Si ocurre un error al guardar el usuario.
    */
-  async createUser(name, password, email, avatarSrc) {
-    const user = new User({ name, password, email, avatarSrc });
+  async createUser(username, password, email, avatarSrc) {
+    const user = new User({ name: username, password, email, avatarSrc });
     // Verificar si el nombre de usuario existe
-    const existingUser = await User.findOne({ name })
+    const existingUser = await User.findOne({ username })
     if (existingUser) throw new Error("El nombre de usuario ya existe")
     const existingEmail = await User.findOne({ email })
     if (existingEmail) throw new Error("El correo electrónico ya está registrado")
@@ -42,13 +42,13 @@ export class UserServices {
       throw new Error(err);
     });
     const token = jwt.sign(
-      { userID: user.id, username: user.username },
+      { userID: user.id, name: user.name },
       process.env.SECRET_KEY,
       {
         expiresIn: "24h",
       }
     );
-    return { token: token, id: user.id };
+    return { token: token, id: user.id, name: user.name, avatar: user.avatarSrc };
   }
 
   /**
@@ -211,9 +211,9 @@ export class UserServices {
    * @returns {Promise<Object>} Un objeto que contiene el token de autenticación y el ID del usuario.
    * @throws {Error} Si la contraseña es incorrecta o ocurre algún otro error durante el proceso de inicio de sesión.
    */
-  async login(name, password, newAvatar) {
+  async login(username, password, newAvatar) {
     try {
-      const user = await this.getUserByName(name);
+      const user = await this.getUserByName(username);
       if (user.avatarSrc !== newAvatar) {
         user.avatarSrc = newAvatar  
         await user.save()
@@ -221,13 +221,14 @@ export class UserServices {
       const isValidPassword = await bcrypt.compare(password, user.password);
       if (!isValidPassword) throw new Error("Contraseña incorrecta");
       const token = jwt.sign(
-        { userID: user.id, username: user.username },
+        { userID: user.id, name: user.name },
         process.env.SECRET_KEY,
         {
           expiresIn: "24h",
         }
       );
-      return { token: token, id: user.id };
+      console.log(user.name)
+      return { token: token, id: user.id, name: user.name, avatar: user.avatarSrc  };
     } catch (err) {
       throw err;
     }

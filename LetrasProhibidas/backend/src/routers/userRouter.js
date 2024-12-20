@@ -108,23 +108,23 @@ userRouter.get("/user/:id", (req, res) => {
 });
 
 userRouter.post("/user", (req, res) => {
-  const name = req.body.name;
+  const username = req.body.username;
   const password = req.body.password;
   const email = req.body.email;
   const avatar = req.body.avatarSrc;
-  console.log(avatar)
+  console.log(username)
 
-  if (!name || !password || !email) {
+  if (!username || !password || !email) {
     return res
       .status(400)
       .send("No se proporcionó el nombre, contraseña o email");
   }
 
   userService
-    .createUser(name, password, email, avatar)
-    .then(({ token, id }) => {
+    .createUser(username, password, email, avatar)
+    .then(({ token, id, name, avatar }) => {
       return res.status(200)
-                .json({ token, message: "Usario logeado correctamente", userID: id });
+                .json({ token, message: "Usario logeado correctamente", userID: id, userName: name, userAvatar: avatar });
     })
     .catch((err) => {
       res.status(500).json({message: err.message});
@@ -235,12 +235,12 @@ userRouter.patch("/user", (req, res) => {
 
 // Endpoint para logearse
 userRouter.post("/user/login", async (req, res) => {
-  const { name, password, avatarSrc } = req.body;
+  const { username, password, avatarSrc } = req.body;
   try {
-    const { token, id } = await userService.login(name, password, avatarSrc);
+    const { token, id, name, avatar } = await userService.login(username, password, avatarSrc);
     return res
       .status(200)
-      .json({ token, message: "Usario logeado correctamente", userID: id });
+      .json({ token, message: "Usario logeado correctamente", userID: id, userName: name, userAvatar: avatar });
   } catch (err) {
     // console.log(err.message);
     return res.status(400).send("Could not login");

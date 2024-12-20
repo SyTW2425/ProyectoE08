@@ -19,14 +19,16 @@ export const AuthProvider = ({children}) => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name: username, password, avatarSrc: avatar})
+        body: JSON.stringify({ username, password, avatarSrc: avatar})
       });
       
       if (response.ok) {
-        const { token, message, userID } = await response.json();
+        const { token, message, userID, userName, userAvatar } = await response.json();
         setIsAuthenticated(true)
         localStorage.setItem("token", token)
         localStorage.setItem("userID", userID)
+        localStorage.setItem("userName", userName)
+        localStorage.setItem("userAvatar", userAvatar)
         console.log(message)
       } else {
         console.log("Usuario o contraseña incorrecta")
@@ -38,7 +40,7 @@ export const AuthProvider = ({children}) => {
     }
   }
 
-  const register = async ({email, name, password, avatar}) => {
+  const register = async ({email, username, password, avatar}) => {
     console.log("Starting registration process...");
     try {
       const response = await fetch("http://localhost:5000/user", {
@@ -46,14 +48,16 @@ export const AuthProvider = ({children}) => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, name, password, avatarSrc: avatar })
+        body: JSON.stringify({ email, username, password, avatarSrc: avatar })
       });
       console.log(avatar)
 
       if (response.ok) {
-        const { token, message, userID } = await response.json();
+        const { token, message, userID, userName, userAvatar } = await response.json();
         localStorage.setItem("token", token)
         localStorage.setItem("userID", userID)
+        localStorage.setItem("userName", userName)
+        localStorage.setItem("userAvatar", userAvatar)
         console.log(message)
         setIsAuthenticated(true)
       } else {
@@ -70,6 +74,8 @@ export const AuthProvider = ({children}) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userID");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userAvatar");
     setIsAuthenticated(false);
   }
 

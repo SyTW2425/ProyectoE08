@@ -3,8 +3,9 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ConfirmButton } from './assets/ConfirmButton'
 import { UserInput } from './assets/UserInput'
+import { useSocket } from './hooks/useSocket'
 
-export const InputModal = ({ 
+export const JoinLobby = ({ 
     isOpen, 
     onClose, 
     title, 
@@ -15,6 +16,10 @@ export const InputModal = ({
     const [inputValue, setInputValue] = useState("") // Estado para el texto ingresado
     const upperTitle = title.toUpperCase()
     const navigate = useNavigate()
+    const { socket } = useSocket()
+    const userID = localStorage.getItem("userID")
+    const userName = localStorage.getItem("userName")
+    const userAvatar = localStorage.getItem("userAvatar")
 
     useEffect(() => {
         if (isOpen) {
@@ -39,7 +44,10 @@ export const InputModal = ({
 
     const handleButtonClick = () => {
         if (inputValue.trim()) { // Navegar solo si el valor no está vacío
+            socket.emit("joinLobby", { lobbyID: inputValue.trim(), userID, userName, userAvatar })
             navigate(`/lobby/${inputValue.trim()}`)
+
+
         } else {
             alert("Por favor ingresa un texto antes de continuar.")
         }
