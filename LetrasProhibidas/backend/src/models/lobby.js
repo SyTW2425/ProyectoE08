@@ -3,7 +3,7 @@ import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
 
 const LobbySchema = new Schema({
-  id: {
+  lobbyID: {
     type: String,
     required: true,
     unique: true,
@@ -38,8 +38,8 @@ const LobbySchema = new Schema({
   joinable: {
     type: Boolean,
     required: true,
-    default: true
-  }
+    default: true,
+  },
 });
 
 export const Lobby = model("Lobby", LobbySchema);
