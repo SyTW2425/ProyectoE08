@@ -36,24 +36,12 @@ export class LobbyServices {
 
   /**
    * Obtiene un lobby por su ID.
-   * @param {string} id - El ID del lobby.
+   * @param {string} lobbyID - El ID del lobby.
    * @returns {Promise<Lobby>} El lobby encontrado.
    * @throws {Error} Si ocurre un error al buscar el lobby.
    */
-  async getLobbyById(id) {
-    return await Lobby.findOne({ id }).catch((err) => {
-      throw new Error(err.message);
-    });
-  }
-
-  /**
-   * Obtiene un lobby por su ID de MongoDB.
-   * @param {string} _id - El ID de MongoDB del lobby.
-   * @returns {Promise<Lobby>} El lobby encontrado.
-   * @throws {Error} Si ocurre un error al buscar el lobby.
-   */
-  async getLobbyByMongoId(_id) {
-    return await Lobby.findById(_id).catch((err) => {
+  async getLobbyById(lobbyID) {
+    return await Lobby.findOne({ lobbyID }).catch((err) => {
       throw new Error(err.message);
     });
   }
@@ -65,32 +53,30 @@ export class LobbyServices {
    * @returns {Promise<UpdateResult>} El resultado de la actualización.
    * @throws {Error} Si ocurre un error al actualizar el lobby.
    */
-  async updateLobbyPlayers(id, players) {
-    return await Lobby.updateOne({ id }, { players }).catch((err) => {
+  async updateLobbyPlayers(lobbyID, players) {
+    const lobby = await this.getLobbyById(lobbyID);
+
+    if (!lobby) {
+      return null;
+    }
+
+    return await Lobby.updateOne({ lobbyID }, { players }).catch((err) => {
       throw new Error(err.message);
     });
   }
 
   /**
    * Elimina un lobby por su ID.
-   * @param {string} id - El ID del lobby.
+   * @param {string} lobbyID - El ID del lobby.
    * @returns {Promise<DeleteResult>} El resultado de la eliminación.
    * @throws {Error} Si ocurre un error al eliminar el lobby.
    */
-  async deleteLobby(id) {
-    return await Lobby.deleteOne({ id }).catch((err) => {
-      throw new Error(err.message);
-    });
-  }
-
-  /**
-   * Elimina un lobby por su ID de MongoDB.
-   * @param {string} _id - El ID de MongoDB del lobby.
-   * @returns {Promise<DeleteResult>} El resultado de la eliminación.
-   * @throws {Error} Si ocurre un error al eliminar el lobby.
-   */
-  async deleteLobbyByMongoId(_id) {
-    return await Lobby.deleteOne({ _id }).catch((err) => {
+  async deleteLobby(lobbyID) {
+    const lobby = await this.getLobbyById(lobbyID);
+    if (!lobby) {
+      return { deletedCount: 0 }; // Ajuste para devolver un objeto con deletedCount
+    }
+    return await Lobby.deleteOne({ lobbyID }).catch((err) => {
       throw new Error(err.message);
     });
   }
@@ -120,36 +106,36 @@ export class LobbyServices {
 
   /**
    * Añade un jugador a un lobby.
-   * @param {string} id - El ID del lobby.
+   * @param {string} lobbyID - El ID del lobby.
    * @param {string} playerID - El ID del jugador.
    * @returns {Promise<UpdateResult>} El resultado de la actualización.
    * @throws {Error} Si el lobby está lleno.
    */
-  async addPlayerToLobby(id, playerID) {
-    const lobby = await this.getLobbyById(id);
+  async addPlayerToLobby(lobbyID, playerID) {
+    const lobby = await this.getLobbyById(lobbyID);
     if (lobby.players.length >= lobby.maxPlayers) {
-      this.setLobbyStatus(id, false)
+      this.setLobbyStatus(lobbyID, false);
       throw new Error("Lobby is full");
     }
     lobby.players.push(playerID);
-    return await this.updateLobbyPlayers(id, lobby.players);
+    return await this.updateLobbyPlayers(lobbyID, lobby.players);
   }
 
   /**
    * Elimina un jugador de un lobby.
-   * @param {string} id - El ID del lobby.
+   * @param {string} lobbyID - El ID del lobby.
    * @param {string} playerID - El ID del jugador.
    * @returns {Promise<UpdateResult>} El resultado de la actualización.
    * @throws {Error} Si el jugador no está en el lobby.
    */
-  async removePlayerFromLobby(id, playerID) {
-    const lobby = await this.getLobbyById(id);
+  async removePlayerFromLobby(lobbyID, playerID) {
+    const lobby = await this.getLobbyById(lobbyID);
     const index = lobby.players.indexOf(playerID);
     if (index === -1) {
       throw new Error("Player not found in lobby");
     }
     lobby.players.splice(index, 1);
-    return await this.updateLobbyPlayers(id, lobby.players);
+    return await this.updateLobbyPlayers(lobbyID, lobby.players);
   }
 
   /**
@@ -165,21 +151,42 @@ export class LobbyServices {
     });
   }
 
-  async getLobbyStatus(id) {
+  /**
+   * Obtiene el estado de un lobby por su ID.
+   *
+   * @param {string} lobbyID - El ID del lobby.
+   * @returns {Promise<{ joinable: boolean }>} Un objeto que indica si el lobby es unible.
+   * @throws {Error} Si ocurre un error al obtener el estado del lobby.
+   */
+  async setLobbyStatus(lobbyID, status) {
     try {
-      return { joinable } = await this.getLobbyById(id);
+      const lobby = await this.getLobbyById(lobbyID);
+      if (!lobby) {
+        throw new Error("Lobby not found");
+      }
+      lobby.joinable = status;
+      await lobby.save();
     } catch (err) {
-      throw(err)
+      throw new Error("Error updating status");
     }
   }
 
-  async setLobbyStatus(id, status) {
+  /**
+   * Obtiene el estado de un lobby por su ID.
+   *
+   * @param {string} lobbyID - El ID del lobby.
+   * @returns {Promise<{ joinable: boolean }>} Un objeto que indica si el lobby es unible.
+   * @throws {Error} Si ocurre un error al obtener el estado del lobby.
+   */
+  async getLobbyStatus(lobbyID) {
     try {
-      const lobby = await this.getLobbyById(id);
-      lobby.joinable = status;
-      await lobby.save()
-    } catch(err) {
-      throw(err)
+      const lobby = await this.getLobbyById(lobbyID);
+      if (!lobby) {
+        throw new Error("Lobby not found");
+      }
+      return { joinable: lobby.joinable };
+    } catch (err) {
+      throw new Error("Error fetching status");
     }
   }
 }

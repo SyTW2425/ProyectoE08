@@ -34,10 +34,11 @@ export class UserServices {
   async createUser(username, password, email, avatarSrc) {
     const user = new User({ name: username, password, email, avatarSrc });
     // Verificar si el nombre de usuario existe
-    const existingUser = await User.findOne({ username })
-    if (existingUser) throw new Error("El nombre de usuario ya existe")
-    const existingEmail = await User.findOne({ email })
-    if (existingEmail) throw new Error("El correo electrónico ya está registrado")
+    const existingUser = await User.findOne({ username });
+    if (existingUser) throw new Error("El nombre de usuario ya existe");
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail)
+      throw new Error("El correo electrónico ya está registrado");
     await user.save().catch((err) => {
       throw new Error(err);
     });
@@ -48,7 +49,12 @@ export class UserServices {
         expiresIn: "24h",
       }
     );
-    return { token: token, id: user.id, name: user.name, avatar: user.avatarSrc };
+    return {
+      token: token,
+      id: user.id,
+      name: user.name,
+      avatar: user.avatarSrc,
+    };
   }
 
   /**
@@ -106,11 +112,15 @@ export class UserServices {
    * @throws {Error} Si ocurre un error al actualizar el usuario.
    */
   async updateUserLastConnected(id) {
-    return await User.updateOne({ id }, { lastConnected: Date.now() }).catch(
-      (err) => {
-        throw new Error(err.message);
-      }
-    );
+    try {
+      const user = await this.getUserById(id);
+      if (!user) throw new Error("User not found");
+      user.lastConnected = Date.now();
+      await user.save();
+      return user;
+    } catch (err) {
+      throw new Error(`Error updating last connected date: ${err.message}`);
+    }
   }
 
   /**
@@ -215,9 +225,9 @@ export class UserServices {
     try {
       const user = await this.getUserByName(username);
       if (user.avatarSrc !== newAvatar) {
-        user.avatarSrc = newAvatar  
-        await user.save()
-      } 
+        user.avatarSrc = newAvatar;
+        await user.save();
+      }
       const isValidPassword = await bcrypt.compare(password, user.password);
       if (!isValidPassword) throw new Error("Contraseña incorrecta");
       const token = jwt.sign(
@@ -227,8 +237,12 @@ export class UserServices {
           expiresIn: "24h",
         }
       );
-      console.log(user.name)
-      return { token: token, id: user.id, name: user.name, avatar: user.avatarSrc  };
+      return {
+        token: token,
+        id: user.id,
+        name: user.name,
+        avatar: user.avatarSrc,
+      };
     } catch (err) {
       throw err;
     }
@@ -236,11 +250,11 @@ export class UserServices {
 
   async sumStats(addGamesWon, addGamesPlayed, addWordsGuessed, id) {
     try {
-      const user = await this.getUserById(id)
-      user.gamesWon += addGamesWon
-      user.gamesPlayed += addGamesPlayed
-      user.wordsGuessed += addWordsGuessed
-      await user.save()
+      const user = await this.getUserById(id);
+      user.gamesWon += addGamesWon;
+      user.gamesPlayed += addGamesPlayed;
+      user.wordsGuessed += addWordsGuessed;
+      await user.save();
     } catch (err) {
       throw err;
     }

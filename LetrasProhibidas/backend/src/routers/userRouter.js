@@ -102,7 +102,6 @@ userRouter.get("/user/:id", (req, res) => {
           .send("Error al intentar obtener el usuario por su ID");
       });
   } catch (err) {
-    // console.log(err);
     return res.status(500).send(err);
   }
 });
@@ -112,7 +111,6 @@ userRouter.post("/user", (req, res) => {
   const password = req.body.password;
   const email = req.body.email;
   const avatar = req.body.avatarSrc;
-  console.log(username)
 
   if (!username || !password || !email) {
     return res
@@ -123,11 +121,16 @@ userRouter.post("/user", (req, res) => {
   userService
     .createUser(username, password, email, avatar)
     .then(({ token, id, name, avatar }) => {
-      return res.status(200)
-                .json({ token, message: "Usario logeado correctamente", userID: id, userName: name, userAvatar: avatar });
+      return res.status(200).json({
+        token,
+        message: "Usario logeado correctamente",
+        userID: id,
+        userName: name,
+        userAvatar: avatar,
+      });
     })
     .catch((err) => {
-      res.status(500).json({message: err.message});
+      res.status(500).json({ message: err.message });
     });
 });
 
@@ -201,10 +204,9 @@ userRouter.delete("/user/:id", (req, res) => {
     });
 });
 
-userRouter.patch("/user", (req, res) => {
+userRouter.patch("/user/password", (req, res) => {
   const name = req.query.name;
   const newPassword = req.query.password;
-  const id = req.query.id;
 
   if (name && newPassword) {
     userService
@@ -215,21 +217,32 @@ userRouter.patch("/user", (req, res) => {
           : res.status(404).send("No se pudo actualizar la contraseña");
       })
       .catch((err) => {
-        res.status(500).send("Error al intentar actualizar la contraseña");
-      });
-  } else if (id) {
-    userService
-      .updateUserLastConnected(id)
-      .then((user) => {
-        return user
-          ? res.status(200).send(user)
-          : res.status(404).send("No se pudo actualizar la ultima conexion");
-      })
-      .catch((err) => {
-        res.status(500).send("Error al intentar actualizar la ultima conexion");
+        res
+          .status(500)
+          .send(
+            "Error al intentar actualizar la contraseña o usuario no encontrado"
+          );
       });
   } else {
     res.status(400).send("Los parametros no son correctos");
+  }
+});
+
+userRouter.patch("/user/updateLogin", async (req, res) => {
+  const { id } = req.body;
+
+  if (!id) {
+    return res.status(400).send("No se proporcionó el ID");
+  }
+
+  try {
+    const userService = UserServices.getInstance();
+    const user = await userService.updateUserLastConnected(id);
+    return res.status(200).send("Fecha de última conexión actualizada");
+  } catch (err) {
+    return res
+      .status(500)
+      .send("Error al intentar actualizar la fecha de última conexión");
   }
 });
 
@@ -237,26 +250,37 @@ userRouter.patch("/user", (req, res) => {
 userRouter.post("/user/login", async (req, res) => {
   const { username, password, avatarSrc } = req.body;
   try {
-    const { token, id, name, avatar } = await userService.login(username, password, avatarSrc);
-    return res
-      .status(200)
-      .json({ token, message: "Usario logeado correctamente", userID: id, userName: name, userAvatar: avatar });
+    const { token, id, name, avatar } = await userService.login(
+      username,
+      password,
+      avatarSrc
+    );
+    return res.status(200).json({
+      token,
+      message: "Usario logeado correctamente",
+      userID: id,
+      userName: name,
+      userAvatar: avatar,
+    });
   } catch (err) {
-    // console.log(err.message);
     return res.status(400).send("Could not login");
   }
 });
 
 userRouter.patch("/user/stats", async (req, res) => {
   const { addGamesWon, addGamesPlayed, addWordsGuessed, id } = req.body;
+  if (!id) {
+    return res.status(400).send("No se proporcionó el ID");
+  }
   try {
-    await userService.sumStats(addGamesWon, addGamesPlayed, addWordsGuessed, id)
-    return res
-      .status(200)
-      .send("Estadisticas actualizadas")
+    await userService.sumStats(
+      addGamesWon,
+      addGamesPlayed,
+      addWordsGuessed,
+      id
+    );
+    return res.status(200).send("Estadisticas actualizadas");
   } catch (err) {
-    return res
-      .status(400)
-      .send(err)
+    return res.status(404).send("No se pudieron actualizar las estadisticas");
   }
 });

@@ -3,18 +3,18 @@ import { GameServices } from "../services/gameServices.js";
 
 export const gameRouter = express.Router();
 
-// Conseguir la instancia de GameServices, si  no existe, se crea.
+// Conseguir la instancia de GameServices, si no existe, se crea.
 const gameService = GameServices.getInstance();
 
 // EJ: http://localhost:5000/game?id=1234
 gameRouter.get("/game", (req, res) => {
-  const id = req.query.id;
-  if (!id) {
-    return res.status(400).send("No se proporcionó el ID");
+  const gameID = req.query.gameID;
+  if (!gameID) {
+    return res.status(400).send("No se proporcionó el ID del juego");
   }
 
   gameService
-    .getGameById(id)
+    .getGameByGameID(gameID)
     .then((game) => {
       return game
         ? res.status(200).send(game)
@@ -25,40 +25,19 @@ gameRouter.get("/game", (req, res) => {
     });
 });
 
-// EJ: http://localhost:5000/game/673774152c8491836a6aa153 (GET)
-gameRouter.get("/game/:id", (req, res) => {
-  const id = req.params.id;
-
-  if (!id) {
-    return res.status(400).send("No se proporcionó el ID de MongoDB");
-  }
-
-  gameService
-    .getGameByMongoId(id)
-    .then((game) => {
-      return game
-        ? res.status(200).send(game)
-        : res.status(404).send("No se encontró el juego por su ID de MongoDB");
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .send("Error al intentar obtener el juego por su ID de MongoDB");
-    });
-});
-
 gameRouter.post("/game", (req, res) => {
-  const id = req.body.lobbyID;
+  const gameID = req.body.gameID;
   const players = req.body.players;
+  const winnerID = req.body.winnerID;
 
-  if (!id || !players) {
+  if (!gameID || !players || !winnerID) {
     return res
       .status(400)
-      .send("No se proporcionó el ID del lobby o jugadores");
+      .send("No se proporcionó el ID del lobby, jugadores o ganador");
   }
 
   gameService
-    .createGame(id, players)
+    .createGame(gameID, players, winnerID)
     .then((game) => {
       return game
         ? res.status(200).send(game)
@@ -71,17 +50,17 @@ gameRouter.post("/game", (req, res) => {
 
 // EJ: http://localhost:5000/game?id=1234&winner=345 (UPDATE)
 gameRouter.patch("/game", (req, res) => {
-  const id = req.query.id;
+  const gameID = req.query.gameID;
   const winnerID = req.query.winnerID;
 
-  if (!id || !winnerID) {
+  if (!gameID || !winnerID) {
     return res.status(400).send("No se proporcionó el ID o el ganador");
   }
   gameService
-    .updateGameWinner(id, winnerID)
-    .then((game) => {
-      return game
-        ? res.status(200).send(game)
+    .updateGameWinner(gameID, winnerID)
+    .then((result) => {
+      return result.modifiedCount > 0
+        ? res.status(200).send("Ganador actualizado correctamente")
         : res.status(404).send("No se pudo actualizar el ganador del juego");
     })
     .catch((err) => {
@@ -90,17 +69,17 @@ gameRouter.patch("/game", (req, res) => {
 });
 
 gameRouter.delete("/game", (req, res) => {
-  const id = req.query.id;
+  const gameID = req.query.gameID;
 
-  if (!id) {
+  if (!gameID) {
     return res.status(400).send("No se proporcionó el ID");
   }
 
   gameService
-    .deleteGame(id)
-    .then((game) => {
-      return game
-        ? res.status(200).send(game)
+    .deleteGame(gameID)
+    .then((result) => {
+      return result.deletedCount > 0
+        ? res.status(200).send("Juego eliminado correctamente")
         : res.status(404).send("No se pudo eliminar el juego");
     })
     .catch((err) => {

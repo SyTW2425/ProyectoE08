@@ -5,14 +5,14 @@ export const lobbyRouter = express.Router();
 const lobbyService = LobbyServices.getInstance();
 
 lobbyRouter.get("/lobby", (req, res) => {
-  const id = req.query.id;
+  const lobbyID = req.query.lobbyID;
 
-  if (!id) {
+  if (!lobbyID) {
     return res.status(400).send("No se proporcionó el ID");
   }
 
   lobbyService
-    .getLobbyById(id)
+    .getLobbyById(lobbyID)
     .then((lobby) => {
       return lobby
         ? res.status(200).send(lobby)
@@ -36,51 +36,10 @@ lobbyRouter.get("/lobby/all", (_, res) => {
     });
 });
 
-lobbyRouter.get("/lobby/:id", (req, res) => {
-  const id = req.params.id;
-
-  if (!id) {
-    return res.status(400).send("No se proporcionó el ID");
-  }
-
-  lobbyService
-    .getLobbyByMongoId(id)
-    .then((lobby) => {
-      return lobby
-        ? res.status(200).send(lobby)
-        : res.status(404).send("Lobby no encontrado");
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .send("Error al intentar obtener el lobby por su ID de MongoDB");
-    });
-});
-
-lobbyRouter.get("/lobby/all/:id", (req, res) => {
-  const id = req.params.id;
-
-  if (!id) {
-    return res.status(400).send("No se proporcionó el ID");
-  }
-
-  lobbyService
-    .getAllUserLobbies(id)
-    .then((lobbies) => {
-      return lobbies
-        ? res.status(200).send(lobbies)
-        : res.status(404).send("No se pudieron obtener los lobbies");
-    })
-    .catch((err) => {
-      res.status(500).send("Error al intentar obtener los lobbies del usuario");
-    });
-});
-
 lobbyRouter.post("/lobby", (req, res) => {
   const hostID = req.body.hostID;
   const players = req.body.players;
   const maxPlayers = req.body.maxPlayers;
-  console.log(req.body)
 
   if (!hostID || !players || !maxPlayers) {
     return res.status(400).send("Missing parameters");
@@ -99,18 +58,18 @@ lobbyRouter.post("/lobby", (req, res) => {
 });
 
 lobbyRouter.patch("/lobby", (req, res) => {
-  const id = req.query.id;
+  const lobbyID = req.query.lobbyID;
   const players = req.body.players;
 
-  if (!id || !players) {
+  if (!lobbyID || !players) {
     return res.status(400).send("No se proporcionó el ID o los jugadores");
   }
 
   lobbyService
-    .updateLobbyPlayers(id, players)
+    .updateLobbyPlayers(lobbyID, players)
     .then((lobby) => {
       return lobby
-        ? res.status(200).send(lobby)
+        ? res.status(200).send("Lobby actualizado correctamente")
         : res.status(404).send("No se pudo actualizar el lobby");
     })
     .catch((err) => {
@@ -119,17 +78,17 @@ lobbyRouter.patch("/lobby", (req, res) => {
 });
 
 lobbyRouter.delete("/lobby", (req, res) => {
-  const id = req.query.id;
+  const lobbyID = req.query.lobbyID;
 
-  if (!id) {
+  if (!lobbyID) {
     return res.status(400).send("No se proporcionó el ID");
   }
 
   lobbyService
-    .deleteLobby(id)
-    .then((lobby) => {
-      return lobby
-        ? res.status(200).send(lobby)
+    .deleteLobby(lobbyID)
+    .then((result) => {
+      return result.deletedCount > 0
+        ? res.status(200).send("Lobby eliminado correctamente")
         : res.status(404).send("No se pudo eliminar");
     })
     .catch((err) => {
@@ -137,51 +96,31 @@ lobbyRouter.delete("/lobby", (req, res) => {
     });
 });
 
-lobbyRouter.delete("/lobby/:id", (req, res) => {
-  const id = req.params.id;
-
-  if (!id) {
-    return res.status(400).send("No se proporcionó el ID");
+lobbyRouter.get("/lobby/status", async (req, res) => {
+  const lobbyID = req.body.lobbyID;
+  if (!lobbyID) {
+    return res.status(400).send("No se proporcionó el ID del lobby");
   }
-
-  lobbyService
-    .deleteLobbyByMongoId(id)
-    .then((lobby) => {
-      return lobby
-        ? res.status(200).send(lobby)
-        : res
-            .status(404)
-            .send("No se pudo eliminar el lobby por su ID de MongoDB");
-    })
-    .catch((err) => {
-      res
-        .status(500)
-        .send("Error al intentar eliminar el lobby por su ID de MongoDB");
-    });
+  try {
+    const lobbyStatus = await lobbyService.getLobbyStatus(lobbyID);
+    res.status(200).send(lobbyStatus);
+  } catch (err) {
+    res.status(400).send("Error fetching status");
+  }
 });
 
-lobbyRouter.get("/lobby/status", async (req, res) => {
-  const { id } = req.body;
-  try {
-    const lobbyStatus = await lobbyService.getLobbyStatus(id)
-    res.status(200)
-    .send(lobbyStatus)
-  } catch(err) {
-    res.status(400)
-    .send(Err)
-  }
-})
-
 lobbyRouter.patch("/lobby/status", async (req, res) => {
-  const { id, lobbyStatus } = req.body;
+  const lobbyID = req.body.lobbyID;
+  const lobbyStatus = req.body.lobbyStatus;
   try {
-    const lobby = await lobbyService.getLobbyById(id)
-    lobby.status = lobbyStatus
-    await lobby.save()
-    res.status(200)
-    .send("Estado actualizado correctamente")
-  } catch(err) {
-    res.status(400)
-    .send(Err)
+    const lobby = await lobbyService.getLobbyById(lobbyID);
+    if (!lobby) {
+      return res.status(404).send("Lobby no encontrado");
+    }
+    lobby.joinable = lobbyStatus;
+    await lobby.save();
+    res.status(200).send("Estado actualizado correctamente");
+  } catch (err) {
+    res.status(400).send("Error updating status");
   }
-})
+});
