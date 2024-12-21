@@ -8,12 +8,12 @@ on:
 
 jobs:
   test:
-    name: Run Frontend and Backend Tests
+    name: Run Backend Tests
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        directory: [frontend, backend] # Directorios con lógica separada para tests
+        node-version: [14, 16, 18] # Especifica las versiones de Node.js necesarias
 
     steps:
       - name: Checkout code
@@ -22,14 +22,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16' # Especifica la versión de Node.js necesaria
+          node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: |
-          cd LetrasProhibidas/${{ matrix.directory }}
+          cd LetrasProhibidas/backend
           npm install
 
       - name: Run Tests
+        env:
+          MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST }}
         run: |
-          cd LetrasProhibidas/${{ matrix.directory }}
+          cd LetrasProhibidas/backend
           npm test
