@@ -3,17 +3,7 @@ import validator from "validator";
 import { v4 as uuidv4 } from "uuid";
 
 const GameSchema = new Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-    default: uuidv4,
-    validate: {
-      validator: (value) => validator.isUUID(value),
-      message: "Invalid ID",
-    },
-  },
-  lobbyID: {
+  gameID: {
     type: String,
     required: true,
     unique: true,
@@ -24,7 +14,7 @@ const GameSchema = new Schema({
     },
   },
   players: {
-    type: Array,
+    type: [String],
     required: true,
   },
   winnerID: {
