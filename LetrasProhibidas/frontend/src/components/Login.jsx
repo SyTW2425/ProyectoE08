@@ -53,7 +53,7 @@ export const Login = () => {
     <div className="flex flex-row items-center gap-10">
       <div className="relative">
         <div className="w-56 h-56 flex items-center justify-center border-white border-[7px] rounded-full">
-          {loading && <div className="loader w-10 h-10 border-4 border-t-4 border-t-white border-gray-200 rounded-full animate-spin"></div>}
+          {loading && <div className="w-10 h-10 border-4 border-t-4 border-t-white border-gray-200 rounded-full animate-spin"></div>}
           <img
             src={avatar}
             className={`rounded-full ${loading ? 'hidden' : 'block'}`}
