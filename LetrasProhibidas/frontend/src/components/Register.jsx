@@ -16,6 +16,7 @@ export const Register = ({onRegister}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [avatar, setAvatar] = useState(avatars[0]);
+  const [loading, setLoading] = useState(true);
   const {register} = useAuth();
   const navigate = useNavigate()
 
@@ -59,15 +60,21 @@ export const Register = ({onRegister}) => {
       index = Math.floor(Math.random() * avatars.length)
     }
     setAvatar(avatars[index])
+    setLoading(true);
   }
 
   return (
     <div className="flex flex-row items-center gap-10">
       <div className="relative">
-        <img
-          src={avatar}
-          className="rounded-full border-white border-[7px] max-w-56 max-h-56"
-        />
+        <div className="w-56 h-56 flex items-center justify-center border-white border-[7px] rounded-full">
+          {loading && <div className="loader w-10 h-10 border-4 border-t-4 border-t-white border-gray-200 rounded-full animate-spin"></div>}
+          <img
+            src={avatar}
+            className={`rounded-full ${loading ? 'hidden' : 'block'}`}
+            onLoad={() => setLoading(false)}
+            onError={() => setLoading(false)}
+          />
+        </div>
         <RandomButton className="top-1 right-4 absolute" onClick={handleClick} />
       </div>
 
