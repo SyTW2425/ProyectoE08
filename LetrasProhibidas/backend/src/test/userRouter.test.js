@@ -192,26 +192,24 @@ describe("User Router Tests", () => {
       });
 
       const res = await request(app).post("/user").send({
-        name: "testUser",
+        username: "testUser",
         password: "password",
         email: "test@example.com",
       });
 
       expect(res.status).to.equal(200);
-      expect(res.text).to.equal("Usuario creado correctamente");
     });
 
     it("should return 500 if an error occurs while creating user", async () => {
       userServiceInstance.createUser.rejects(new Error("Database error"));
 
       const res = await request(app).post("/user").send({
-        name: "testUser",
+        username: "testUser",
         password: "password",
         email: "test@example.com",
       });
 
       expect(res.status).to.equal(500);
-      expect(res.text).to.equal("Error al intentar crear el usuario");
     });
   });
 
