@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14, 16, 18] # Especifica las versiones de Node.js necesarias
+        node-version: [16, 18, 20] # Especifica las versiones de Node.js necesarias
 
     steps:
       - name: Checkout code
@@ -32,6 +32,7 @@ jobs:
       - name: Run Tests
         env:
           MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           cd LetrasProhibidas/backend
           npm test
