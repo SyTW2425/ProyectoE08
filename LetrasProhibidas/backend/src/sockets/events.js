@@ -11,10 +11,10 @@ io.on("connection", (socket) => {
 
   
   // Implementación de los eventos
-  const joinLobby = (lobbyID, userID, userName, userAvatar) => {
+  const joinLobby = async (lobbyID, userID, userName, userAvatar) => {
     socket.join(lobbyID) // Une a la lobby al usuario
     console.log(`El usuario ${userID} se ha unido a la lobby: ${lobbyID}`)
-    lobbyService.addPlayerToLobby(lobbyID, {userID, userName, userAvatar})
+    await lobbyService.addPlayerToLobby(lobbyID, {userID, userName, userAvatar})
     io.to(lobbyID).emit("newUser", { userID })
   }
 })

@@ -53,6 +53,7 @@ lobbyRouter.post("/lobby", (req, res) => {
         : res.status(404).send("No se pudo crear el lobby");
     })
     .catch((err) => {
+      console.log(err)
       res.status(500).send("Error al intentar crear el lobby");
     });
 });

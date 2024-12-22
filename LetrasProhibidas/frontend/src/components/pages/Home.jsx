@@ -29,7 +29,7 @@ export const Home = ({ }) => {
         })
       })
       const data = await response.json()
-      const lobbyID = data.id
+      const lobbyID = data.lobbyID
       socket.emit("joinLobby", { lobbyID, userID, userName, userAvatar })
       navigate(`/lobby/${lobbyID}`)
     } catch (err) {
