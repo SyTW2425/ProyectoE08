@@ -130,7 +130,7 @@ export class LobbyServices {
    */
   async removePlayerFromLobby(lobbyID, playerID) {
     const lobby = await this.getLobbyById(lobbyID);
-    const index = lobby.players.indexOf(playerID);
+    const index = lobby.players.findIndex(player => player.userID === playerID);
     if (index === -1) {
       throw new Error("Player not found in lobby");
     }

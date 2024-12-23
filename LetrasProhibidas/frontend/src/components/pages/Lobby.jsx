@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useSocket } from "../hooks/useSocket"
 import { useEffect, useState, useCallback } from "react"
 import { LobbyChat } from "../LobbyChat"
@@ -12,11 +12,18 @@ export const Lobby = () => {
   const [maxPlayers, setMaxPlayers] = useState(0)
   const [loading, setLoading] = useState(true)
   const userName = localStorage.getItem("userName")
+  const userID = localStorage.getItem("userID")
+  const navigate = useNavigate()
 
-  const handleNewUser = (userID) => {
-    console.log("Se ha unido el usuario", userID);
+  const handleUserUpdate = () => {
+    console.log("Actualizando lista de jugadores")
     fetchLobbyData()
   };
+
+  const handleLeave = (userID) => {
+    socket.emit("leaveLobby", ({lobbyID: id, userID}))
+    navigate("/")
+  }
 
   const fetchLobbyData = useCallback(async () => {
     console.log("ejecuto");
@@ -39,12 +46,12 @@ export const Lobby = () => {
 
   useEffect(() => {
     if (socket) {
-      socket.on("newUser", ({ userID }) => handleNewUser(userID));
+      socket.on("userUpdate", () => handleUserUpdate());
     }
 
     return () => {
       if (socket) {
-        socket.off("newUser"); // Importantisimo
+        socket.off("userUpdate"); // Importantisimo
       }
     };
   }, [fetchLobbyData, socket]);
@@ -56,7 +63,7 @@ export const Lobby = () => {
           <div className="h-[40rem] w-[60rem] border-[10px] p-5 rounded-xl border-white/10 backdrop-blur-xl flex flex-col items-center justify-start shadow-xl font-poppins text-white">
             <h1 className="text-[64px] font-black"><span className="text-white">LETRAS</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">PROHIBIDAS</span></h1>
             <div className="h-full w-[50rem] flex flex-row gap-4 items-center justify-start p-3">
-              <div className="flex h-full w-full justify-between">
+              <div className="flex h-full w-full gap-36">
                 <div>
                   <h2 className="font-black text-2xl bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">JUGADORES {`(${numPlayers}/${maxPlayers})`}</h2>
                   {users ? (
@@ -77,19 +84,18 @@ export const Lobby = () => {
                     <p>Cargando..</p>
                   )}
                 </div>
-                <LobbyChat/>
+                <LobbyChat lobbyID={id}/>
               </div>
             </div>
             <div className="flex flex-row gap-2">
               <CopyToClipboard toCopy={id}/>
-              <button onClick={() => console.log("click")} className="bg-black/25 rounded-xl p-2 hover:bg-black/50">
+              <button onClick={() => handleLeave(userID)} className="bg-black/25 rounded-xl p-2 hover:bg-black/50">
                 Salir
               </button>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   )
 }
