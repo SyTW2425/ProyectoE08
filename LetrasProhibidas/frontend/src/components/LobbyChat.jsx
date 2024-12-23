@@ -41,7 +41,7 @@ export const LobbyChat = ({ lobbyID }) => {
     }, [messages]);
 
   return (
-    <div className="bg-black/30 h-[400px] flex flex-col justify-between w-full p-2 rounded-xl">
+    <div className="bg-black/30 h-[400px] flex-1 flex flex-col justify-between max-w-[700px] p-2 rounded-xl">
       {/* Contenedor de los mensajes */}
       <div className="
         flex-1 p-2 

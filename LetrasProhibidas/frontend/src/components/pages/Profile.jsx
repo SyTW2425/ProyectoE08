@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react"
 import { StatCard } from "../assets/StatCard"
+import { StandardButton } from "../assets/StandardButton"
+import { useNavigate } from "react-router-dom"
 
 export const Profile = () => {
   const [userData, setUserData] = useState()
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
@@ -51,6 +54,7 @@ export const Profile = () => {
                   </div>
                 </div>
               </div>
+              <StandardButton text="Volver" onClick={() => navigate("/")}/>
             </div>
           </div>
         </div>

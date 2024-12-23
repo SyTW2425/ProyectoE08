@@ -4,6 +4,7 @@ import { BentoItem } from "../assets/BentoItem";
 import { useAuth } from "../hooks/useAuth";
 import { JoinLobby } from "../JoinLobby";
 import { useSocket } from "../hooks/useSocket";
+import { StandardButton } from "../assets/StandardButton";
 
 export const Home = ({ }) => {
   const navigate = useNavigate()
@@ -61,9 +62,7 @@ export const Home = ({ }) => {
               </div>
             </div>
           </div>
-          <button onClick={logout} className="bg-black/25 rounded-xl p-2 hover:bg-black/50">
-            Logout
-          </button>
+          <StandardButton text="Logout" onClick={logout}/>
           <JoinLobby isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Introduce Código" />
         </div>
       </div>
