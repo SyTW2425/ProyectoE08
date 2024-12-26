@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export const CopyToClipboard = ({toCopy}) => {
+export const CopyToClipboard = ({ toCopy }) => {
   const handleClick = async () => {
     try {
       navigator.clipboard.writeText(toCopy)
@@ -14,7 +14,7 @@ export const CopyToClipboard = ({toCopy}) => {
   const [buttonText, setButtonText] = useState("Copiar código")
 
   return (
-    <button className="bg-black/25 rounded-xl p-2 hover:bg-black/50" onClick={handleClick}>
+    <button className="bg-black/25 rounded-xl p-2 hover:bg-black/50 text-white font-bold shadow-md" onClick={handleClick}>
       {buttonText}
     </button>
   )
