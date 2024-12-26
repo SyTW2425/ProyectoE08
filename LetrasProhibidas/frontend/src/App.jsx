@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import { AuthProvider, useAuth } from "./components/hooks/useAuth";
 import { Background } from "./components/pages/Background";
 import { SocketProvider } from "./components/hooks/useSocket";
-import { LoadingProvider } from "./components/hooks/LoadingContext";
+import { LoadingProvider } from "./components/hooks/useLoading";
 
 import "@fontsource/poppins/200.css";
 import "@fontsource/poppins/400.css"; // Normal
