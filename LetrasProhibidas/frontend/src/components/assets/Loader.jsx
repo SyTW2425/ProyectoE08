@@ -27,7 +27,7 @@ export const Loader = () => {
           {letters.split("").map((letter, index) => (
             <span
               key={index}
-              className={`inline-block w-10 h-14 mx-1 text-4xl font-bold transition-all duration-300 ease-in-out font-poppins
+              className={`inline-block w-10 h-14 mx-1 text-6xl font-bold transition-all duration-300 ease-in-out font-poppins
                                                     ${activeLetters.includes(
                 index
               )
