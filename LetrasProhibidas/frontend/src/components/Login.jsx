@@ -24,7 +24,7 @@ export const Login = () => {
       setIsModalOpen(true);
       return;
     }
-    
+
     try {
       await login({ username, password, avatar });
       navigate("/")
@@ -49,9 +49,10 @@ export const Login = () => {
     setAvatar(avatars[index])
   }
 
+
   return (
     <div className="flex flex-row items-center gap-10">
-      <div className="relative">
+      <div className="relative ml-4">
         <div className="w-56 h-56 flex items-center justify-center border-white border-[7px] rounded-full">
           {loading && <div className="w-10 h-10 border-4 border-t-4 border-t-white border-gray-200 rounded-full animate-spin"></div>}
           <img
@@ -62,9 +63,16 @@ export const Login = () => {
           />
         </div>
         <RandomButton className="top-1 right-4 absolute" onClick={handleClick} />
+
+        {/* <div className="flex flex-row items-center justify-center gap-2 mt-4">
+          <a href="#" className="text-primaryBlue hover:underline" onClick={handlePasswordRecovery}>
+            ¿No te acuerdas de tu contraseña?
+          </a>
+        </div> */}
+
       </div>
 
-      <form className="flex flex-col justify-center" onSubmit={ (e) => {
+      <form className="flex flex-col justify-center gap-4 mr-4" onSubmit={(e) => {
         e.preventDefault()
         handleLogin()
       }}>

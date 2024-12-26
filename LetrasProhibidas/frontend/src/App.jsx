@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import { AuthProvider, useAuth } from "./components/hooks/useAuth";
 import { Background } from "./components/pages/Background";
 import { SocketProvider } from "./components/hooks/useSocket";
+import { LoadingProvider } from "./components/hooks/LoadingContext";
 
 import "@fontsource/poppins/200.css";
 import "@fontsource/poppins/400.css"; // Normal
@@ -17,44 +18,46 @@ import "@fontsource/poppins/900.css"; // Black
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <SocketProvider>
-          <Background>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <PrivateRoute>
-                    <Home />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/login"
-                element={<LoginRoute />}
-              />
-              <Route
-                path="/profile"
-                element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/lobby/:id"
-                element={
-                  <PrivateRoute>
-                    <Lobby />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
-          </Background>
-        </SocketProvider>
-      </AuthProvider>
-    </Router>
+    <LoadingProvider>
+      <Router>
+        <AuthProvider>
+          <SocketProvider>
+            <Background>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <PrivateRoute>
+                      <Home />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={<LoginRoute />}
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <Profile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/lobby/:id"
+                  element={
+                    <PrivateRoute>
+                      <Lobby />
+                    </PrivateRoute>
+                  }
+                />
+              </Routes>
+            </Background>
+          </SocketProvider>
+        </AuthProvider>
+      </Router>
+    </LoadingProvider>
   );
 }
 
