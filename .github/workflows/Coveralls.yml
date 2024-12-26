@@ -28,21 +28,21 @@ jobs:
         run: |
           cd LetrasProhibidas/backend
           npm install
-      
+
       - name: Wait for Run-Test-Backend Workflow
         uses: actions/github-script@v6
         with:
           script: |
-        const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-        const { data: runs } = await octokit.rest.actions.listWorkflowRuns({
-          owner: 'SyTW2425',
-          repo: 'ProyectoE08',
-          workflow_id: 'Run-Test-Backend.yml',
-          status: 'completed'
-        });
-        if (runs.workflow_runs.length === 0) {
-          throw new Error('No completed runs found for Run-Test-Backend.yml');
-        }
+            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+            const { data: runs } = await octokit.rest.actions.listWorkflowRuns({
+              owner: 'SyTW2425',
+              repo: 'ProyectoE08',
+              workflow_id: 'Run-Test-Backend.yml',
+              status: 'completed'
+            });
+            if (runs.workflow_runs.length === 0) {
+              throw new Error('No completed runs found for Run-Test-Backend.yml');
+            }
 
       - name: Run Tests
         env:
