@@ -51,7 +51,7 @@ export const Home = ({ }) => {
                   <BentoItem title="PERFIL" description="Echa un vistazo a tus partidas ganadas, estadísticas y logros." background="bento/profile.webp" onClick={() => navigate("/profile")} />
                 </div>
                 <div className="col-span-3 row-span-2 rounded-lg shadow-md flex items-center justify-center">
-                  <BentoItem title="JUGAR" description="¿No tienes con quién jugar? No hay problema, busca una partida y conoce gente nueva." background="bento/play.webp" />
+                  <BentoItem title="JUGAR" description="¿No tienes con quién jugar? No hay problema, busca una partida y conoce gente nueva." background="bento/play.webp" onClick={() => navigate("/play")} />
                 </div>
                 <div className="col-span-3 row-span-2 rounded-lg shadow-md flex items-center justify-center">
                   <BentoItem title="UNIRSE" description="Pide a tus amigos el código de la sala y juega junto a ellos." background="bento/join.webp" onClick={() => setIsModalOpen(true)} />
@@ -62,7 +62,7 @@ export const Home = ({ }) => {
               </div>
             </div>
           </div>
-          <StandardButton text="Logout" onClick={logout}/>
+          <StandardButton text="Logout" onClick={logout} />
           <JoinLobby isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Introduce Código" />
         </div>
       </div>

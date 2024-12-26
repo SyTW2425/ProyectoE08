@@ -2,13 +2,14 @@ import { LoginPage } from "./components/pages/LoginPage";
 import { Home } from "./components/pages/Home";
 import { Profile } from "./components/pages/Profile";
 import { Lobby } from "./components/pages/Lobby";
+import { Play } from "./components/pages/Play";
 import { PrivateRoute } from "./components/PrivateRoute";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./components/hooks/useAuth";
 import { Background } from "./components/pages/Background";
 import { SocketProvider } from "./components/hooks/useSocket";
-import { LoadingProvider } from "./components/hooks/useLoading";
+import { LoadingProvider } from "./components/hooks/LoadingContext";
 
 import "@fontsource/poppins/200.css";
 import "@fontsource/poppins/400.css"; // Normal
@@ -49,6 +50,14 @@ function App() {
                   element={
                     <PrivateRoute>
                       <Lobby />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/play"
+                  element={
+                    <PrivateRoute>
+                      <Play />
                     </PrivateRoute>
                   }
                 />
