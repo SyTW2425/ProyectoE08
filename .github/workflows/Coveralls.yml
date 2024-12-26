@@ -28,11 +28,10 @@ jobs:
         run: |
           cd LetrasProhibidas/backend
           npm install
-
-      - name: Wait for Run-Test-Backend Workflow
-        uses: actions/github-script@v6
-        with:
-          script: |
+          - name: Wait for Run-Test-Backend Workflow
+            uses: actions/github-script@v6
+            with:
+              script: |
             const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
             const { data: runs } = await octokit.rest.actions.listWorkflowRuns({
               owner: 'SyTW2425',
