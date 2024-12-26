@@ -4,6 +4,9 @@ import { useEffect, useState, useCallback } from "react"
 import { LobbyChat } from "../LobbyChat"
 import { CopyToClipboard } from "../assets/CopyToClipboard"
 import { StandardButton } from "../assets/StandardButton"
+import { Loader } from "../assets/Loader"
+import { Error404 } from "../assets/Error404"
+import { PrivacityButton } from "../assets/PrivacityButton"
 
 export const Lobby = () => {
   const { id } = useParams()
@@ -12,6 +15,8 @@ export const Lobby = () => {
   const [numPlayers, setNumPlayers] = useState(0)
   const [maxPlayers, setMaxPlayers] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
+  const [hostID, setHostID] = useState(null) // Estado para almacenar el hostID
   const userName = localStorage.getItem("userName")
   const userID = localStorage.getItem("userID")
   const navigate = useNavigate()
@@ -22,7 +27,7 @@ export const Lobby = () => {
   };
 
   const handleLeave = (userID) => {
-    socket.emit("leaveLobby", ({lobbyID: id, userID}))
+    socket.emit("leaveLobby", ({ lobbyID: id, userID }))
     navigate("/")
   }
 
@@ -39,23 +44,55 @@ export const Lobby = () => {
       setUsers(data.players);
       setNumPlayers(data.players.length)
       setMaxPlayers(data.maxPlayers);
+      setHostID(data.hostID); // Almacena el hostID
       setLoading(false);
     } catch (err) {
       console.error("Error fetching lobby data:", err);
+      setLoading(false);
+      setError(true);
     }
   }, [id]);
+  const updateLobbyStatus = async (newStatus) => {
+    try {
+      const response = await fetch(`http://localhost:5000/lobby/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ lobbyID: id, lobbyStatus: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update lobby status");
+      }
+
+      console.log("Lobby status updated successfully");
+    } catch (err) {
+      console.error("Error updating lobby status:", err);
+    }
+  };
 
   useEffect(() => {
     if (socket) {
       socket.on("userUpdate", () => handleUserUpdate());
     }
 
+    fetchLobbyData();
+
     return () => {
       if (socket) {
-        socket.off("userUpdate"); // Importantisimo
+        socket.off("userUpdate");
       }
     };
   }, [fetchLobbyData, socket]);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <Error404 />;
+  }
 
   return (
     <div>
@@ -85,12 +122,27 @@ export const Lobby = () => {
                     <p>Cargando..</p>
                   )}
                 </div>
-                <LobbyChat lobbyID={id}/>
+                <LobbyChat lobbyID={id} />
               </div>
             </div>
-            <div className="flex flex-row gap-2">
-              <CopyToClipboard toCopy={id}/>
-              <StandardButton text="Salir" onClick={() => handleLeave(userID)}/>
+            <div className="flex flex-row gap-2 justify-between w-full">
+              <div className="flex flex-row gap-4 ml-8">
+                {userID === hostID && (
+                  <>
+                    <PrivacityButton
+                      initialStatus={false}
+                      onChange={(newStatus) => {
+                        console.log("Privacity status changed to:", newStatus);
+                        updateLobbyStatus(newStatus);
+                      }}
+                    />
+                  </>
+                )}
+                <CopyToClipboard toCopy={id} />
+              </div>
+              <div className="flex flex-row gap-2 mr-16">
+                <StandardButton text="Salir" onClick={() => handleLeave(userID)} />
+              </div>
             </div>
           </div>
         </div>
