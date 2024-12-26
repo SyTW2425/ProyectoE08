@@ -1,3 +1,3 @@
 - Crear pagina de partida, fin de partida
 - Al unirse a lobby, hay que comprobar que existe la lobby y que es apta para unirse (valor joinable del modelo lobby)
-- Manejar que ocurre al dejar una lobby
+- Añadir al modelo de lobby el campo "private" para saber si es privada o no, si lo es no se podrá acceder a ella pulsando en "JUGAR"

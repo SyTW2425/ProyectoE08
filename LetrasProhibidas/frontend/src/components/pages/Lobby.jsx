@@ -125,7 +125,7 @@ export const Lobby = () => {
                 <LobbyChat lobbyID={id} />
               </div>
             </div>
-            <div className="flex flex-row gap-2 justify-between w-full">
+            <div className="flex flex-row gap-2 items-center">
               <div className="flex flex-row gap-4 ml-8">
                 {userID === hostID && (
                   <>
@@ -139,8 +139,6 @@ export const Lobby = () => {
                   </>
                 )}
                 <CopyToClipboard toCopy={id} />
-              </div>
-              <div className="flex flex-row gap-2 mr-16">
                 <StandardButton text="Salir" onClick={() => handleLeave(userID)} />
               </div>
             </div>
