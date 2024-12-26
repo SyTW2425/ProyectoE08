@@ -87,7 +87,7 @@ export class LobbyServices {
    * @throws {Error} Si ocurre un error al obtener los lobbies.
    */
   async getAllLobbies() {
-    return await Lobby.find().catch((err) => {
+    return await Lobby.find({ joinable: true }).catch((err) => {
       throw new Error(err.message);
     });
   }
@@ -130,7 +130,9 @@ export class LobbyServices {
    */
   async removePlayerFromLobby(lobbyID, playerID) {
     const lobby = await this.getLobbyById(lobbyID);
-    const index = lobby.players.findIndex(player => player.userID === playerID);
+    const index = lobby.players.findIndex(
+      (player) => player.userID === playerID
+    );
     if (index === -1) {
       throw new Error("Player not found in lobby");
     }
