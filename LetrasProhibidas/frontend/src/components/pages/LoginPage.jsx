@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { LoginButton } from "../assets/LoginButton"
 import { Login } from "../Login"
 import { Register } from "../Register"
-import { useLoading } from "../hooks/LoadingContext"
+import { useLoading } from "../hooks/useLoading"
 import { Loader } from "../assets/Loader"
 
 
