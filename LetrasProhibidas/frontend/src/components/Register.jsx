@@ -9,7 +9,7 @@ import { useAuth } from "./hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 
 
-export const Register = ({onRegister}) => {
+export const Register = ({ onRegister }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +17,7 @@ export const Register = ({onRegister}) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [avatar, setAvatar] = useState(avatars[0]);
   const [loading, setLoading] = useState(true);
-  const {register} = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate()
 
 
@@ -64,7 +64,7 @@ export const Register = ({onRegister}) => {
   }
 
   return (
-    <div className="flex flex-row items-center gap-10">
+    <div className="flex flex-row items-center">
       <div className="relative">
         <div className="w-56 h-56 flex items-center justify-center border-white border-[7px] rounded-full">
           {loading && <div className="w-10 h-10 border-4 border-t-4 border-t-white border-gray-200 rounded-full animate-spin"></div>}
@@ -78,7 +78,7 @@ export const Register = ({onRegister}) => {
         <RandomButton className="top-1 right-4 absolute" onClick={handleClick} />
       </div>
 
-      <form className="flex flex-col justify-center" onSubmit={ (e) => {
+      <form className="flex flex-col justify-center ml-6" onSubmit={(e) => {
         e.preventDefault()
         handleRegister()
       }
@@ -90,7 +90,7 @@ export const Register = ({onRegister}) => {
         <ConfirmButton text="VALE" type="submit" />
       </form>
 
-    
+
       <WarningModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error inesperado">
         <p>{errorMessage}</p>
       </WarningModal>

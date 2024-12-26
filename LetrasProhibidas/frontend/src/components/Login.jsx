@@ -51,7 +51,7 @@ export const Login = () => {
 
 
   return (
-    <div className="flex flex-row items-center gap-10">
+    <div className="flex flex-row items-center">
       <div className="relative ml-4">
         <div className="w-56 h-56 flex items-center justify-center border-white border-[7px] rounded-full">
           {loading && <div className="w-10 h-10 border-4 border-t-4 border-t-white border-gray-200 rounded-full animate-spin"></div>}
@@ -72,7 +72,7 @@ export const Login = () => {
 
       </div>
 
-      <form className="flex flex-col justify-center gap-4 mr-4" onSubmit={(e) => {
+      <form className="flex flex-col justify-center gap- mr-4 ml-6" onSubmit={(e) => {
         e.preventDefault()
         handleLogin()
       }}>
