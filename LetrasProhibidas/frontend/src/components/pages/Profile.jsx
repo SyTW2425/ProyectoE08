@@ -37,16 +37,45 @@ export const Profile = () => {
     fetchData();
   }, []);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     let index = 0;
     while (avatars[index] === avatar) {
       index = Math.floor(Math.random() * avatars.length);
     }
-    setAvatar(avatars[index]);
+
+    const newAvatar = avatars[index];
+    setAvatar(newAvatar);
     setUserData((prevData) => ({
       ...prevData,
-      avatarSrc: avatars[index],
+      avatarSrc: newAvatar,
     }));
+
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("userID");
+    if (token) {
+      try {
+        const response = await fetch(`http://localhost:5000/user/avatar`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: userData.name,
+            avatarSrc: newAvatar,
+          }),
+        });
+        if (response.ok) {
+          localStorage.setItem("userAvatar", newAvatar);
+        } else {
+          console.log("Error updating avatar");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      console.log("No token found");
+    }
   };
 
   return (
@@ -71,9 +100,8 @@ export const Profile = () => {
                       )}
                       <img
                         src={userData.avatarSrc}
-                        className={`rounded-full ${
-                          loading ? "hidden" : "block"
-                        }`}
+                        className={`rounded-full ${loading ? "hidden" : "block"
+                          }`}
                         onLoad={() => setLoading(false)}
                         onError={() => setLoading(false)}
                       />

@@ -259,4 +259,14 @@ export class UserServices {
       throw err;
     }
   }
+
+  async updateAvatar(name, avatarSrc) {
+    try {
+      const user = await this.getUserByName(name);
+      user.avatarSrc = avatarSrc;
+      await user.save();
+    } catch (err) {
+      throw err;
+    }
+  }
 }

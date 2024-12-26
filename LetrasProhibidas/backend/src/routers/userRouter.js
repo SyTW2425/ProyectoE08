@@ -284,3 +284,16 @@ userRouter.patch("/user/stats", async (req, res) => {
     return res.status(404).send("No se pudieron actualizar las estadisticas");
   }
 });
+
+userRouter.patch("/user/avatar", async (req, res) => {
+  const { name, avatarSrc } = req.body;
+  if (!name || !avatarSrc) {
+    return res.status(400).send("No se proporcionó el nombre o el avatar");
+  }
+  try {
+    await userService.updateAvatar(name, avatarSrc);
+    return res.status(200).send("Avatar actualizado");
+  } catch (err) {
+    return res.status(404).send("No se pudo actualizar el avatar");
+  }
+});
