@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LobbyCard } from '../assets/lobbyCard';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { StandardButton } from '../assets/StandardButton';
 
 export const Play = () => {
     const [lobbies, setLobbies] = useState([]);
@@ -70,7 +71,7 @@ export const Play = () => {
             <div className="h-[40rem] w-[60rem] border-[10px] p-5 rounded-xl border-white/10 backdrop-blur-xl flex flex-col items-center justify-start shadow-xl font-poppins text-white">
                 <h1 className="text-[64px] font-black"><span className="text-white">LETRAS</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">PROHIBIDAS</span></h1>
                 <div className="
-                    h-full w-[50rem] flex flex-col gap-4 items-center justify-start p-3 overflow-y-auto overflow-x-hidden
+                    h-full w-[50rem] flex flex-col gap-4 items-center justify-start p-3 overflow-y-auto overflow-x-hidden m-4
                     [&::-webkit-scrollbar]:w-2
                     [&::-webkit-scrollbar-track]:rounded-full
                     [&::-webkit-scrollbar-track]:bg-gray-100
@@ -100,6 +101,7 @@ export const Play = () => {
                         ))
                     )}
                 </div>
+                <StandardButton text="Volver" onClick={() => navigate("/")}/>
             </div>
         </div>
     );
