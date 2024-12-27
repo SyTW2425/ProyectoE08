@@ -14,7 +14,7 @@ export const CopyToClipboard = ({ toCopy }) => {
   const [buttonText, setButtonText] = useState("Copiar código")
 
   return (
-    <button className="bg-black/25 rounded-xl p-2 hover:bg-black/50 text-white font-bold shadow-md" onClick={handleClick}>
+    <button className="bg-black/25 rounded-xl p-2 hover:bg-black/50 shadow-md" onClick={handleClick}>
       {buttonText}
     </button>
   )

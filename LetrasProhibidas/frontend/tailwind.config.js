@@ -8,6 +8,8 @@ module.exports = {
         secondaryPurple: "#231459",
         primaryBlue: "#6BE0FF",
         secondaryBlue: "#04043F",
+        primaryRed: "#FF5757",
+        primaryGreen: "#ADC881" 
       },
       animation: {
         meteor: "meteor 5s linear infinite",

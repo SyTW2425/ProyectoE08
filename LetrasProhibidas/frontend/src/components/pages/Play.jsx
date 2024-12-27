@@ -94,6 +94,7 @@ export const Play = () => {
                                 lobbyID={lobby.lobbyID}
                                 hostAvatar={hostDetails[lobby.hostID]?.avatar || 'Loading...'}
                                 playerCount={lobby.players.length}
+                                maxPlayers={lobby.maxPlayers}
                                 onClick={() => navigate(`/lobby/${lobby.lobbyID}`)}
                             />
                         ))
