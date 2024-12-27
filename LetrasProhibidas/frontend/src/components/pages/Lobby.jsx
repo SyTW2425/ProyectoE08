@@ -19,6 +19,7 @@ export const Lobby = () => {
   const [hostID, setHostID] = useState(null) // Estado para almacenar el hostID
   const userName = localStorage.getItem("userName")
   const userID = localStorage.getItem("userID")
+  const userAvatar = localStorage.getItem("userAvatar")
   const navigate = useNavigate()
 
   const handleUserUpdate = () => {
@@ -75,6 +76,7 @@ export const Lobby = () => {
   useEffect(() => {
     if (socket) {
       socket.on("userUpdate", () => handleUserUpdate());
+      socket.emit("joinLobby", { lobbyID: id, userID, userName, userAvatar })
     }
 
     fetchLobbyData();

@@ -16,10 +16,10 @@ io.on("connection", (socket) => {
   // Unirse a lobby
   const joinLobby = async (lobbyID, userID, userName, userAvatar) => {
     try {
+      await lobbyService.addPlayerToLobby(lobbyID, {userID, userName, userAvatar})
       socket.join(lobbyID) // Une a la lobby al usuario
       console.log(socket.rooms)
       console.log(`El usuario ${userID} se ha unido a la lobby: ${lobbyID}`)
-      await lobbyService.addPlayerToLobby(lobbyID, {userID, userName, userAvatar})
       io.to(lobbyID).emit("userUpdate")
     } catch(err) {
       console.log(err)

@@ -111,13 +111,18 @@ export class LobbyServices {
    * @returns {Promise<UpdateResult>} El resultado de la actualización.
    * @throws {Error} Si el lobby está lleno.
    */
-  async addPlayerToLobby(lobbyID, playerID) {
+  async addPlayerToLobby(lobbyID, newPlayer) {
     const lobby = await this.getLobbyById(lobbyID);
+    // Comprobar que la lobby no este llena
     if (lobby.players.length >= lobby.maxPlayers) {
       this.setLobbyStatus(lobbyID, false);
       throw new Error("Lobby is full");
     }
-    lobby.players.push(playerID);
+    // Comprobar que no meto a un mismo usuario varias veces
+    if (lobby.players.some((player) => player.userID === newPlayer.userID)) {
+      throw new Error("User is already in lobby")
+    } 
+    lobby.players.push(newPlayer);
     return await this.updateLobbyPlayers(lobbyID, lobby.players);
   }
 
