@@ -87,7 +87,7 @@ export const Play = () => {
                             <span className="sr-only">Loading...</span>
                         </div>
                     ) : (
-                        lobbies.map(lobby => (
+                        lobbies.sort((firstLobby, secondLobby) => secondLobby.players.length - firstLobby.players.length).map(lobby => (
                             <LobbyCard
                                 key={lobby.lobbyID}
                                 hostName={hostDetails[lobby.hostID]?.name || 'Loading...'}
