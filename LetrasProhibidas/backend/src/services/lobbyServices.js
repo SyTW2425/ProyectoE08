@@ -134,6 +134,9 @@ export class LobbyServices {
    * @throws {Error} Si el jugador no está en el lobby.
    */
   async removePlayerFromLobby(lobbyID, playerID) {
+    // Que pasa si se elimina al host?
+    // 1. Si hay más usuarios, transferir el host.
+    // 2. Si no hay más usuarios, eliminar la lobby.
     const lobby = await this.getLobbyById(lobbyID);
     const index = lobby.players.findIndex(
       (player) => player.userID === playerID
@@ -142,6 +145,11 @@ export class LobbyServices {
       throw new Error("Player not found in lobby");
     }
     lobby.players.splice(index, 1);
+    if (playerID === lobby.hostID) {
+      const newHost = lobby.players[0]
+      if (newHost) await this.updateHostID(lobbyID, newHost.userID)
+      else return await this.deleteLobby(lobbyID)
+    }
     return await this.updateLobbyPlayers(lobbyID, lobby.players);
   }
 
@@ -226,5 +234,19 @@ export class LobbyServices {
     return await Lobby.find({ joinable: true, private: false }).catch((err) => {
       throw new Error(err.message);
     });
+  }
+
+  async updateHostID(lobbyID, newHostID) {
+    try {
+      const lobby = await this.getLobbyById(lobbyID);
+      if (!lobby) {
+        throw new Error("Lobby not found");
+      }
+      lobby.hostID = newHostID;
+      return await lobby.save()
+    }
+    catch(err) {
+      throw new Error(err)
+    }
   }
 }

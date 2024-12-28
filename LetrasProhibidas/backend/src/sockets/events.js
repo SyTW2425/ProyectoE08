@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
   // Dejar lobby
   const leaveLobby = async (lobbyID, userID) => {
     try {
-      // 1. Eliminarme de la base de datos
+      // 1. Eliminarme de la base de datos, si soy el host, debo transferir el host a otro
       await lobbyService.removePlayerFromLobby(lobbyID, userID)
       // 2. Emitir evento de que me fui
       socket.to(lobbyID).emit("userUpdate")
