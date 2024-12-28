@@ -16,6 +16,7 @@ import "@fontsource/poppins/400.css"; // Normal
 import "@fontsource/poppins/500.css"; // Normal
 import "@fontsource/poppins/600.css"; // Normal
 import "@fontsource/poppins/900.css"; // Black
+import { Game } from "./components/pages/Game";
 
 function App() {
   return (
@@ -58,6 +59,14 @@ function App() {
                   element={
                     <PrivateRoute>
                       <Play />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/game/:id"
+                  element={
+                    <PrivateRoute>
+                      <Game />
                     </PrivateRoute>
                   }
                 />

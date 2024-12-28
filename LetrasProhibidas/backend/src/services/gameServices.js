@@ -26,8 +26,8 @@ export class GameServices {
    * @returns {Promise<Game>} El juego creado.
    * @throws {Error} Si ocurre un error al guardar el juego.
    */
-  async createGame(gameID, players, winnerID) {
-    const game = new Game({ gameID, players, winnerID });
+  async createGame(players, lobbyID) {
+    const game = new Game({ players, lobbyID });
     return await game.save().catch((err) => {
       throw new Error(err.message);
     });
@@ -89,6 +89,26 @@ export class GameServices {
    */
   async getAllUsersGames(userID) {
     return await Game.find({ players: { $in: [userID] } }).catch((err) => {
+      throw new Error(err.message);
+    });
+  }
+
+  async addPlayerToGame(newPlayer, gameID) {
+   const game = await this.getGameByGameID(gameID)
+   // Comprobar que no meta al mismo usuario varias veces
+   if (game.players.some((player) => player.userID === newPlayer.userID)) {
+    throw new Error("User is already in game")
+    }
+    game.players.push(newPlayer);
+    return await this.updateGamePlayers(gameID, game.players);
+  }
+
+  async updateGamePlayers(gameID, players) {
+    const game = await this.getGameByGameID(gameID)
+    if (!game) {
+      return null
+    }
+    return await Game.updateOne({ gameID }, { players }).catch((err) => {
       throw new Error(err.message);
     });
   }

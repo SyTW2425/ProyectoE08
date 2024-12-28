@@ -26,18 +26,16 @@ gameRouter.get("/game", (req, res) => {
 });
 
 gameRouter.post("/game", (req, res) => {
-  const gameID = req.body.gameID;
-  const players = req.body.players;
-  const winnerID = req.body.winnerID;
+  const { players, lobbyID } = req.body
 
-  if (!gameID || !players || !winnerID) {
+  if (!players) {
     return res
       .status(400)
       .send("No se proporcionó el ID del lobby, jugadores o ganador");
   }
 
   gameService
-    .createGame(gameID, players, winnerID)
+    .createGame(players, lobbyID)
     .then((game) => {
       return game
         ? res.status(200).send(game)
@@ -45,6 +43,7 @@ gameRouter.post("/game", (req, res) => {
     })
     .catch((err) => {
       res.status(500).send("Error al intentar crear el juego");
+      console.log(err)
     });
 });
 

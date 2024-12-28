@@ -55,6 +55,7 @@ export const Lobby = () => {
       setError(true);
     }
   }, [id]);
+
   const updateLobbyPrivacy = async (newStatus) => {
     try {
       const response = await fetch(`http://localhost:5000/lobby/privacy`, {
@@ -75,10 +76,39 @@ export const Lobby = () => {
     }
   };
 
+  const handleCreateGame = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/game`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          "players": [
+
+          ],
+          "lobbyID": id
+        })
+      })
+      const data = await response.json()
+      const gameID = data.gameID
+      // Emito el evento de que estoy creando la partida, lo capturo en el backend, emito el evento de que el juego esta empezando,
+      // cuando eso ocurre, cada cliente tiene que enviar un evento con que se quiere unir a la partida, joinGame, esto lo captura el backend
+      // y une a todos los usuarios al mismo room de sockets y emite el evento joinedLobby, que captura el cliente y navega hacia la url del game.
+      socket.emit("creatingGame", { gameID, userID, userName, userAvatar, lobbyID: id })
+      navigate(`/game/${gameID}`)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+
   useEffect(() => {
     if (socket) {
       socket.on("userUpdate", () => handleUserUpdate());
       socket.emit("joinLobby", { lobbyID: id, userID, userName, userAvatar })
+      socket.on("startingGame", ({ gameID }) => socket.emit("joinGame", {gameID, userID, userName, userAvatar}))
+      socket.on("joinedGame", ({ gameID }) => navigate(`/game/${gameID}`))
     }
 
     fetchLobbyData();
@@ -86,6 +116,8 @@ export const Lobby = () => {
     return () => {
       if (socket) {
         socket.off("userUpdate");
+        socket.off("startingGame");
+        socket.off("joinedGame");
       }
     };
   }, [fetchLobbyData, socket]);
@@ -140,7 +172,7 @@ export const Lobby = () => {
                         updateLobbyPrivacy(newStatus);
                       }}
                     />
-                    <StandardButton text="Iniciar Partida" onClick={() => console.log("Iniciar")}/>
+                    <StandardButton text="Iniciar Partida" onClick={() => handleCreateGame()}/>
                   </>
                 )}
                 <CopyToClipboard toCopy={id} />

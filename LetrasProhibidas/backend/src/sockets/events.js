@@ -1,7 +1,9 @@
 import { io } from "../app.js"
+import { GameServices } from "../services/gameServices.js";
 import { LobbyServices } from "../services/lobbyServices.js";
 
 const lobbyService = LobbyServices.getInstance();
+const gameService = GameServices.getInstance();
 
 io.on("connection", (socket) => {
   console.log("me conecte");
@@ -9,6 +11,8 @@ io.on("connection", (socket) => {
   socket.on("joinLobby", ({ lobbyID, userID, userName, userAvatar }) => joinLobby(lobbyID, userID, userName, userAvatar))
   socket.on("leaveLobby", ({ lobbyID, userID }) => leaveLobby(lobbyID, userID))
   socket.on("sendMessage", ({ message, lobbyID }) => sendMessage(message, lobbyID))
+  socket.on("creatingGame", ({gameID, userID, userName, userAvatar, lobbyID}) => creatingGame(gameID, userID, userName, userAvatar, lobbyID))
+  socket.on("joinGame", ({ gameID, userID, userName, userAvatar }) => joinGame(gameID, userID, userName, userAvatar))
 
 
   
@@ -53,6 +57,29 @@ io.on("connection", (socket) => {
     console.log(lobbyID)
     socket.to(lobbyID).emit("newMessage", { message })
     console.log("Emitiendo mensaje: ", message)
+  }
+
+  const creatingGame = async (gameID, userID, userName, userAvatar, lobbyID) => {
+    try {
+      await gameService.addPlayerToGame({userID, userName, userAvatar}, gameID)
+      socket.join(gameID) // Une a la room del Juego
+      console.log(`El usuario ${userID} ha creado el game: ${gameID}`)
+      socket.to(lobbyID).emit("startingGame", { gameID })
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  const joinGame = async (gameID, userID, userName, userAvatar) => {
+    try {
+      await gameService.addPlayerToGame({userID, userName, userAvatar}, gameID)
+      socket.join(gameID) // Une a la room del Juego
+      console.log(socket.rooms)
+      console.log(`El usuario ${userID} se ha unido al game: ${gameID}`)
+      socket.emit("joinedGame", { gameID })
+    } catch(err) {
+      console.log(err)
+    }
   }
 })
 

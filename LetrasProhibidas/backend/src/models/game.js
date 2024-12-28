@@ -13,8 +13,17 @@ const GameSchema = new Schema({
       message: "Invalid ID",
     },
   },
+  lobbyID: {
+    type: String,
+    required: true,
+      default: uuidv4,
+      validate: {
+        validator: (value) => validator.isUUID(value),
+        message: "Invalid ID",
+      },
+  },
   players: {
-    type: [String],
+    type: Array,
     required: true,
   },
   winnerID: {
