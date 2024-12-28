@@ -17,6 +17,7 @@ export const Lobby = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [hostID, setHostID] = useState(null) // Estado para almacenar el hostID
+  const [isPrivate, setIsPrivate] = useState(true)
   const userName = localStorage.getItem("userName")
   const userID = localStorage.getItem("userID")
   const userAvatar = localStorage.getItem("userAvatar")
@@ -46,6 +47,7 @@ export const Lobby = () => {
       setNumPlayers(data.players.length)
       setMaxPlayers(data.maxPlayers);
       setHostID(data.hostID); // Almacena el hostID
+      setIsPrivate(data.private)
       setLoading(false);
     } catch (err) {
       console.error("Error fetching lobby data:", err);
@@ -132,7 +134,7 @@ export const Lobby = () => {
                 {userID === hostID && (
                   <>
                     <PrivacityButton
-                      initialStatus={true}
+                      initialStatus={isPrivate}
                       onChange={(newStatus) => {
                         console.log("Privacity changed to:", newStatus);
                         updateLobbyPrivacy(newStatus);
