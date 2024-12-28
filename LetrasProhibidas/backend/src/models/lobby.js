@@ -40,6 +40,11 @@ const LobbySchema = new Schema({
     required: true,
     default: true,
   },
+  private: {
+    type: Boolean,
+    required: true,
+    default: true,
+  }
 });
 
 export const Lobby = model("Lobby", LobbySchema);

@@ -196,4 +196,35 @@ export class LobbyServices {
       throw new Error("Error fetching status");
     }
   }
+
+  async setLobbyPrivacy(lobbyID, newPrivate) {
+    try {
+      const lobby = await this.getLobbyById(lobbyID);
+      if (!lobby) {
+        throw new Error("Lobby not found");
+      }
+      lobby.private = newPrivate;
+      await lobby.save();
+    } catch (err) {
+      throw new Error("Error updating privacy");
+    }
+  }
+
+  async getLobbyPrivacy(lobbyID) {
+    try {
+      const lobby = await this.getLobbyById(lobbyID);
+      if (!lobby) {
+        throw new Error("Lobby not found");
+      }
+      return { private: lobby.private };
+    } catch (err) {
+      throw new Error("Error fetching privacy");
+    }
+  }
+
+  async getAllPublicLobby() {
+    return await Lobby.find({ joinable: true, private: false }).catch((err) => {
+      throw new Error(err.message);
+    });
+  }
 }

@@ -53,14 +53,14 @@ export const Lobby = () => {
       setError(true);
     }
   }, [id]);
-  const updateLobbyStatus = async (newStatus) => {
+  const updateLobbyPrivacy = async (newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/lobby/status`, {
+      const response = await fetch(`http://localhost:5000/lobby/privacy`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ lobbyID: id, lobbyStatus: newStatus }),
+        body: JSON.stringify({ lobbyID: id, lobbyPrivate: newStatus }),
       });
 
       if (!response.ok) {
@@ -132,10 +132,10 @@ export const Lobby = () => {
                 {userID === hostID && (
                   <>
                     <PrivacityButton
-                      initialStatus={false}
+                      initialStatus={true}
                       onChange={(newStatus) => {
-                        console.log("Privacity status changed to:", newStatus);
-                        updateLobbyStatus(newStatus);
+                        console.log("Privacity changed to:", newStatus);
+                        updateLobbyPrivacy(newStatus);
                       }}
                     />
                   </>

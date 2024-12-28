@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { LobbyCard } from '../assets/lobbyCard';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { StandardButton } from '../assets/StandardButton';
 
 export const Play = () => {
@@ -15,7 +15,7 @@ export const Play = () => {
 
         const fetchLobbies = async () => {
             try {
-                const response = await fetch('http://localhost:5000/lobby/all');
+                const response = await fetch('http://localhost:5000/lobby/all/public');
                 if (!response.ok) {
                     throw new Error('Failed to fetch lobbies');
                 }

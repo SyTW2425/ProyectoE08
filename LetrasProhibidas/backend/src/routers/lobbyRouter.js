@@ -125,3 +125,45 @@ lobbyRouter.patch("/lobby/status", async (req, res) => {
     res.status(400).send("Error updating status");
   }
 });
+
+lobbyRouter.get("/lobby/privacy", async (req, res) => {
+  const lobbyID = req.body.lobbyID;
+  if (!lobbyID) {
+    return res.status(400).send("No se proporcionó el ID del lobby");
+  }
+  try {
+    const lobbyPrivacy = await lobbyService.getLobbyPrivacy(lobbyID);
+    res.status(200).send(lobbyPrivacy);
+  } catch (err) {
+    res.status(400).send("Error fetching status");
+  }
+});
+
+lobbyRouter.patch("/lobby/privacy", async (req, res) => {
+  const lobbyID = req.body.lobbyID;
+  const lobbyPrivate = req.body.lobbyPrivate;
+  try {
+    const lobby = await lobbyService.getLobbyById(lobbyID);
+    if (!lobby) {
+      return res.status(404).send("Lobby no encontrado");
+    }
+    lobby.private = lobbyPrivate;
+    await lobby.save();
+    res.status(200).send("Privacidad actualizada correctamente");
+  } catch (err) {
+    res.status(400).send("Error updating privacy");
+  }
+});
+
+lobbyRouter.get("/lobby/all/public", (_, res) => {
+  lobbyService
+    .getAllPublicLobby()
+    .then((lobbies) => {
+      return lobbies
+        ? res.status(200).send(lobbies)
+        : res.status(404).send("Lobby no encontrado");
+    })
+    .catch((err) => {
+      res.status(500).send("Error al intentar obtener todos los lobbies");
+    });
+});
