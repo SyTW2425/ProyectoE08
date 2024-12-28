@@ -140,6 +140,7 @@ export const Lobby = () => {
                         updateLobbyPrivacy(newStatus);
                       }}
                     />
+                    <StandardButton text="Iniciar Partida" onClick={() => console.log("Iniciar")}/>
                   </>
                 )}
                 <CopyToClipboard toCopy={id} />
