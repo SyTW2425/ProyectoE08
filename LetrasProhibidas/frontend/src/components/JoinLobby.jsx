@@ -46,8 +46,6 @@ export const JoinLobby = ({
         if (inputValue.trim()) { // Navegar solo si el valor no está vacío
             socket.emit("joinLobby", { lobbyID: inputValue.trim(), userID, userName, userAvatar })
             navigate(`/lobby/${inputValue.trim()}`)
-
-
         } else {
             alert("Por favor ingresa un texto antes de continuar.")
         }

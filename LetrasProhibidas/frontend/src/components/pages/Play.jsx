@@ -88,6 +88,7 @@ export const Play = () => {
                             <span className="sr-only">Loading...</span>
                         </div>
                     ) : (
+                        lobbies.length > 0 ? 
                         lobbies.sort((firstLobby, secondLobby) => secondLobby.players.length - firstLobby.players.length).map(lobby => (
                             <LobbyCard
                                 key={lobby.lobbyID}
@@ -99,6 +100,8 @@ export const Play = () => {
                                 onClick={() => navigate(`/lobby/${lobby.lobbyID}`)}
                             />
                         ))
+                        :
+                        <p>No hay lobbies disponibles en este momento... ¡Lo sentimos!</p>
                     )}
                 </div>
                 <StandardButton text="Volver" onClick={() => navigate("/")}/>
