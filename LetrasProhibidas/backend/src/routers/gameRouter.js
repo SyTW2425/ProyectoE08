@@ -26,7 +26,7 @@ gameRouter.get("/game", (req, res) => {
 });
 
 gameRouter.post("/game", (req, res) => {
-  const { players, lobbyID } = req.body
+  const { players, lobbyID } = req.body;
 
   if (!players) {
     return res
@@ -43,7 +43,6 @@ gameRouter.post("/game", (req, res) => {
     })
     .catch((err) => {
       res.status(500).send("Error al intentar crear el juego");
-      console.log(err)
     });
 });
 
