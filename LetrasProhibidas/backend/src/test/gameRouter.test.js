@@ -35,20 +35,16 @@ describe("Game Router", () => {
   describe("POST /game", () => {
     it("should create a new game and return it", async () => {
       const newGame = {
-        gameID: "b4a4c4d4-e4f4-1234-5678-9abcdef01234",
         players: [
           "b1a1c1d1-e1f1-1234-5678-9abcdef01234",
           "b2a2c2d2-e2f2-1234-5678-9abcdef01234",
         ],
-        winnerID: "b1a1c1d1-e1f1-1234-5678-9abcdef01234",
+        lobbyID: "b2a2cfd2-e2f3-1234-5678-9abcdef01ddd",
       };
 
       const res = await request(app).post("/game").send(newGame);
       expect(res.status).to.equal(200);
-      expect(res.body).to.have.property(
-        "gameID",
-        "b4a4c4d4-e4f4-1234-5678-9abcdef01234"
-      );
+      expect(res.body).to.have.property("gameID");
     });
 
     it("should return 400 if required fields are missing", async () => {
