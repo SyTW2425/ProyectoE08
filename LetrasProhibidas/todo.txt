@@ -1,3 +1,48 @@
 - Crear pagina de partida, fin de partida
 - Al unirse a lobby, hay que comprobar que existe la lobby y que es apta para unirse (valor joinable del modelo lobby)
 - Añadir al modelo de lobby el campo "private" para saber si es privada o no, si lo es no se podrá acceder a ella pulsando en "JUGAR"
+
+----------------------------------------------- CATEGORIAS -----------------------------------------------
+
+Animales,
+fruta,
+color,
+comida,
+instrumentos musicales,
+herramientas,
+partes del cuerpo,
+naturaleza,
+fisica,
+matematicas,
+informatica,
+tecnologia,
+profesiones,
+colegio,
+ropa,
+calzado,
+accesorios,
+electrodomesticos,
+muebles,
+vehiculos,
+medios de transporte,
+plantas,
+comida,
+minerales,
+fenomenos naturales,
+sentidos,
+enfermedades,
+inventos,
+astronomia,
+religiones,
+ingredientes,
+postres,
+civilizaciones antiguas,
+piezas de vehiculos,
+figuras geometricas,
+géneros de peliculas,
+juguetes.
+familia
+verbos
+bebidas
+deportes
+LO DEJé EN saxofón

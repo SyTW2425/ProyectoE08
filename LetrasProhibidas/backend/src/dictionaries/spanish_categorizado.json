@@ -10160,37 +10160,13 @@
   {
     "lemma": "saxofón",
     "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "sección",
-    "category": [
-      "Matemáticas"
-    ]
-  },
-  {
-    "lemma": "seco",
-    "category": [
-      "Postres"
-    ]
-  },
-  {
-    "lemma": "secreto",
-    "category": [
-      "Profesiones"
+      "Instrumentos musicales"
     ]
   },
   {
     "lemma": "secta",
     "category": [
       "Religiones"
-    ]
-  },
-  {
-    "lemma": "sed",
-    "category": [
-      "Verbos"
     ]
   },
   {
@@ -10206,21 +10182,9 @@
     ]
   },
   {
-    "lemma": "sello",
-    "category": [
-      "Informática"
-    ]
-  },
-  {
     "lemma": "selva",
     "category": [
       "Naturaleza"
-    ]
-  },
-  {
-    "lemma": "semana",
-    "category": [
-      "Fenómenos naturales"
     ]
   },
   {
@@ -10230,27 +10194,18 @@
     ]
   },
   {
-    "lemma": "senda",
-    "category": [
-      "Naturaleza"
-    ]
-  },
-  {
     "lemma": "sensor",
     "category": [
-      "Piezas de vehículos"
+      "Informática",
+      "Piezas de vehículos",
+      "Tecnología"
     ]
   },
   {
     "lemma": "señal",
     "category": [
-      "Matemáticas"
-    ]
-  },
-  {
-    "lemma": "señor",
-    "category": [
-      "Civilizaciones antiguas"
+      "Informática",
+      "Tecnología"
     ]
   },
   {
@@ -10262,13 +10217,14 @@
   {
     "lemma": "sepia",
     "category": [
-      "Comida"
+      "Comida",
+      "Animales"
     ]
   },
   {
     "lemma": "sequía",
     "category": [
-      "Animales"
+      "Naturaleza"
     ]
   },
   {
@@ -10278,15 +10234,9 @@
     ]
   },
   {
-    "lemma": "serie",
-    "category": [
-      "Géneros de películas"
-    ]
-  },
-  {
     "lemma": "sermón",
     "category": [
-      "Animales"
+      "Religiones"
     ]
   },
   {
@@ -10302,75 +10252,28 @@
     ]
   },
   {
-    "lemma": "sesión",
-    "category": [
-      "Géneros de películas"
-    ]
-  },
-  {
     "lemma": "seta",
     "category": [
-      "Plantas"
+      "Plantas",
+      "Comida"
     ]
   },
   {
     "lemma": "setenta",
     "category": [
-      "Religiones"
-    ]
-  },
-  {
-    "lemma": "severo",
-    "category": [
-      "Profesiones"
-    ]
-  },
-  {
-    "lemma": "sexo",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "sexto",
-    "category": [
-      "Minerales"
+      "Matemáticas"
     ]
   },
   {
     "lemma": "sidra",
     "category": [
-      "Comida"
-    ]
-  },
-  {
-    "lemma": "siesta",
-    "category": [
-      "Verbos"
+      "Bebidas"
     ]
   },
   {
     "lemma": "siete",
     "category": [
-      "Civilizaciones antiguas"
-    ]
-  },
-  {
-    "lemma": "siglo",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
-    "lemma": "signo",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
-    "lemma": "sílaba",
-    "category": [
-      "Animales"
+      "Matemáticas"
     ]
   },
   {
@@ -10380,21 +10283,9 @@
     ]
   },
   {
-    "lemma": "silencio",
-    "category": [
-      "Figuras geométricas"
-    ]
-  },
-  {
     "lemma": "silla",
     "category": [
       "Muebles"
-    ]
-  },
-  {
-    "lemma": "símbolo",
-    "category": [
-      "Animales"
     ]
   },
   {
@@ -10404,20 +10295,9 @@
     ]
   },
   {
-    "lemma": "sirena",
-    "category": [
-      "Juguetes"
-    ]
-  },
-  {
     "lemma": "sistema",
     "category": [
-      "Informática"
-    ]
-  },
-  {
-    "lemma": "sitio",
-    "category": [
+      "Informática",
       "Tecnología"
     ]
   },
@@ -10428,51 +10308,21 @@
     ]
   },
   {
-    "lemma": "sobre",
-    "category": [
-      "Matemáticas"
-    ]
-  },
-  {
-    "lemma": "socio",
-    "category": [
-      "Profesiones"
-    ]
-  },
-  {
     "lemma": "sodio",
     "category": [
-      "Ingredientes"
+      "Minerales"
     ]
   },
   {
     "lemma": "sol",
     "category": [
-      "Accesorios"
+      "Astronomía"
     ]
   },
   {
     "lemma": "solapa",
     "category": [
       "Ropa"
-    ]
-  },
-  {
-    "lemma": "soldado",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "soledad",
-    "category": [
-      "Fenómenos naturales"
-    ]
-  },
-  {
-    "lemma": "sólido",
-    "category": [
-      "Animales"
     ]
   },
   {
@@ -10485,36 +10335,6 @@
     "lemma": "solución",
     "category": [
       "Matemáticas"
-    ]
-  },
-  {
-    "lemma": "sombra",
-    "category": [
-      "Color"
-    ]
-  },
-  {
-    "lemma": "sondeo",
-    "category": [
-      "Fenómenos naturales"
-    ]
-  },
-  {
-    "lemma": "sonido",
-    "category": [
-      "Instrumentos musicales"
-    ]
-  },
-  {
-    "lemma": "sonoro",
-    "category": [
-      "Instrumentos musicales"
-    ]
-  },
-  {
-    "lemma": "sonrisa",
-    "category": [
-      "Ropa"
     ]
   },
   {
@@ -10538,37 +10358,13 @@
   {
     "lemma": "sordo",
     "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "sorpresa",
-    "category": [
-      "Astronomía"
-    ]
-  },
-  {
-    "lemma": "sorteo",
-    "category": [
-      "Postres"
+      "Sentidos"
     ]
   },
   {
     "lemma": "sostén",
     "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "sótano",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "suave",
-    "category": [
-      "Sentidos"
+      "Ropa"
     ]
   },
   {
@@ -10578,21 +10374,9 @@
     ]
   },
   {
-    "lemma": "suceso",
-    "category": [
-      "Fenómenos naturales"
-    ]
-  },
-  {
-    "lemma": "sudor",
-    "category": [
-      "Sentidos"
-    ]
-  },
-  {
     "lemma": "suegra",
     "category": [
-      "Juguetes"
+      "Familia"
     ]
   },
   {
@@ -10602,39 +10386,22 @@
     ]
   },
   {
-    "lemma": "sueño",
-    "category": [
-      "Sentidos"
-    ]
-  },
-  {
-    "lemma": "suerte",
-    "category": [
-      "Partes del cuerpo"
-    ]
-  },
-  {
     "lemma": "sufrir",
     "category": [
       "Verbos"
     ]
   },
   {
-    "lemma": "sujeto",
-    "category": [
-      "Géneros de películas"
-    ]
-  },
-  {
     "lemma": "sultán",
     "category": [
-      "Animales"
+      "Civilizaciones antiguas"
     ]
   },
   {
     "lemma": "sumar",
     "category": [
-      "Matemáticas"
+      "Matemáticas",
+      "Verbos"
     ]
   },
   {
@@ -10656,51 +10423,15 @@
     ]
   },
   {
-    "lemma": "supremo",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
-    "lemma": "sur",
-    "category": [
-      "Naturaleza"
-    ]
-  },
-  {
-    "lemma": "surco",
-    "category": [
-      "Figuras geométricas"
-    ]
-  },
-  {
-    "lemma": "sureño",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
     "lemma": "surgir",
     "category": [
       "Verbos"
     ]
   },
   {
-    "lemma": "susto",
-    "category": [
-      "Partes del cuerpo"
-    ]
-  },
-  {
-    "lemma": "sutil",
-    "category": [
-      "Sentidos"
-    ]
-  },
-  {
     "lemma": "tabaco",
     "category": [
-      "Frutas"
+      "Plantas"
     ]
   },
   {
@@ -10710,33 +10441,9 @@
     ]
   },
   {
-    "lemma": "tabla",
-    "category": [
-      "Colegio"
-    ]
-  },
-  {
-    "lemma": "tabú",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "taco",
-    "category": [
-      "Ropa"
-    ]
-  },
-  {
     "lemma": "tacto",
     "category": [
       "Sentidos"
-    ]
-  },
-  {
-    "lemma": "tajo",
-    "category": [
-      "Naturaleza"
     ]
   },
   {
@@ -10748,13 +10455,7 @@
   {
     "lemma": "talco",
     "category": [
-      "Ingredientes"
-    ]
-  },
-  {
-    "lemma": "talento",
-    "category": [
-      "Física"
+      "Minerales"
     ]
   },
   {
@@ -10766,23 +10467,11 @@
   {
     "lemma": "talón",
     "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "tamaño",
-    "category": [
-      "Figuras geométricas"
+      "Partes del cuerpo"
     ]
   },
   {
     "lemma": "tambor",
-    "category": [
-      "Herramientas"
-    ]
-  },
-  {
-    "lemma": "tango",
     "category": [
       "Instrumentos musicales"
     ]
@@ -10790,37 +10479,21 @@
   {
     "lemma": "tanque",
     "category": [
-      "Vehículos"
+      "Vehículos",
+      "Inventos"
     ]
   },
   {
     "lemma": "tapa",
     "category": [
-      "Herramientas"
-    ]
-  },
-  {
-    "lemma": "tapete",
-    "category": [
-      "Accesorios"
-    ]
-  },
-  {
-    "lemma": "tapia",
-    "category": [
-      "Naturaleza"
-    ]
-  },
-  {
-    "lemma": "tapón",
-    "category": [
-      "Animales"
+      "Inventos"
     ]
   },
   {
     "lemma": "taquilla",
     "category": [
-      "Géneros de películas"
+      "Muebles",
+      "Colegio"
     ]
   },
   {
@@ -10830,25 +10503,7 @@
     ]
   },
   {
-    "lemma": "tarea",
-    "category": [
-      "Géneros de películas"
-    ]
-  },
-  {
-    "lemma": "tarifa",
-    "category": [
-      "Física"
-    ]
-  },
-  {
     "lemma": "tarjeta",
-    "category": [
-      "Inventos"
-    ]
-  },
-  {
-    "lemma": "tarot",
     "category": [
       "Inventos"
     ]
@@ -10856,7 +10511,7 @@
   {
     "lemma": "tarro",
     "category": [
-      "Electrodomésticos"
+      "Inventos"
     ]
   },
   {
@@ -10866,57 +10521,10 @@
     ]
   },
   {
-    "lemma": "tatuaje",
-    "category": [
-      "Juguetes"
-    ]
-  },
-  {
-    "lemma": "tauro",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "taza",
-    "category": [
-      "Electrodomésticos"
-    ]
-  },
-  {
-    "lemma": "tazón",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "teatro",
-    "category": [
-      "Géneros de películas"
-    ]
-  },
-  {
-    "lemma": "techo",
-    "category": [
-      "Herramientas"
-    ]
-  },
-  {
     "lemma": "tecla",
     "category": [
-      "Instrumentos musicales"
-    ]
-  },
-  {
-    "lemma": "técnica",
-    "category": [
-      "Matemáticas"
-    ]
-  },
-  {
-    "lemma": "tejado",
-    "category": [
-      "Postres"
+      "Informática",
+      "Tecnología"
     ]
   },
   {
@@ -10928,7 +10536,7 @@
   {
     "lemma": "tejido",
     "category": [
-      "Plantas"
+      "Ropa"
     ]
   },
   {
@@ -10940,7 +10548,9 @@
   {
     "lemma": "teléfono",
     "category": [
-      "Inventos"
+      "Inventos",
+      "Electrodomésticos",
+      "Tecnología"
     ]
   },
   {
@@ -10950,27 +10560,15 @@
     ]
   },
   {
-    "lemma": "temor",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
     "lemma": "templo",
     "category": [
       "Civilizaciones antiguas"
     ]
   },
   {
-    "lemma": "tenaz",
-    "category": [
-      "Física"
-    ]
-  },
-  {
     "lemma": "tender",
     "category": [
-      "Matemáticas"
+      "Verbos"
     ]
   },
   {
@@ -10982,67 +10580,21 @@
   {
     "lemma": "tenis",
     "category": [
-      "Juguetes"
-    ]
-  },
-  {
-    "lemma": "tenso",
-    "category": [
-      "Física"
+      "Ropa",
+      "Deportes"
     ]
   },
   {
     "lemma": "teoría",
     "category": [
-      "Matemáticas"
-    ]
-  },
-  {
-    "lemma": "terapia",
-    "category": [
-      "Enfermedades"
-    ]
-  },
-  {
-    "lemma": "terco",
-    "category": [
-      "Física"
-    ]
-  },
-  {
-    "lemma": "término",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
-    "lemma": "ternura",
-    "category": [
-      "Plantas"
+      "Matemáticas",
+      "Colegio"
     ]
   },
   {
     "lemma": "terror",
     "category": [
       "Géneros de películas"
-    ]
-  },
-  {
-    "lemma": "tesis",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
-    "lemma": "tesoro",
-    "category": [
-      "Minerales"
-    ]
-  },
-  {
-    "lemma": "testigo",
-    "category": [
-      "Profesiones"
     ]
   },
   {
@@ -11060,12 +10612,6 @@
   {
     "lemma": "tez",
     "category": [
-      "Plantas"
-    ]
-  },
-  {
-    "lemma": "tibio",
-    "category": [
       "Partes del cuerpo"
     ]
   },
@@ -11076,27 +10622,9 @@
     ]
   },
   {
-    "lemma": "tiempo",
-    "category": [
-      "Astronomía"
-    ]
-  },
-  {
-    "lemma": "tienda",
-    "category": [
-      "Comida"
-    ]
-  },
-  {
     "lemma": "tierra",
     "category": [
       "Naturaleza"
-    ]
-  },
-  {
-    "lemma": "tieso",
-    "category": [
-      "Animales"
     ]
   },
   {
@@ -11108,31 +10636,14 @@
   {
     "lemma": "tijera",
     "category": [
-      "Herramientas"
-    ]
-  },
-  {
-    "lemma": "tilde",
-    "category": [
-      "Instrumentos musicales"
+      "Herramientas",
+      "Colegio"
     ]
   },
   {
     "lemma": "timbre",
     "category": [
-      "Instrumentos musicales"
-    ]
-  },
-  {
-    "lemma": "tímido",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "timo",
-    "category": [
-      "Religiones"
+      "Inventos"
     ]
   },
   {
@@ -11144,43 +10655,13 @@
   {
     "lemma": "tío",
     "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "típico",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "tipo",
-    "category": [
-      "Matemáticas"
-    ]
-  },
-  {
-    "lemma": "tira",
-    "category": [
-      "Partes del cuerpo"
-    ]
-  },
-  {
-    "lemma": "tirón",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "titán",
-    "category": [
-      "Animales"
+      "Familia"
     ]
   },
   {
     "lemma": "títere",
     "category": [
-      "Animales"
+      "Juguetes"
     ]
   },
   {
@@ -11193,12 +10674,7 @@
     "lemma": "tiza",
     "category": [
       "Colegio"
-    ]
-  },
-  {
-    "lemma": "toalla",
-    "category": [
-      "Ropa"
+
     ]
   },
   {
@@ -11216,13 +10692,9 @@
   {
     "lemma": "tocino",
     "category": [
-      "Postres"
-    ]
-  },
-  {
-    "lemma": "todo",
-    "category": [
-      "Verbos"
+      "Ingredientes",
+      "Comida",
+      "Animales"
     ]
   },
   {
@@ -11234,7 +10706,7 @@
   {
     "lemma": "toldo",
     "category": [
-      "Herramientas"
+      "Inventos"
     ]
   },
   {
@@ -11244,57 +10716,21 @@
     ]
   },
   {
-    "lemma": "tono",
-    "category": [
-      "Sentidos"
-    ]
-  },
-  {
-    "lemma": "tonto",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
     "lemma": "topar",
     "category": [
       "Verbos"
     ]
   },
   {
-    "lemma": "tope",
-    "category": [
-      "Herramientas"
-    ]
-  },
-  {
-    "lemma": "toque",
-    "category": [
-      "Sentidos"
-    ]
-  },
-  {
     "lemma": "tórax",
     "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "torero",
-    "category": [
-      "Accesorios"
+      "Partes del cuerpo"
     ]
   },
   {
     "lemma": "tormenta",
     "category": [
       "Fenómenos naturales"
-    ]
-  },
-  {
-    "lemma": "torneo",
-    "category": [
-      "Juguetes"
     ]
   },
   {
@@ -11306,13 +10742,13 @@
   {
     "lemma": "torpedo",
     "category": [
-      "Medios de transporte"
+      "Inventos"
     ]
   },
   {
     "lemma": "torre",
     "category": [
-      "Naturaleza"
+      "Civilizaciones antiguas"
     ]
   },
   {
@@ -11328,39 +10764,17 @@
     ]
   },
   {
-    "lemma": "tos",
-    "category": [
-      "Enfermedades"
-    ]
-  },
-  {
-    "lemma": "tosco",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
     "lemma": "toser",
     "category": [
       "Verbos"
     ]
   },
   {
-    "lemma": "tóxico",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "trabajo",
-    "category": [
-      "Matemáticas"
-    ]
-  },
-  {
     "lemma": "tractor",
     "category": [
-      "Piezas de vehículos"
+      "Vehículos",
+      "Inventos",
+      "Herramientas"
     ]
   },
   {
@@ -11370,39 +10784,9 @@
     ]
   },
   {
-    "lemma": "tráfico",
-    "category": [
-      "Física"
-    ]
-  },
-  {
-    "lemma": "trago",
-    "category": [
-      "Postres"
-    ]
-  },
-  {
     "lemma": "traje",
     "category": [
-      "Accesorios"
-    ]
-  },
-  {
-    "lemma": "tramo",
-    "category": [
-      "Medios de transporte"
-    ]
-  },
-  {
-    "lemma": "trance",
-    "category": [
-      "Física"
-    ]
-  },
-  {
-    "lemma": "trato",
-    "category": [
-      "Sentidos"
+      "Ropa"
     ]
   },
   {
@@ -11420,19 +10804,13 @@
   {
     "lemma": "trébol",
     "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "tregua",
-    "category": [
-      "Fenómenos naturales"
+      "Plantas"
     ]
   },
   {
     "lemma": "treinta",
     "category": [
-      "Civilizaciones antiguas"
+      "Matemáticas"
     ]
   },
   {
@@ -11462,7 +10840,8 @@
   {
     "lemma": "trigo",
     "category": [
-      "Ingredientes"
+      "Ingredientes",
+      "Plantas"
     ]
   },
   {
@@ -11478,57 +10857,23 @@
     ]
   },
   {
-    "lemma": "triunfo",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
-    "lemma": "trofeo",
-    "category": [
-      "Minerales"
-    ]
-  },
-  {
     "lemma": "trompa",
     "category": [
-      "Partes del cuerpo"
+      "Instrumentos musicales"
     ]
   },
   {
     "lemma": "tronco",
     "category": [
-      "Plantas"
-    ]
-  },
-  {
-    "lemma": "tropa",
-    "category": [
-      "Física"
-    ]
-  },
-  {
-    "lemma": "trote",
-    "category": [
-      "Verbos"
-    ]
-  },
-  {
-    "lemma": "trozo",
-    "category": [
-      "Postres"
-    ]
-  },
-  {
-    "lemma": "truco",
-    "category": [
-      "Tecnología"
+      "Plantas",
+      "Naturaleza"
     ]
   },
   {
     "lemma": "trueno",
     "category": [
-      "Herramientas"
+      "Fenómenos naturales",
+      "Naturaleza"
     ]
   },
   {
@@ -11540,25 +10885,13 @@
   {
     "lemma": "tubería",
     "category": [
-      "Animales"
+      "Inventos"
     ]
   },
   {
     "lemma": "tubo",
     "category": [
-      "Herramientas"
-    ]
-  },
-  {
-    "lemma": "tuerto",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "tumba",
-    "category": [
-      "Civilizaciones antiguas"
+      "Inventos"
     ]
   },
   {
@@ -11570,37 +10903,26 @@
   {
     "lemma": "túnel",
     "category": [
-      "Animales"
+      "Inventos"
     ]
   },
   {
     "lemma": "túnica",
     "category": [
-      "Animales"
+      "Ropa"
     ]
   },
   {
     "lemma": "turbina",
     "category": [
-      "Herramientas"
-    ]
-  },
-  {
-    "lemma": "turismo",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
-    "lemma": "turno",
-    "category": [
-      "Juguetes"
+      "Inventos"
     ]
   },
   {
     "lemma": "tutor",
     "category": [
-      "Colegio"
+      "Colegio",
+      "Profesiones"
     ]
   },
   {
@@ -11610,21 +10932,17 @@
     ]
   },
   {
-    "lemma": "úlcera",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
     "lemma": "umbral",
     "category": [
-      "Figuras geométricas"
+      "Matemáticas",
+      "Física"
     ]
   },
   {
     "lemma": "unidad",
     "category": [
-      "Géneros de películas"
+      "Matemáticas",
+      "Física"
     ]
   },
   {
@@ -11642,7 +10960,7 @@
   {
     "lemma": "uno",
     "category": [
-      "Astronomía"
+      "Matemáticas"
     ]
   },
   {
@@ -11654,31 +10972,13 @@
   {
     "lemma": "uña",
     "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "urbano",
-    "category": [
-      "Figuras geométricas"
-    ]
-  },
-  {
-    "lemma": "urbe",
-    "category": [
-      "Astronomía"
-    ]
-  },
-  {
-    "lemma": "urgente",
-    "category": [
-      "Géneros de películas"
+      "Partes del cuerpo"
     ]
   },
   {
     "lemma": "urna",
     "category": [
-      "Física"
+      "Inventos"
     ]
   },
   {
@@ -11694,18 +10994,6 @@
     ]
   },
   {
-    "lemma": "útil",
-    "category": [
-      "Tecnología"
-    ]
-  },
-  {
-    "lemma": "utopía",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
     "lemma": "uva",
     "category": [
       "Frutas"
@@ -11714,18 +11002,14 @@
   {
     "lemma": "vaca",
     "category": [
-      "Comida"
-    ]
-  },
-  {
-    "lemma": "vacío",
-    "category": [
-      "Postres"
+      "Animales"
     ]
   },
   {
     "lemma": "vacuna",
     "category": [
+      "Animales",
+      "Inventos",
       "Enfermedades"
     ]
   },
@@ -11736,51 +11020,30 @@
     ]
   },
   {
-    "lemma": "vago",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
     "lemma": "vaina",
     "category": [
-      "Frutas"
+      "Frutas",
+      "Plantas",
+      "Naturaleza"
     ]
   },
   {
     "lemma": "vajilla",
     "category": [
-      "Minerales"
-    ]
-  },
-  {
-    "lemma": "vale",
-    "category": [
-      "Matemáticas"
-    ]
-  },
-  {
-    "lemma": "válido",
-    "category": [
-      "Animales"
+      "Inventos"
     ]
   },
   {
     "lemma": "valle",
     "category": [
-      "Naturaleza"
-    ]
-  },
-  {
-    "lemma": "valor",
-    "category": [
-      "Matemáticas"
+      "Naturaleza",
+      "Fenómenos naturales"
     ]
   },
   {
     "lemma": "válvula",
     "category": [
-      "Animales"
+      "Inventos"
     ]
   },
   {
@@ -11792,7 +11055,8 @@
   {
     "lemma": "vara",
     "category": [
-      "Accesorios"
+      "Accesorios",
+      "Herramientas"
     ]
   },
   {
@@ -11802,27 +11066,16 @@
     ]
   },
   {
-    "lemma": "varón",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
     "lemma": "vaso",
     "category": [
-      "Postres"
-    ]
-  },
-  {
-    "lemma": "vecino",
-    "category": [
-      "Profesiones"
+      "Inventos"
     ]
   },
   {
     "lemma": "vector",
     "category": [
-      "Figuras geométricas"
+      "Física",
+      "Matemáticas"
     ]
   },
   {
@@ -11834,13 +11087,7 @@
   {
     "lemma": "veinte",
     "category": [
-      "Civilizaciones antiguas"
-    ]
-  },
-  {
-    "lemma": "vejez",
-    "category": [
-      "Enfermedades"
+      "Matemáticas"
     ]
   },
   {
@@ -11853,12 +11100,6 @@
     "lemma": "velero",
     "category": [
       "Medios de transporte"
-    ]
-  },
-  {
-    "lemma": "veloz",
-    "category": [
-      "Física"
     ]
   },
   {
@@ -11882,25 +11123,19 @@
   {
     "lemma": "veneno",
     "category": [
-      "Animales"
+      "Naturaleza"
     ]
   },
   {
     "lemma": "vengar",
     "category": [
-      "Física"
+      "Verbos"
     ]
   },
   {
     "lemma": "venir",
     "category": [
       "Verbos"
-    ]
-  },
-  {
-    "lemma": "venta",
-    "category": [
-      "Matemáticas"
     ]
   },
   {
@@ -11918,13 +11153,8 @@
   {
     "lemma": "verano",
     "category": [
-      "Postres"
-    ]
-  },
-  {
-    "lemma": "verbo",
-    "category": [
-      "Religiones"
+      "Fenómenos naturales",
+      "Naturaleza"
     ]
   },
   {
@@ -11934,21 +11164,9 @@
     ]
   },
   {
-    "lemma": "vereda",
-    "category": [
-      "Naturaleza"
-    ]
-  },
-  {
     "lemma": "verja",
     "category": [
-      "Juguetes"
-    ]
-  },
-  {
-    "lemma": "verso",
-    "category": [
-      "Colegio"
+      "Inventos"
     ]
   },
   {
@@ -11964,12 +11182,6 @@
     ]
   },
   {
-    "lemma": "viaje",
-    "category": [
-      "Medios de transporte"
-    ]
-  },
-  {
     "lemma": "vibrar",
     "category": [
       "Verbos"
@@ -11982,20 +11194,16 @@
     ]
   },
   {
-    "lemma": "víctima",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
     "lemma": "vida",
     "category": [
-      "Religiones"
+      "Naturaleza"
     ]
   },
   {
     "lemma": "vídeo",
     "category": [
+      "Tecnología",
+      "Inventos",
       "Tecnología"
     ]
   },
@@ -12008,31 +11216,7 @@
   {
     "lemma": "viejo",
     "category": [
-      "Accesorios"
-    ]
-  },
-  {
-    "lemma": "viernes",
-    "category": [
-      "Fenómenos naturales"
-    ]
-  },
-  {
-    "lemma": "vigor",
-    "category": [
-      "Géneros de películas"
-    ]
-  },
-  {
-    "lemma": "vil",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
-    "lemma": "villa",
-    "category": [
-      "Naturaleza"
+      "Familia"
     ]
   },
   {
@@ -12044,19 +11228,20 @@
   {
     "lemma": "vino",
     "category": [
-      "Postres"
+      "Bebidas"
     ]
   },
   {
     "lemma": "viñedo",
     "category": [
-      "Animales"
+      "Plantas",
+      "Naturaleza"
     ]
   },
   {
     "lemma": "violín",
     "category": [
-      "Animales"
+      "Instrumentos musicales"
     ]
   },
   {
@@ -12066,27 +11251,9 @@
     ]
   },
   {
-    "lemma": "virgo",
-    "category": [
-      "Géneros de películas"
-    ]
-  },
-  {
-    "lemma": "virtud",
-    "category": [
-      "Géneros de películas"
-    ]
-  },
-  {
     "lemma": "visor",
     "category": [
-      "Informática"
-    ]
-  },
-  {
-    "lemma": "víspera",
-    "category": [
-      "Animales"
+      "Herramientas"
     ]
   },
   {
@@ -12096,27 +11263,17 @@
     ]
   },
   {
-    "lemma": "vitamina",
-    "category": [
-      "Ingredientes"
-    ]
-  },
-  {
     "lemma": "viudo",
     "category": [
-      "Profesiones"
-    ]
-  },
-  {
-    "lemma": "vivaz",
-    "category": [
-      "Plantas"
+      "Familia"
     ]
   },
   {
     "lemma": "vivero",
     "category": [
-      "Naturaleza"
+      "Naturaleza",
+      "Herramientas",
+      "Plantas"
     ]
   },
   {
@@ -12126,15 +11283,9 @@
     ]
   },
   {
-    "lemma": "vivo",
-    "category": [
-      "Inventos"
-    ]
-  },
-  {
     "lemma": "volcán",
     "category": [
-      "Animales"
+      "Naturaleza"
     ]
   },
   {
@@ -12150,45 +11301,15 @@
     ]
   },
   {
-    "lemma": "voraz",
-    "category": [
-      "Animales"
-    ]
-  },
-  {
     "lemma": "votar",
     "category": [
       "Verbos"
     ]
   },
   {
-    "lemma": "voto",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
     "lemma": "voz",
     "category": [
       "Instrumentos musicales"
-    ]
-  },
-  {
-    "lemma": "vuelo",
-    "category": [
-      "Medios de transporte"
-    ]
-  },
-  {
-    "lemma": "vulgar",
-    "category": [
-      "Religiones"
-    ]
-  },
-  {
-    "lemma": "yacer",
-    "category": [
-      "Verbos"
     ]
   },
   {
@@ -12204,15 +11325,9 @@
     ]
   },
   {
-    "lemma": "yema",
-    "category": [
-      "Frutas"
-    ]
-  },
-  {
     "lemma": "yerno",
     "category": [
-      "Profesiones"
+      "Familia"
     ]
   },
   {
@@ -12224,48 +11339,41 @@
   {
     "lemma": "yodo",
     "category": [
-      "Ingredientes"
+      "Minerales"
     ]
   },
   {
     "lemma": "yoga",
     "category": [
-      "Religiones"
+      "Deportes"
     ]
   },
   {
     "lemma": "yogur",
     "category": [
-      "Postres"
+      "Postres",
+      "Ingredientes",
+      "Comida"
     ]
   },
   {
     "lemma": "zafiro",
     "category": [
-      "Inventos"
-    ]
-  },
-  {
-    "lemma": "zanja",
-    "category": [
-      "Partes del cuerpo"
+      "Minerales"
     ]
   },
   {
     "lemma": "zapato",
     "category": [
-      "Ropa"
+      "Ropa",
+      "Calzado",
+      "Accesorios"
     ]
   },
   {
     "lemma": "zarza",
     "category": [
-      "Plantas"
-    ]
-  },
-  {
-    "lemma": "zona",
-    "category": [
+      "Plantas",
       "Naturaleza"
     ]
   },
@@ -12284,7 +11392,7 @@
   {
     "lemma": "zurdo",
     "category": [
-      "Juguetes"
+      "Sentidos"
     ]
   }
 ]
