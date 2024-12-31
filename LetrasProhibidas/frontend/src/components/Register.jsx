@@ -8,7 +8,6 @@ import { avatars } from "../utils/avatars"
 import { useAuth } from "./hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 
-
 export const Register = ({ onRegister }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -19,7 +18,6 @@ export const Register = ({ onRegister }) => {
   const [loading, setLoading] = useState(true);
   const { register } = useAuth();
   const navigate = useNavigate()
-
 
   const validateInputs = () => {
     if (!email || !username || !password) {
@@ -64,9 +62,9 @@ export const Register = ({ onRegister }) => {
   }
 
   return (
-    <div className="flex flex-row items-center">
-      <div className="relative">
-        <div className="w-56 h-56 flex items-center justify-center border-white border-[7px] rounded-full">
+    <div className="flex flex-col md:flex-row items-center">
+      <div className="relative ml-4 mb-4 md:mb-0">
+        <div className="w-40 h-40 md:w-56 md:h-56 flex items-center justify-center border-white border-[7px] rounded-full">
           {loading && <div className="w-10 h-10 border-4 border-t-4 border-t-white border-gray-200 rounded-full animate-spin"></div>}
           <img
             src={avatar}
@@ -78,18 +76,15 @@ export const Register = ({ onRegister }) => {
         <RandomButton className="top-1 right-4 absolute" onClick={handleClick} />
       </div>
 
-      <form className="flex flex-col justify-center ml-6" onSubmit={(e) => {
+      <form className="flex flex-col justify-center mr-4 ml-6 w-full md:w-auto" onSubmit={(e) => {
         e.preventDefault()
         handleRegister()
-      }
-
-      }>
+      }}>
         <UserInput text="CORREO ELECTRÓNICO" type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         <UserInput text="NOMBRE DE USUARIO" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         <UserInput text="CONTRASEÑA" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <ConfirmButton text="VALE" type="submit" />
       </form>
-
 
       <WarningModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Error inesperado">
         <p>{errorMessage}</p>

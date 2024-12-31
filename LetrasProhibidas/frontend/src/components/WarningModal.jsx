@@ -2,10 +2,10 @@ import { X } from 'lucide-react'
 import { useEffect, useState } from "react"
 import { ConfirmButton } from './assets/ConfirmButton'
 
-export const WarningModal = ({ 
-    isOpen, 
-    onClose, 
-    title, 
+export const WarningModal = ({
+    isOpen,
+    onClose,
+    title,
     children,
     showCloseButton = true,
     buttonText = "VALE",
@@ -28,7 +28,7 @@ export const WarningModal = ({
         const handleEscape = (e) => {
             if (e.key === 'Escape') onClose()
         }
-        
+
         window.addEventListener('keydown', handleEscape)
         return () => window.removeEventListener('keydown', handleEscape)
     }, [onClose])
@@ -46,13 +46,13 @@ export const WarningModal = ({
     return (
         <div className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
             {/* Backdrop */}
-            <div 
+            <div
                 className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'opacity-0'}`}
                 onClick={onClose}
             />
-            
+
             {/* Modal */}
-            <div className={`relative w-full max-w-lg rounded-2xl bg-[#1a1040] p-6 shadow-xl transition-all duration-300 ease-in-out ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
+            <div className={`relative w-full max-w-lg mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl bg-[#1a1040] p-6 shadow-xl transition-all duration-300 ease-in-out ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
                 {showCloseButton && (
                     <button
                         onClick={onClose}
@@ -69,13 +69,13 @@ export const WarningModal = ({
                             {upperTitle.split(' ').slice(1)}
                         </span>
                     </h2>
-                    
+
                     <div className="m-4 text-gray-100">
                         {children}
                     </div>
-                    
 
-                    <ConfirmButton text={buttonText} onClick={handleButtonClick} className="pl-2 pr-2"/>
+
+                    <ConfirmButton text={buttonText} onClick={handleButtonClick} className="pl-2 pr-2" />
                 </div>
             </div>
         </div>

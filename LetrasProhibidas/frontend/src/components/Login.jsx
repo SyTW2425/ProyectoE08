@@ -51,9 +51,9 @@ export const Login = () => {
 
 
   return (
-    <div className="flex flex-row items-center">
-      <div className="relative ml-4">
-        <div className="w-56 h-56 flex items-center justify-center border-white border-[7px] rounded-full">
+    <div className="flex flex-col md:flex-row items-center">
+      <div className="relative ml-4 mb-4 md:mb-0">
+        <div className="w-40 h-40 md:w-56 md:h-56 flex items-center justify-center border-white border-[7px] rounded-full">
           {loading && <div className="w-10 h-10 border-4 border-t-4 border-t-white border-gray-200 rounded-full animate-spin"></div>}
           <img
             src={avatar}
@@ -63,16 +63,9 @@ export const Login = () => {
           />
         </div>
         <RandomButton className="top-1 right-4 absolute" onClick={handleClick} />
-
-        {/* <div className="flex flex-row items-center justify-center gap-2 mt-4">
-          <a href="#" className="text-primaryBlue hover:underline" onClick={handlePasswordRecovery}>
-            ¿No te acuerdas de tu contraseña?
-          </a>
-        </div> */}
-
       </div>
 
-      <form className="flex flex-col justify-center gap- mr-4 ml-6" onSubmit={(e) => {
+      <form className="flex flex-col justify-center mr-4 ml-6 w-full md:w-auto" onSubmit={(e) => {
         e.preventDefault()
         handleLogin()
       }}>
