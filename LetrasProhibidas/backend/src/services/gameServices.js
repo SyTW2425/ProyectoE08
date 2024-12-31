@@ -99,17 +99,6 @@ export class GameServices {
    if (game.players.some((player) => player.userID === newPlayer.userID)) {
     throw new Error("User is already in game")
     }
-    game.players.push(newPlayer);
-    return await this.updateGamePlayers(gameID, game.players);
-  }
-
-  async updateGamePlayers(gameID, players) {
-    const game = await this.getGameByGameID(gameID)
-    if (!game) {
-      return null
-    }
-    return await Game.updateOne({ gameID }, { players }).catch((err) => {
-      throw new Error(err.message);
-    });
+    return await Game.updateOne({gameID}, {$push: {players: newPlayer}})    
   }
 }

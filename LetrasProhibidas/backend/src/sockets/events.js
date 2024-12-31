@@ -1,6 +1,8 @@
 import { io } from "../app.js"
 import { GameServices } from "../services/gameServices.js";
 import { LobbyServices } from "../services/lobbyServices.js";
+import { getRandomCategory } from "../utils/getRandomCategory.js";
+import { getRandomLetter } from "../utils/getRandomLetter.js";
 
 const lobbyService = LobbyServices.getInstance();
 const gameService = GameServices.getInstance();
@@ -13,6 +15,8 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", ({ message, lobbyID }) => sendMessage(message, lobbyID))
   socket.on("creatingGame", ({gameID, userID, userName, userAvatar, lobbyID}) => creatingGame(gameID, userID, userName, userAvatar, lobbyID))
   socket.on("joinGame", ({ gameID, userID, userName, userAvatar }) => joinGame(gameID, userID, userName, userAvatar))
+  socket.on("joinedGame", ({ gameID }) => joinedGame(gameID))
+  socket.on("requestStart", ({ gameID, currentLetters }) => requestStart(gameID, currentLetters))
 
 
   
@@ -60,14 +64,8 @@ io.on("connection", (socket) => {
   }
 
   const creatingGame = async (gameID, userID, userName, userAvatar, lobbyID) => {
-    try {
-      await gameService.addPlayerToGame({userID, userName, userAvatar}, gameID)
-      socket.join(gameID) // Une a la room del Juego
-      console.log(`El usuario ${userID} ha creado el game: ${gameID}`)
-      socket.to(lobbyID).emit("startingGame", { gameID })
-    } catch(err) {
-      console.log(err)
-    }
+    console.log(`El usuario ${userID} ha creado el game: ${gameID}`)
+    io.to(lobbyID).emit("startingGame", { gameID })
   }
 
   const joinGame = async (gameID, userID, userName, userAvatar) => {
@@ -76,10 +74,21 @@ io.on("connection", (socket) => {
       socket.join(gameID) // Une a la room del Juego
       console.log(socket.rooms)
       console.log(`El usuario ${userID} se ha unido al game: ${gameID}`)
-      socket.emit("joinedGame", { gameID })
+      socket.emit("joiningGame", { gameID })
     } catch(err) {
       console.log(err)
     }
+  }
+
+  const joinedGame = async (gameID) => {
+    socket.to(gameID).emit("playerUpdate")
+  }
+
+  const requestStart = async (gameID, currentLetters) => {
+    const newLetter = getRandomLetter(currentLetters)
+    io.to(gameID).emit("newLetter", ({ newLetter }))
+    const newCategory = getRandomCategory()
+    io.to(gameID).emit("newCategory", ({ newCategory }))
   }
 })
 

@@ -24,7 +24,7 @@ export const Lobby = () => {
   const navigate = useNavigate()
 
   const handleUserUpdate = () => {
-    console.log("Actualizando lista de jugadores")
+    console.log("Actualizando lista de usuarios")
     fetchLobbyData()
   };
 
@@ -96,7 +96,6 @@ export const Lobby = () => {
       // cuando eso ocurre, cada cliente tiene que enviar un evento con que se quiere unir a la partida, joinGame, esto lo captura el backend
       // y une a todos los usuarios al mismo room de sockets y emite el evento joinedLobby, que captura el cliente y navega hacia la url del game.
       socket.emit("creatingGame", { gameID, userID, userName, userAvatar, lobbyID: id })
-      navigate(`/game/${gameID}`)
     } catch (err) {
       console.log(err)
     }
@@ -108,7 +107,7 @@ export const Lobby = () => {
       socket.on("userUpdate", () => handleUserUpdate());
       socket.emit("joinLobby", { lobbyID: id, userID, userName, userAvatar })
       socket.on("startingGame", ({ gameID }) => socket.emit("joinGame", {gameID, userID, userName, userAvatar}))
-      socket.on("joinedGame", ({ gameID }) => navigate(`/game/${gameID}`))
+      socket.on("joiningGame", ({ gameID }) => navigate(`/game/${gameID}`))
     }
 
     fetchLobbyData();
@@ -117,7 +116,7 @@ export const Lobby = () => {
       if (socket) {
         socket.off("userUpdate");
         socket.off("startingGame");
-        socket.off("joinedGame");
+        socket.off("joiningGame");
       }
     };
   }, [fetchLobbyData, socket]);
@@ -172,7 +171,7 @@ export const Lobby = () => {
                         updateLobbyPrivacy(newStatus);
                       }}
                     />
-                    <StandardButton text="Iniciar Partida" onClick={() => handleCreateGame()}/>
+                    <StandardButton text="Jugar Partida" onClick={() => handleCreateGame()}/>
                   </>
                 )}
                 <CopyToClipboard toCopy={id} />
