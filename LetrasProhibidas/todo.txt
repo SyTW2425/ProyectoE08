@@ -2,13 +2,13 @@
 - Al unirse a lobby, hay que comprobar que existe la lobby y que es apta para unirse (valor joinable del modelo lobby)
 - Añadir al modelo de lobby el campo "private" para saber si es privada o no, si lo es no se podrá acceder a ella pulsando en "JUGAR"
 - Cuando termine la partida, se usa el LobbyID para volver a llevar a los usuarios a la lobby.
-- Estilos del contador cuando queden 5 segundos se pone en rojo.
-- Poner el borde en azul cuando segun el turno.
-- Nombre del jugador en azul.
+- Estilos del contador cuando queden 5 segundos se pone en rojo.HECHO
+- Poner el borde en azul cuando segun el turno. LISTO
+- Nombre del jugador en azul. LISTO
 - Actualizar estadisticas
 - Comprobar palabra (falta comprobar que la palabra no tiene las letras prohibidas)
 - Cambio de turno. (Saber cuando termina una vuelta para generar otra letra) (Cambia por acierto o por termino de tiempo, en cuyo caso se resta la vida)
-- Mostrar la respuesta como un bocadillo encima del usuario. (Poner borde rojo si fallo y verde si acierto)
+- Mostrar la respuesta como un bocadillo encima del usuario. (Poner borde rojo si fallo y verde si acierto) HECHO
 - Restar vidas
 - Si no es mi turno, no muestro input
 - Arreglar errores de tiempos al mostrar las respuestas.
