@@ -16,11 +16,7 @@ export const Game = () => {
   const [forbiddenLetters, setForbidenLetters] = useState([])
   const [turn, setTurn] = useState() // El ID del jugador al que le toca
   const [category, setCategory] = useState(null)
-  const [guessTry, setGuessTry] = useState(null)
-  // Evento para comprobar palabra
-  // Evento para comprobar vidas
-  // Evento para pasar de turno
-  // Evento para 
+  const [guessTries, setGuessTries] = useState([])
 
   const handlePlayerUpdate = () => {
     console.log("actualizando jugadores")
@@ -28,7 +24,7 @@ export const Game = () => {
   }
 
   const handleNewLetter = (newLetter) => {
-      setForbidenLetters((prevLetters) => [...prevLetters, newLetter])
+    setForbidenLetters((prevLetters) => [...prevLetters, newLetter])
   }
 
   const handleNewCategory = (newCategory) => {
@@ -36,63 +32,61 @@ export const Game = () => {
   }
 
   const fetchGameData = useCallback(async () => {
-      try {
-        console.log("jecutpo")
-        const response = await fetch(`http://localhost:5000/game?gameID=${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        const newPlayers = data.players.map(player => ({...player, lives: 3 }));
-        console.log(newPlayers)
-        setPlayers(newPlayers);
-      } catch (err) {
-        console.error("Error fetching lobby data:", err);
-      }
-    }, [id]);
-  
-    useEffect(() => {
+    try {
+      console.log("jecutpo")
+      const response = await fetch(`http://localhost:5000/game?gameID=${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      const newPlayers = data.players.map(player => ({ ...player, lives: 3 }));
+      console.log(newPlayers)
+      setPlayers(newPlayers);
+    } catch (err) {
+      console.error("Error fetching lobby data:", err);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.emit("joinedGame", { gameID: id })
+      socket.on("playerUpdate", () => handlePlayerUpdate());
+      socket.on("newLetter", ({ newLetter }) => handleNewLetter(newLetter));
+      socket.on("newCategory", ({ newCategory }) => handleNewCategory(newCategory));
+      socket.on("guessTry", ({ userID, word, isCorrect }) => handleNewGuessTry(userID, word, isCorrect));
+    }
+    fetchGameData();
+
+    return () => {
       if (socket) {
-        socket.emit("joinedGame", { gameID: id })
-        socket.on("playerUpdate", () => handlePlayerUpdate());
-        socket.on("newLetter", ({newLetter}) => handleNewLetter(newLetter));
-        socket.on("newCategory", ({newCategory}) => handleNewCategory(newCategory));
-        socket.on("guessTry", ({ userID, word, isCorrect }) => handleNewGuessTry(userID, word, isCorrect));
+        socket.off("playerUpdate");
+        socket.off("newLetter")
+        socket.off("newCategory")
+        socket.off("guessTry")
       }
-      fetchGameData();
+    };
+  }, [fetchGameData, socket]);
 
-      return () => {
-        if (socket) {
-          socket.off("playerUpdate");
-          socket.off("newLetter")
-          socket.off("newCategory")
-          socket.off("guessTry")
-        }
-      };
-    }, [fetchGameData, socket]);
+  const handleStart = () => {
+    socket.emit("requestStart", { gameID: id })
+  }
 
-    const handleStart = () => {
-      socket.emit("requestStart", { gameID: id })
-    }
+  const handleSendWord = (word) => {
+    socket.emit("sendWord", { gameID: id, userID, word, category })
+  }
 
-    const handleSendWord = (word) => {
-      socket.emit("sendWord", { gameID: id, userID, word, category })
-    }
+  const handleNewGuessTry = (userID, word, isCorrect) => {
+    const newGuessTry = { userID, word, isCorrect }
+    setGuessTries((prevTries) => [...prevTries, newGuessTry])
+    console.log("ejecuto handleNewGuessTry")
 
-    const handleNewGuessTry = (userID, word, isCorrect) => {
-      setGuessTry({userID, word, isCorrect})
-      console.log("ejecuto handleNewGuessTry")
-    }
-    
-    useEffect(() => {
-      console.log("GuessTry", guessTry)
-      setTimeout(() => {
-        setGuessTry(null)
-      }, 3000)
-    }, [guessTry])
-  
+    setTimeout(() => {
+      setGuessTries((prevTries) => prevTries.filter((t) => t !== newGuessTry))
+    }, 3000)
+  }
+
   return (
     <div>
       {
@@ -100,26 +94,27 @@ export const Game = () => {
           <div>
             <div className="h-[40rem] w-[60rem] border-[10px] p-5 rounded-xl border-white/10 backdrop-blur-xl flex flex-col items-center justify-center shadow-xl font-poppins text-white">
               {
-                forbiddenLetters.length && category? (
+                forbiddenLetters.length && category ? (
                   <div className="flex flex-col items-center justify-center">
                     <h1 className="text-4xl font-black p-2">
-                      <span className="text-white">LETRAS</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">PROHIBIDAS: </span>
+                      <span className="text-white">LETRAS</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">PROHIBIDAS:  </span>
                       {forbiddenLetters.join(", ")}
                     </h1>
-                    <Timer className="p-2"/>
+                    <Timer className="p-2" />
                     <p className="p-2 text-2xl font-bold">CATEGORÍA: {category.toUpperCase()}</p>
-                    <GameInput handleSend={(word) => handleSendWord(word)}/>
-                    <UserCarousel players={players} turn={turn} guessTry={guessTry}/>
+                    <GameInput handleSend={(word) => handleSendWord(word)} />
+                    <UserCarousel players={players} turn={turn} guessTries={guessTries} />
                     <div className="flex gap-2">
-                      <StandardButton text="Salir" onClick={() => navigate("/")}/>
+                      <StandardButton text="Salir" onClick={() => navigate("/")} />
                     </div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center">
-                    <UserCarousel players={players} turn={turn}/>
+                    <h1 className="text-[64px] font-black"><span className="text-white">¿ESTÁN</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">LISTOS?</span></h1>
+                    <UserCarousel players={players} turn={turn} guessTries={guessTries} />
                     <div className="flex gap-2">
-                      <StandardButton text="Empezar" onClick={() => handleStart()}/>
-                      <StandardButton text="Salir" onClick={() => navigate("/")}/>
+                      <StandardButton text="Empezar" onClick={() => handleStart()} />
+                      <StandardButton text="Salir" onClick={() => navigate("/")} />
                     </div>
                   </div>
                 )
