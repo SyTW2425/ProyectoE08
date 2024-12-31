@@ -1,11 +1,15 @@
 import { io } from "../app.js"
 import { GameServices } from "../services/gameServices.js";
 import { LobbyServices } from "../services/lobbyServices.js";
+import { checkWord } from "../utils/checkWord.js";
 import { getRandomCategory } from "../utils/getRandomCategory.js";
 import { getRandomLetter } from "../utils/getRandomLetter.js";
+import { loadWords } from "../utils/loadWords.js";
 
 const lobbyService = LobbyServices.getInstance();
 const gameService = GameServices.getInstance();
+
+let words = []
 
 io.on("connection", (socket) => {
   console.log("me conecte");
@@ -16,7 +20,8 @@ io.on("connection", (socket) => {
   socket.on("creatingGame", ({gameID, userID, userName, userAvatar, lobbyID}) => creatingGame(gameID, userID, userName, userAvatar, lobbyID))
   socket.on("joinGame", ({ gameID, userID, userName, userAvatar }) => joinGame(gameID, userID, userName, userAvatar))
   socket.on("joinedGame", ({ gameID }) => joinedGame(gameID))
-  socket.on("requestStart", ({ gameID, currentLetters }) => requestStart(gameID, currentLetters))
+  socket.on("requestStart", ({ gameID }) => requestStart(gameID))
+  socket.on("sendWord", ({ gameID, userID, word, category }) => sendWord(gameID, userID, word, category))
 
 
   
@@ -84,11 +89,31 @@ io.on("connection", (socket) => {
     socket.to(gameID).emit("playerUpdate")
   }
 
-  const requestStart = async (gameID, currentLetters) => {
-    const newLetter = getRandomLetter(currentLetters)
+  const requestStart = async (gameID) => {
+    // Cargar en el backend las palabras
+    words = loadWords()
+    const newLetter = getRandomLetter()
     io.to(gameID).emit("newLetter", ({ newLetter }))
     const newCategory = getRandomCategory()
     io.to(gameID).emit("newCategory", ({ newCategory }))
+  }
+
+  const sendWord = async (gameID, userID,  word, category) => {
+    // Emitir evento de que se intentó adivinar
+    // Comprobar la palabra
+    const isCorrect = checkWord(words, word, category)
+    io.to(gameID).emit("guessTry", ({ userID, word, isCorrect }))
+    if (isCorrect) {
+      // Palabra acertada, emitir evento correspondiente.
+      console.log("Acerto")
+      io.to(gameID).emit("correctAnswer")
+      // Manejar el cambio de turno???
+    }
+    else {
+      // Palabra fallida, emitir evento correspondiente.
+      console.log("Fallo")
+      io.to(gameID).emit("wrongAnswer")
+    }
   }
 })
 

@@ -63,7 +63,6 @@ export const LobbyChat = ({ lobbyID }) => {
       <form className="flex flex-row items-center p-2 justify-center" onSubmit={ (e) => {
         e.preventDefault()
         handleSend()
-        e.target.reset()
       }}>
         <div className="p-2">
           <input

@@ -9,12 +9,14 @@ import { StandardButton } from "../assets/StandardButton"
 export const Game = () => {
   const { id } = useParams()
   const { socket } = useSocket()
+  const userID = localStorage.getItem("userID")
   const navigate = useNavigate()
   const [players, setPlayers] = useState(null) // Jugadores que estan en la partida y las vidas que tienen
   const [lives, setLives] = useState(3) // Mis vidas
-  const [forbiddenLetters, setForbidenLetters] = useState(null)
+  const [forbiddenLetters, setForbidenLetters] = useState([])
   const [turn, setTurn] = useState() // El ID del jugador al que le toca
-  const [category, setCategory] = useState("Frutas")
+  const [category, setCategory] = useState(null)
+  const [guessTry, setGuessTry] = useState(null)
   // Evento para comprobar palabra
   // Evento para comprobar vidas
   // Evento para pasar de turno
@@ -26,10 +28,7 @@ export const Game = () => {
   }
 
   const handleNewLetter = (newLetter) => {
-    if (forbiddenLetters) {
       setForbidenLetters((prevLetters) => [...prevLetters, newLetter])
-    }
-    else setForbidenLetters([newLetter])
   }
 
   const handleNewCategory = (newCategory) => {
@@ -60,6 +59,7 @@ export const Game = () => {
         socket.on("playerUpdate", () => handlePlayerUpdate());
         socket.on("newLetter", ({newLetter}) => handleNewLetter(newLetter));
         socket.on("newCategory", ({newCategory}) => handleNewCategory(newCategory));
+        socket.on("guessTry", ({ userID, word, isCorrect }) => handleNewGuessTry(userID, word, isCorrect));
       }
       fetchGameData();
 
@@ -68,13 +68,30 @@ export const Game = () => {
           socket.off("playerUpdate");
           socket.off("newLetter")
           socket.off("newCategory")
+          socket.off("guessTry")
         }
       };
     }, [fetchGameData, socket]);
 
     const handleStart = () => {
-      socket.emit("requestStart", { gameID: id, currentLetters: forbiddenLetters })
+      socket.emit("requestStart", { gameID: id })
     }
+
+    const handleSendWord = (word) => {
+      socket.emit("sendWord", { gameID: id, userID, word, category })
+    }
+
+    const handleNewGuessTry = (userID, word, isCorrect) => {
+      setGuessTry({userID, word, isCorrect})
+      console.log("ejecuto handleNewGuessTry")
+    }
+    
+    useEffect(() => {
+      console.log("GuessTry", guessTry)
+      setTimeout(() => {
+        setGuessTry(null)
+      }, 3000)
+    }, [guessTry])
   
   return (
     <div>
@@ -83,13 +100,16 @@ export const Game = () => {
           <div>
             <div className="h-[40rem] w-[60rem] border-[10px] p-5 rounded-xl border-white/10 backdrop-blur-xl flex flex-col items-center justify-center shadow-xl font-poppins text-white">
               {
-                forbiddenLetters ? (
+                forbiddenLetters.length && category? (
                   <div className="flex flex-col items-center justify-center">
-                    <h1 className="text-4xl font-black p-2"><span className="text-white">LETRAS</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">PROHIBIDAS: </span>{JSON.stringify(forbiddenLetters)}</h1>
+                    <h1 className="text-4xl font-black p-2">
+                      <span className="text-white">LETRAS</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">PROHIBIDAS: </span>
+                      {forbiddenLetters.join(", ")}
+                    </h1>
                     <Timer className="p-2"/>
                     <p className="p-2 text-2xl font-bold">CATEGORÍA: {category.toUpperCase()}</p>
-                    <GameInput/>
-                    <UserCarousel players={players} turn={turn}/>
+                    <GameInput handleSend={(word) => handleSendWord(word)}/>
+                    <UserCarousel players={players} turn={turn} guessTry={guessTry}/>
                     <div className="flex gap-2">
                       <StandardButton text="Salir" onClick={() => navigate("/")}/>
                     </div>
