@@ -29,8 +29,8 @@ describe('LoginButton Component', () => {
         const buttonElement = screen.getByText(/login/i);
         expect(buttonElement).toHaveClass('font-poppins');
         expect(buttonElement).toHaveClass('font-black');
-        expect(buttonElement).toHaveClass('text-2xl');
-        expect(buttonElement).toHaveClass('p-4');
+        expect(buttonElement).toHaveClass('text-lg');
+        expect(buttonElement).toHaveClass('p-2');
         expect(buttonElement).toHaveClass('rounded-xl');
     });
 });
