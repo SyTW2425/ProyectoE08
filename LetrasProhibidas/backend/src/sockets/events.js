@@ -10,6 +10,106 @@ const lobbyService = LobbyServices.getInstance();
 const gameService = GameServices.getInstance();
 
 let words = []
+let gameTurns = {}
+let timers = {}
+
+const resetTimer = (gameID) => {
+  if (timers[gameID]) {
+    clearInterval(timers[gameID]);
+  }
+
+  let timeLeft = 20; // 20 segundos
+  io.to(gameID).emit("updateTimer", { timeLeft });
+
+  timers[gameID] = setInterval(() => {
+    timeLeft -= 1;
+    io.to(gameID).emit("updateTimer", { timeLeft });
+
+    if (timeLeft < 0) {
+      clearInterval(timers[gameID]);
+      setTimeout(() => handleTimeOut(gameID), 1000); // Agregar un retraso de 1 segundo
+    }
+  }, 1000);
+};
+
+const rotateTurn = (gameID) => {
+  const game = gameTurns[gameID];
+  if (!game) return;
+
+  if (game.players.length === 0) {
+    console.log(`No quedan jugadores en la partida ${gameID}. Finalizando partida.`);
+    endGame(gameID);
+    return;
+  }
+
+  const currentTurnIndex = game.players.findIndex(player => player.userID === game.currentTurn);
+  const nextTurnIndex = (currentTurnIndex + 1) % game.players.length;
+  game.currentTurn = game.players[nextTurnIndex].userID;
+
+  io.to(gameID).emit("turnUpdate", { currentTurn: game.currentTurn });
+  resetTimer(gameID);
+};
+
+const checkForWinner = (gameID) => {
+  const game = gameTurns[gameID];
+  if (!game) return;
+
+  const remainingPlayers = game.players.filter(player => player.lives > 0);
+  if (remainingPlayers.length === 1) {
+    const winner = remainingPlayers[0];
+    io.to(gameID).emit("gameWon", { winnerID: winner.userID });
+    console.log(`El usuario ${winner.userID} ha ganado la partida ${gameID}`);
+    endGame(gameID);
+  }
+};
+
+const handleLifeLoss = (gameID, userID) => {
+  const game = gameTurns[gameID];
+  const player = game.players.find(player => player.userID === userID);
+  if (player) {
+    player.lives = Math.max(player.lives - 1, 0); // Ensure lives do not go below 0
+    if (player.lives <= 0) {
+      game.players = game.players.filter(p => p.userID !== userID);
+    }
+    io.to(gameID).emit("lifeUpdate", { userID, lives: player.lives });
+    console.log("Vidas actualizadas", player.lives);
+    checkForWinner(gameID);
+  }
+};
+
+const changeCategory = (gameID) => {
+  const newCategory = getRandomCategory();
+  io.to(gameID).emit("newCategory", { newCategory });
+};
+
+const endGame = (gameID) => {
+  if (timers[gameID]) {
+    clearInterval(timers[gameID]);
+    delete timers[gameID];
+  }
+  if (gameTurns[gameID]) {
+    delete gameTurns[gameID];
+  }
+  io.to(gameID).emit("gameEnded");
+  console.log(`Partida ${gameID} finalizada.`);
+  // lobbyService.setLobbyStatus(gameID, true);
+};
+
+const handleTimeOut = (gameID) => {
+  const game = gameTurns[gameID];
+  if (!game) {
+    console.error(`No se encontró el juego con ID ${gameID}`);
+    return;
+  }
+  const currentTurn = game.currentTurn;
+  console.log(`Tiempo agotado para el usuario ${currentTurn}`);
+  handleLifeLoss(gameID, currentTurn);
+  rotateTurn(gameID);
+  changeCategory(gameID);
+  resetTimer(gameID); // Reiniciar el temporizador después de manejar el tiempo agotado
+};
+
+
 
 io.on("connection", (socket) => {
   console.log("me conecte");
@@ -17,25 +117,26 @@ io.on("connection", (socket) => {
   socket.on("joinLobby", ({ lobbyID, userID, userName, userAvatar }) => joinLobby(lobbyID, userID, userName, userAvatar))
   socket.on("leaveLobby", ({ lobbyID, userID }) => leaveLobby(lobbyID, userID))
   socket.on("sendMessage", ({ message, lobbyID }) => sendMessage(message, lobbyID))
-  socket.on("creatingGame", ({gameID, userID, userName, userAvatar, lobbyID}) => creatingGame(gameID, userID, userName, userAvatar, lobbyID))
+  socket.on("creatingGame", ({ gameID, userID, userName, userAvatar, lobbyID }) => creatingGame(gameID, userID, userName, userAvatar, lobbyID))
   socket.on("joinGame", ({ gameID, userID, userName, userAvatar }) => joinGame(gameID, userID, userName, userAvatar))
   socket.on("joinedGame", ({ gameID }) => joinedGame(gameID))
   socket.on("requestStart", ({ gameID }) => requestStart(gameID))
   socket.on("sendWord", ({ gameID, userID, word, category }) => sendWord(gameID, userID, word, category))
 
-
-  
   // Implementación de los eventos
   // Unirse a lobby
   const joinLobby = async (lobbyID, userID, userName, userAvatar) => {
     try {
-      await lobbyService.addPlayerToLobby(lobbyID, {userID, userName, userAvatar})
-      socket.join(lobbyID) // Une a la lobby al usuario
-      console.log(socket.rooms)
-      console.log(`El usuario ${userID} se ha unido a la lobby: ${lobbyID}`)
-      io.to(lobbyID).emit("userUpdate")
-    } catch(err) {
-      console.log(err)
+      const lobby = await lobbyService.getLobbyById(lobbyID);
+      if (!lobby) {
+        throw new Error(`Lobby with ID ${lobbyID} not found`);
+      }
+      await lobbyService.addPlayerToLobby(lobbyID, { userID, userName, userAvatar });
+      socket.join(lobbyID); // Une a la lobby al usuario
+      console.log(`El usuario ${userID} se ha unido a la lobby: ${lobbyID}`);
+      io.to(lobbyID).emit("userUpdate");
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -52,12 +153,6 @@ io.on("connection", (socket) => {
     } catch (err) {
       console.log(err)
     }
-
-
-    socket.join(lobbyID) // Une a la lobby al usuario
-    console.log(socket.rooms)
-    console.log(`El usuario ${userID} se ha unido a la lobby: ${lobbyID}`)
-    io.to(lobbyID).emit("newUser", { userID })
   }
 
   // Envío de mensajes
@@ -75,12 +170,12 @@ io.on("connection", (socket) => {
 
   const joinGame = async (gameID, userID, userName, userAvatar) => {
     try {
-      await gameService.addPlayerToGame({userID, userName, userAvatar}, gameID)
+      await gameService.addPlayerToGame({ userID, userName, userAvatar }, gameID)
       socket.join(gameID) // Une a la room del Juego
       console.log(socket.rooms)
       console.log(`El usuario ${userID} se ha unido al game: ${gameID}`)
       socket.emit("joiningGame", { gameID })
-    } catch(err) {
+    } catch (err) {
       console.log(err)
     }
   }
@@ -90,31 +185,45 @@ io.on("connection", (socket) => {
   }
 
   const requestStart = async (gameID) => {
-    // Cargar en el backend las palabras
-    words = loadWords()
-    const newLetter = getRandomLetter()
-    io.to(gameID).emit("newLetter", ({ newLetter }))
-    const newCategory = getRandomCategory()
-    io.to(gameID).emit("newCategory", ({ newCategory }))
-  }
+    words = loadWords();
+    const newLetter = getRandomLetter();
+    const newCategory = getRandomCategory();
 
-  const sendWord = async (gameID, userID,  word, category) => {
-    // Emitir evento de que se intentó adivinar
-    // Comprobar la palabra
-    const isCorrect = checkWord(words, word, category)
-    io.to(gameID).emit("guessTry", ({ userID, word, isCorrect }))
+    const game = await gameService.getGameByGameID(gameID);
+    gameTurns[gameID] = {
+      players: game.players.map(player => ({ ...player, lives: 3 })), // Inicializar con 3 vidas
+      currentTurn: game.players[0].userID // Inicializar con el primer jugador
+    };
+
+    io.to(gameID).emit("newLetter", { newLetter });
+    io.to(gameID).emit("newCategory", { newCategory });
+    io.to(gameID).emit("turnUpdate", { currentTurn: gameTurns[gameID].currentTurn });
+    resetTimer(gameID);
+  };
+
+  const sendWord = async (gameID, userID, word, category) => {
+    const isCorrect = checkWord(words, word, category);
+    io.to(gameID).emit("guessTry", { userID, word, isCorrect });
+
     if (isCorrect) {
-      // Palabra acertada, emitir evento correspondiente.
-      console.log("Acerto")
-      io.to(gameID).emit("correctAnswer")
-      // Manejar el cambio de turno???
+      console.log("Acertó");
+      io.to(gameID).emit("correctAnswer");
+
+      // Cambiar la categoría
+      const newCategory = getRandomCategory();
+      io.to(gameID).emit("newCategory", { newCategory });
+
+      // Reiniciar el contador
+      resetTimer(gameID);
+
+      // Rotar el turno
+      rotateTurn(gameID);
+    } else {
+      console.log("Falló");
+      io.to(gameID).emit("wrongAnswer");
+      handleLifeLoss(gameID, userID);
+      changeCategory(gameID);
+      rotateTurn(gameID);
     }
-    else {
-      // Palabra fallida, emitir evento correspondiente.
-      console.log("Fallo")
-      io.to(gameID).emit("wrongAnswer")
-    }
-  }
+  };
 })
-
-
