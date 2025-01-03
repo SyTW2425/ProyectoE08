@@ -18,14 +18,18 @@ export const UserCarousel = ({ players, turn, guessTries }) => {
             }
             <img
               src={player.userAvatar} alt={player.userName}
-              className="rounded-full border-white border-4 max-w-36 max-h-36"
+              className={`rounded-full border-white border-4 max-w-36 max-h-36 ${player.lives === 0 ? "filter grayscale" : ""}`}
             />
             <div className={`font-bold text-2xl ${player.userName === userName ? "text-primaryBlue" : ""}`}>
               <h1>{player.userName.toUpperCase()}</h1>
               <div className="flex items-center justify-center">
-                {Array.from({ length: player.lives }).map((_, i) => (
-                  <Life key={i} />
-                ))}
+                {player.lives >= 0 ? (
+                  Array.from({ length: player.lives }).map((_, i) => (
+                    <Life key={i} />
+                  ))
+                ) : (
+                  <Life isGray={true} />
+                )}
               </div>
             </div>
           </div>
