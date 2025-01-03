@@ -49,6 +49,7 @@ export const Lobby = () => {
       setHostID(data.hostID); // Almacena el hostID
       setIsPrivate(data.private)
       setLoading(false);
+      // localStorage.setItem("lobbyID", id)
     } catch (err) {
       console.error("Error fetching lobby data:", err);
       setLoading(false);
@@ -92,6 +93,7 @@ export const Lobby = () => {
       })
       const data = await response.json()
       const gameID = data.gameID
+      localStorage.setItem("lobbyID", id)
       // Emito el evento de que estoy creando la partida, lo capturo en el backend, emito el evento de que el juego esta empezando,
       // cuando eso ocurre, cada cliente tiene que enviar un evento con que se quiere unir a la partida, joinGame, esto lo captura el backend
       // y une a todos los usuarios al mismo room de sockets y emite el evento joinedLobby, que captura el cliente y navega hacia la url del game.
@@ -105,8 +107,10 @@ export const Lobby = () => {
   useEffect(() => {
     if (socket) {
       socket.on("userUpdate", () => handleUserUpdate());
+      // console.log("LOBBY ->->-> " + id)
+      localStorage.setItem("lobbyID", id)
       socket.emit("joinLobby", { lobbyID: id, userID, userName, userAvatar })
-      socket.on("startingGame", ({ gameID }) => socket.emit("joinGame", {gameID, userID, userName, userAvatar}))
+      socket.on("startingGame", ({ gameID }) => socket.emit("joinGame", { gameID, userID, userName, userAvatar }))
       socket.on("joiningGame", ({ gameID }) => navigate(`/game/${gameID}`))
     }
 
@@ -171,7 +175,7 @@ export const Lobby = () => {
                         updateLobbyPrivacy(newStatus);
                       }}
                     />
-                    <StandardButton text="Jugar Partida" onClick={() => handleCreateGame()}/>
+                    <StandardButton text="Jugar Partida" onClick={() => handleCreateGame()} />
                   </>
                 )}
                 <CopyToClipboard toCopy={id} />
