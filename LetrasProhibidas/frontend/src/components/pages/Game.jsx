@@ -5,6 +5,9 @@ import { Timer } from "../assets/Timer"
 import { GameInput } from "../assets/GameInput"
 import { UserCarousel } from "../assets/UserCarousel"
 import { StandardButton } from "../assets/StandardButton"
+import { EndPage } from "./EndPage"
+import { WinnerPage } from "./WinnerPage"
+import { Loader } from "../assets/Loader"
 
 export const Game = () => {
   const { id } = useParams()
@@ -12,11 +15,15 @@ export const Game = () => {
   const userID = localStorage.getItem("userID")
   const navigate = useNavigate()
   const [players, setPlayers] = useState(null) // Jugadores que estan en la partida y las vidas que tienen
-  const [lives, setLives] = useState(3) // Mis vidas
   const [forbiddenLetters, setForbidenLetters] = useState([])
   const [turn, setTurn] = useState() // El ID del jugador al que le toca
   const [category, setCategory] = useState(null)
   const [guessTries, setGuessTries] = useState([])
+  const [resetTimer, setResetTimer] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(20) // Tiempo restante
+  const [gameEnded, setGameEnded] = useState(false)
+  const [winnerID, setWinnerID] = useState(null)
+  const lobbyID = localStorage.getItem("lobbyID")
 
   const handlePlayerUpdate = () => {
     console.log("actualizando jugadores")
@@ -44,6 +51,7 @@ export const Game = () => {
       const newPlayers = data.players.map(player => ({ ...player, lives: 3 }));
       console.log(newPlayers)
       setPlayers(newPlayers);
+      console.log("LA LOBBY ES:" + id)
     } catch (err) {
       console.error("Error fetching lobby data:", err);
     }
@@ -56,6 +64,28 @@ export const Game = () => {
       socket.on("newLetter", ({ newLetter }) => handleNewLetter(newLetter));
       socket.on("newCategory", ({ newCategory }) => handleNewCategory(newCategory));
       socket.on("guessTry", ({ userID, word, isCorrect }) => handleNewGuessTry(userID, word, isCorrect));
+      socket.on("turnUpdate", ({ currentTurn }) => {
+        setTurn(currentTurn)
+        console.log("turno actualizado");
+        console.log(currentTurn);
+      })
+      socket.on("lifeUpdate", ({ userID, lives }) => handleLifeUpdate(userID, lives));
+      socket.on("playerEliminated", ({ userID }) => handlePlayerEliminated(userID));
+      socket.on("resetTimer", () => {
+        console.log("resetTimer")
+        setResetTimer(prev => !prev)
+      });
+      socket.on("updateTimer", ({ timeLeft }) => {
+        setTimeLeft(timeLeft);
+      });
+      socket.on("gameEnded", () => {
+        console.log("Partida finalizada");
+        setGameEnded(true);
+      });
+      socket.on("gameWon", ({ winnerID }) => {
+        console.log(`El usuario ${winnerID} ha ganado la partida`);
+        setWinnerID(winnerID);
+      });
     }
     fetchGameData();
 
@@ -65,6 +95,13 @@ export const Game = () => {
         socket.off("newLetter")
         socket.off("newCategory")
         socket.off("guessTry")
+        socket.off("turnUpdate")
+        socket.off("lifeUpdate")
+        socket.off("playerEliminated")
+        socket.off("resetTimer")
+        socket.off("updateTimer")
+        socket.off("gameEnded")
+        socket.off("gameWon")
       }
     };
   }, [fetchGameData, socket]);
@@ -74,7 +111,13 @@ export const Game = () => {
   }
 
   const handleSendWord = (word) => {
-    socket.emit("sendWord", { gameID: id, userID, word, category })
+    if (turn === userID) {
+      // Enviamos la primera palabra de la frase, por lo que lo modificamos
+      word = word.split(" ")[0];
+      socket.emit("sendWord", { gameID: id, userID, word, category });
+    } else {
+      console.log("No es tu turno");
+    }
   }
 
   const handleNewGuessTry = (userID, word, isCorrect) => {
@@ -85,6 +128,24 @@ export const Game = () => {
     setTimeout(() => {
       setGuessTries((prevTries) => prevTries.filter((t) => t !== newGuessTry))
     }, 3000)
+  }
+
+  const handleLifeUpdate = (userID, lives) => {
+    console.log(`Actualizando vidas para el usuario ${userID}: ${lives}`);
+    setPlayers(prevPlayers => prevPlayers.map(player => player.userID === userID ? { ...player, lives } : player));
+    console.log("vidas actualizadas " + lives)
+  }
+
+  const handlePlayerEliminated = (userID) => {
+    setPlayers(prevPlayers => prevPlayers.filter(player => player.userID !== userID));
+  }
+
+  if (winnerID === userID) {
+    return <WinnerPage lobbyID={lobbyID} />; // Renderizar WinnerPage si el usuario ha ganado
+  }
+
+  if (gameEnded) {
+    return <EndPage lobbyID={lobbyID} />; // Renderizar EndPage si la partida ha terminado
   }
 
   return (
@@ -100,11 +161,11 @@ export const Game = () => {
                       <span className="text-white">LETRAS</span> <span className="bg-gradient-to-l from-primaryBlue from-70% to-[#8ee5ff] bg-clip-text text-transparent">PROHIBIDAS:  </span>
                       {forbiddenLetters.join(", ")}
                     </h1>
-                    <Timer className="p-2" />
+                    <Timer className="p-2" timeLeft={timeLeft} />
                     <p className="p-2 text-2xl font-bold">CATEGORÍA: {category.toUpperCase()}</p>
-                    <GameInput handleSend={(word) => handleSendWord(word)} />
+                    <GameInput handleSend={(word) => handleSendWord(word)} disabled={turn !== userID} />
                     <UserCarousel players={players} turn={turn} guessTries={guessTries} />
-                    <div className="flex gap-2">
+                    <div className="flex pt-2">
                       <StandardButton text="Salir" onClick={() => navigate("/")} />
                     </div>
                   </div>
@@ -122,7 +183,7 @@ export const Game = () => {
             </div>
           </div>
         ) : (
-          <p>Loading...</p>
+          <Loader />
         )
       }
     </div>
