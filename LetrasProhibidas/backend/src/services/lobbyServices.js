@@ -6,7 +6,7 @@ import { Lobby } from "../models/lobby.js";
 export class LobbyServices {
   static instance;
 
-  constructor() {}
+  constructor() { }
 
   /**
    * Obtiene la instancia única de LobbyServices.
@@ -113,6 +113,9 @@ export class LobbyServices {
    */
   async addPlayerToLobby(lobbyID, newPlayer) {
     const lobby = await this.getLobbyById(lobbyID);
+    if (!lobby) {
+      throw new Error("Lobby not found");
+    }
     // Comprobar que la lobby no este llena
     if (lobby.players.length >= lobby.maxPlayers) {
       this.setLobbyStatus(lobbyID, false);
@@ -121,7 +124,7 @@ export class LobbyServices {
     // Comprobar que no meto a un mismo usuario varias veces
     if (lobby.players.some((player) => player.userID === newPlayer.userID)) {
       throw new Error("User is already in lobby")
-    } 
+    }
     lobby.players.push(newPlayer);
     return await this.updateLobbyPlayers(lobbyID, lobby.players);
   }
@@ -245,7 +248,7 @@ export class LobbyServices {
       lobby.hostID = newHostID;
       return await lobby.save()
     }
-    catch(err) {
+    catch (err) {
       throw new Error(err)
     }
   }
