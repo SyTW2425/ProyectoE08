@@ -1,21 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-export const Timer = ({ maxTime = 20, className }) => {
-  const [time, setTime] = useState(maxTime);
+export const Timer = ({ timeLeft, className }) => {
   const radius = 50; // Radio del círculo
   const circumference = 2 * Math.PI * radius; // Circunferencia completa
 
-  useEffect(() => {
-    if (time <= 0) return;
-
-    const timer = setTimeout(() => {
-      setTime((prevTime) => prevTime - 1);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [time]);
-
-  const progress = (time / maxTime) * circumference; // Calcular progreso
+  const progress = (timeLeft / 20) * circumference; // Calcular progreso
 
   return (
     <div
@@ -37,7 +26,7 @@ export const Timer = ({ maxTime = 20, className }) => {
           stroke="currentColor"
         />
         <circle
-          className={`text-primaryBlue transition-all duration-1000 ease-linear ${time === 0 ? "text-red-500 animate-pulse" : ""
+          className={`text-primaryBlue transition-all duration-1000 ease-linear ${timeLeft === 0 ? "text-red-500 animate-pulse" : ""
             }`}
           cx="60"
           cy="60"
@@ -52,10 +41,10 @@ export const Timer = ({ maxTime = 20, className }) => {
       </svg>
 
       <span
-        className={`absolute text-xl font-bold ${time <= 5 ? "text-red-500 animate" : "text-white"
+        className={`absolute text-xl font-bold ${timeLeft <= 5 ? "text-red-500 animate" : "text-white"
           }`}
       >
-        {time > 0 ? time : "¡Fin!"}
+        {timeLeft > 0 ? timeLeft : "¡Fin!"}
       </span>
     </div>
   );
