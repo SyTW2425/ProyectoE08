@@ -15,6 +15,7 @@ let words = []
 let gameTurns = {}
 let timers = {}
 
+// Función para reiniciar el temporizador
 const resetTimer = (gameID) => {
   if (timers[gameID]) {
     clearInterval(timers[gameID]);
@@ -34,6 +35,7 @@ const resetTimer = (gameID) => {
   }, 1000);
 };
 
+// Función para rotar el turno en una partida
 const rotateTurn = (gameID) => {
   const game = gameTurns[gameID];
   if (!game) return;
@@ -65,6 +67,7 @@ const rotateTurn = (gameID) => {
   resetTimer(gameID);
 };
 
+// Función para verificar si hay un ganador en una partida
 const checkForWinner = (gameID) => {
   const game = gameTurns[gameID];
   if (!game) return;
@@ -79,6 +82,7 @@ const checkForWinner = (gameID) => {
   }
 };
 
+// Función para manejar la pérdida de vidas de un jugador
 const handleLifeLoss = (gameID, userID) => {
   const game = gameTurns[gameID];
   const player = game.players.find(player => player.userID === userID);
@@ -93,11 +97,7 @@ const handleLifeLoss = (gameID, userID) => {
   }
 };
 
-// const changeCategory = (gameID) => {
-//   const newCategory = getRandomCategory();
-//   io.to(gameID).emit("newCategory", { newCategory });
-// };
-
+// Función para finalizar una partida
 const endGame = (gameID) => {
   if (timers[gameID]) {
     clearInterval(timers[gameID]);
@@ -110,6 +110,7 @@ const endGame = (gameID) => {
   console.log(`Partida ${gameID} finalizada.`);
 };
 
+// Función para manejar el tiempo agotado de un jugador
 const handleTimeOut = (gameID) => {
   const game = gameTurns[gameID];
   if (!game) {
@@ -123,6 +124,7 @@ const handleTimeOut = (gameID) => {
   resetTimer(gameID); // Reiniciar el temporizador después de manejar el tiempo agotado
 };
 
+// EVENTOS DE SOCKET.IO
 io.on("connection", (socket) => {
   console.log("me conecte");
 
@@ -175,11 +177,13 @@ io.on("connection", (socket) => {
     console.log("Emitiendo mensaje: ", message)
   }
 
+  // Crear juego
   const creatingGame = async (gameID, userID, userName, userAvatar, lobbyID) => {
     console.log(`El usuario ${userID} ha creado el game: ${gameID}`)
     io.to(lobbyID).emit("startingGame", { gameID })
   }
 
+  // Unirse a juego
   const joinGame = async (gameID, userID, userName, userAvatar) => {
     try {
       await gameService.addPlayerToGame({ userID, userName, userAvatar }, gameID)
@@ -192,10 +196,12 @@ io.on("connection", (socket) => {
     }
   }
 
+  // Unirse a juego
   const joinedGame = async (gameID) => {
     socket.to(gameID).emit("playerUpdate")
   }
 
+  // Iniciar partida
   const requestStart = async (gameID) => {
     words = loadWords();
     const newLetter = getRandomLetter();
@@ -220,6 +226,7 @@ io.on("connection", (socket) => {
     resetTimer(gameID);
   };
 
+  // Enviar palabra
   const sendWord = async (gameID, userID, word, category) => {
     const game = gameTurns[gameID];
     const isCorrect = checkWord(words, word, category, game.forbiddenLetters);
