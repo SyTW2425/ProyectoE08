@@ -1,6 +1,7 @@
 import { io } from "../app.js"
 import { GameServices } from "../services/gameServices.js";
 import { LobbyServices } from "../services/lobbyServices.js";
+import { UserServices } from "../services/userServices.js";
 import { checkWord } from "../utils/checkWord.js";
 import { getRandomCategory } from "../utils/getRandomCategory.js";
 import { getRandomLetter } from "../utils/getRandomLetter.js";
@@ -8,6 +9,7 @@ import { loadWords } from "../utils/loadWords.js";
 
 const lobbyService = LobbyServices.getInstance();
 const gameService = GameServices.getInstance();
+const userService = UserServices.getInstance();
 
 let words = []
 let gameTurns = {}
@@ -72,6 +74,7 @@ const checkForWinner = (gameID) => {
     const winner = remainingPlayers[0];
     io.to(gameID).emit("gameWon", { winnerID: winner.userID });
     console.log(`El usuario ${winner.userID} ha ganado la partida ${gameID}`);
+    userService.sumStats(1, 0, 0, winner.userID);
     endGame(gameID);
   }
 };
@@ -90,10 +93,10 @@ const handleLifeLoss = (gameID, userID) => {
   }
 };
 
-const changeCategory = (gameID) => {
-  const newCategory = getRandomCategory();
-  io.to(gameID).emit("newCategory", { newCategory });
-};
+// const changeCategory = (gameID) => {
+//   const newCategory = getRandomCategory();
+//   io.to(gameID).emit("newCategory", { newCategory });
+// };
 
 const endGame = (gameID) => {
   if (timers[gameID]) {
@@ -207,6 +210,10 @@ io.on("connection", (socket) => {
       guessedWords: [], // Inicializar con un array vacío de palabras adivinadas
     };
 
+    for (const player of game.players) {
+      await userService.sumStats(0, 1, 0, player.userID);
+    }
+
     io.to(gameID).emit("newLetter", { newLetter });
     io.to(gameID).emit("newCategory", { newCategory });
     io.to(gameID).emit("turnUpdate", { currentTurn: gameTurns[gameID].currentTurn });
@@ -226,6 +233,9 @@ io.on("connection", (socket) => {
       // io.to(gameID).emit("correctAnswer");
       gameTurns[gameID].guessedWords.push(word);
       gameTurns[gameID].someoneGuessedCorrectly = true; // Marcar que alguien acertó una palabra
+
+      await userService.sumStats(0, 0, 1, userID);
+
       // Reiniciar el contador
       resetTimer(gameID);
 
