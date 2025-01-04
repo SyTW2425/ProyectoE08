@@ -46,6 +46,19 @@ const rotateTurn = (gameID) => {
   const nextTurnIndex = (currentTurnIndex + 1) % game.players.length;
   game.currentTurn = game.players[nextTurnIndex].userID;
 
+  // Si hemos completado una ronda, verificamos si alguien acertó una palabra
+  if (nextTurnIndex === 0) {
+    if (game.someoneGuessedCorrectly) {
+      const newLetter = getRandomLetter(game.forbiddenLetters);
+      console.log("LA NUEVA LETRA ES", newLetter);
+      game.forbiddenLetters.push(newLetter.toLowerCase());
+      io.to(gameID).emit("newLetter", { newLetter });
+    }
+    const newCategory = getRandomCategory();
+    io.to(gameID).emit("newCategory", { newCategory });
+    game.someoneGuessedCorrectly = false; // Reiniciar la bandera para la siguiente ronda
+  }
+
   io.to(gameID).emit("turnUpdate", { currentTurn: game.currentTurn });
   resetTimer(gameID);
 };
@@ -73,7 +86,7 @@ const handleLifeLoss = (gameID, userID) => {
     }
     io.to(gameID).emit("lifeUpdate", { userID, lives: player.lives });
     console.log("Vidas actualizadas", player.lives);
-    checkForWinner(gameID);
+    checkForWinner(gameID); // Check for a winner after updating lives
   }
 };
 
@@ -92,7 +105,6 @@ const endGame = (gameID) => {
   }
   io.to(gameID).emit("gameEnded");
   console.log(`Partida ${gameID} finalizada.`);
-  // lobbyService.setLobbyStatus(gameID, true);
 };
 
 const handleTimeOut = (gameID) => {
@@ -105,11 +117,8 @@ const handleTimeOut = (gameID) => {
   console.log(`Tiempo agotado para el usuario ${currentTurn}`);
   handleLifeLoss(gameID, currentTurn);
   rotateTurn(gameID);
-  changeCategory(gameID);
   resetTimer(gameID); // Reiniciar el temporizador después de manejar el tiempo agotado
 };
-
-
 
 io.on("connection", (socket) => {
   console.log("me conecte");
@@ -192,7 +201,10 @@ io.on("connection", (socket) => {
     const game = await gameService.getGameByGameID(gameID);
     gameTurns[gameID] = {
       players: game.players.map(player => ({ ...player, lives: 3 })), // Inicializar con 3 vidas
-      currentTurn: game.players[0].userID // Inicializar con el primer jugador
+      currentTurn: game.players[0].userID, // Inicializar con el primer jugador
+      forbiddenLetters: [newLetter], // Inicializar con la primera letra prohibida
+      someoneGuessedCorrectly: false, // Bandera para rastrear si alguien acertó una palabra en la ronda
+      guessedWords: [], // Inicializar con un array vacío de palabras adivinadas
     };
 
     io.to(gameID).emit("newLetter", { newLetter });
@@ -202,28 +214,27 @@ io.on("connection", (socket) => {
   };
 
   const sendWord = async (gameID, userID, word, category) => {
-    const isCorrect = checkWord(words, word, category);
-    io.to(gameID).emit("guessTry", { userID, word, isCorrect });
+    const game = gameTurns[gameID];
+    const isCorrect = checkWord(words, word, category, game.forbiddenLetters);
+    console.log("Palabra correcta?", isCorrect);
+    // io.to(gameID).emit("guessTry", { userID, word, isCorrect });
 
-    if (isCorrect) {
+    if (isCorrect && !game.guessedWords.includes(word)) {
+      io.to(gameID).emit("guessTry", { userID, word, isCorrect: true });
+
       console.log("Acertó");
-      io.to(gameID).emit("correctAnswer");
-
-      // Cambiar la categoría
-      const newCategory = getRandomCategory();
-      io.to(gameID).emit("newCategory", { newCategory });
-
+      // io.to(gameID).emit("correctAnswer");
+      gameTurns[gameID].guessedWords.push(word);
+      gameTurns[gameID].someoneGuessedCorrectly = true; // Marcar que alguien acertó una palabra
       // Reiniciar el contador
       resetTimer(gameID);
 
       // Rotar el turno
       rotateTurn(gameID);
     } else {
+      io.to(gameID).emit("guessTry", { userID, word, isCorrect: false });
       console.log("Falló");
-      io.to(gameID).emit("wrongAnswer");
-      handleLifeLoss(gameID, userID);
-      changeCategory(gameID);
-      rotateTurn(gameID);
+      // io.to(gameID).emit("wrongAnswer");
     }
   };
 })
