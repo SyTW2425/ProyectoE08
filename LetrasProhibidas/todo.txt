@@ -1,6 +1,6 @@
 - Fin de partida y ganador falta estilizarlo
 - Al unirse a lobby, hay que comprobar que existe la lobby y que es apta para unirse (valor joinable del modelo lobby) ¿Creo que está? No se a lo que te refieres
-- Manejar los eventos de desconexión en las distintas fases del juego
+- Manejar los eventos de desconexión en las distintas fases del juego -> Está implementada solo para que se desconecte durante el juego
 - JSON de exposición
 ----------------------------------------------- CATEGORIAS -----------------------------------------------
 
