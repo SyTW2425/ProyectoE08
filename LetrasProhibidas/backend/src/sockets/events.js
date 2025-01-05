@@ -14,8 +14,8 @@ const userService = UserServices.getInstance();
 let words = []
 let gameTurns = {}
 let timers = {}
+let connectedPlayers = {} // Lista de jugadores conectados por partida
 
-// Función para reiniciar el temporizador
 const resetTimer = (gameID) => {
   if (timers[gameID]) {
     clearInterval(timers[gameID]);
@@ -35,7 +35,6 @@ const resetTimer = (gameID) => {
   }, 1000);
 };
 
-// Función para rotar el turno en una partida
 const rotateTurn = (gameID) => {
   const game = gameTurns[gameID];
   if (!game) return;
@@ -67,7 +66,6 @@ const rotateTurn = (gameID) => {
   resetTimer(gameID);
 };
 
-// Función para verificar si hay un ganador en una partida
 const checkForWinner = (gameID) => {
   const game = gameTurns[gameID];
   if (!game) return;
@@ -78,11 +76,11 @@ const checkForWinner = (gameID) => {
     io.to(gameID).emit("gameWon", { winnerID: winner.userID });
     console.log(`El usuario ${winner.userID} ha ganado la partida ${gameID}`);
     userService.sumStats(1, 0, 0, winner.userID);
+
     endGame(gameID);
   }
 };
 
-// Función para manejar la pérdida de vidas de un jugador
 const handleLifeLoss = (gameID, userID) => {
   const game = gameTurns[gameID];
   const player = game.players.find(player => player.userID === userID);
@@ -97,7 +95,11 @@ const handleLifeLoss = (gameID, userID) => {
   }
 };
 
-// Función para finalizar una partida
+const changeCategory = (gameID) => {
+  const newCategory = getRandomCategory();
+  io.to(gameID).emit("newCategory", { newCategory });
+};
+
 const endGame = (gameID) => {
   if (timers[gameID]) {
     clearInterval(timers[gameID]);
@@ -106,11 +108,13 @@ const endGame = (gameID) => {
   if (gameTurns[gameID]) {
     delete gameTurns[gameID];
   }
+  if (connectedPlayers[gameID]) {
+    delete connectedPlayers[gameID];
+  }
   io.to(gameID).emit("gameEnded");
   console.log(`Partida ${gameID} finalizada.`);
 };
 
-// Función para manejar el tiempo agotado de un jugador
 const handleTimeOut = (gameID) => {
   const game = gameTurns[gameID];
   if (!game) {
@@ -122,6 +126,28 @@ const handleTimeOut = (gameID) => {
   handleLifeLoss(gameID, currentTurn);
   rotateTurn(gameID);
   resetTimer(gameID); // Reiniciar el temporizador después de manejar el tiempo agotado
+};
+
+// Función para manejar la desconexión de un jugador
+const handleDisconnect = (socket) => {
+  console.log("HOLAAAA");
+  for (const gameID in connectedPlayers) {
+    connectedPlayers[gameID] = connectedPlayers[gameID].filter(playerID => playerID !== socket.id);
+    if (connectedPlayers[gameID].length === 0) {
+      console.log(`Todos los jugadores se han desconectado de la partida ${gameID}. Finalizando partida.`);
+      endGame(gameID);
+    }
+  }
+};
+
+const handleLeaveGame = (gameID, userID) => {
+  if (connectedPlayers[gameID]) {
+    connectedPlayers[gameID] = connectedPlayers[gameID].filter(playerID => playerID !== userID);
+    if (connectedPlayers[gameID].length === 0) {
+      console.log(`Todos los jugadores se han desconectado de la partida ${gameID}. Finalizando partida.`);
+      endGame(gameID);
+    }
+  }
 };
 
 // EVENTOS DE SOCKET.IO
@@ -136,6 +162,9 @@ io.on("connection", (socket) => {
   socket.on("joinedGame", ({ gameID }) => joinedGame(gameID))
   socket.on("requestStart", ({ gameID }) => requestStart(gameID))
   socket.on("sendWord", ({ gameID, userID, word, category }) => sendWord(gameID, userID, word, category))
+
+  socket.on("leaveGame", ({ gameID, userID }) => handleLeaveGame(gameID, userID))
+  socket.on("disconnect", () => handleDisconnect(socket)); // Manejar la desconexión de un jugador
 
   // Implementación de los eventos
   // Unirse a lobby
@@ -191,6 +220,12 @@ io.on("connection", (socket) => {
       console.log(socket.rooms)
       console.log(`El usuario ${userID} se ha unido al game: ${gameID}`)
       socket.emit("joiningGame", { gameID })
+
+      // Agregar el jugador a la lista de jugadores conectados
+      if (!connectedPlayers[gameID]) {
+        connectedPlayers[gameID] = [];
+      }
+      connectedPlayers[gameID].push(socket.id);
     } catch (err) {
       console.log(err)
     }

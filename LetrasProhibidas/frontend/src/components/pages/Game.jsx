@@ -140,6 +140,12 @@ export const Game = () => {
     setPlayers(prevPlayers => prevPlayers.filter(player => player.userID !== userID));
   }
 
+  const handleLeaveGame = () => {
+    socket.emit("leaveGame", { gameID: id, userID });
+    socket.disconnect();
+    navigate("/");
+  }
+
   if (winnerID === userID) {
     return <WinnerPage lobbyID={lobbyID} />; // Renderizar WinnerPage si el usuario ha ganado
   }
@@ -166,7 +172,7 @@ export const Game = () => {
                     <GameInput handleSend={(word) => handleSendWord(word)} disabled={turn !== userID} />
                     <UserCarousel players={players} turn={turn} guessTries={guessTries} />
                     <div className="flex pt-2">
-                      <StandardButton text="Salir" onClick={() => navigate("/")} />
+                      <StandardButton text="Salir" onClick={handleLeaveGame} />
                     </div>
                   </div>
                 ) : (
@@ -175,7 +181,7 @@ export const Game = () => {
                     <UserCarousel players={players} turn={turn} guessTries={guessTries} />
                     <div className="flex gap-2">
                       <StandardButton text="Empezar" onClick={() => handleStart()} />
-                      <StandardButton text="Salir" onClick={() => navigate("/")} />
+                      <StandardButton text="Salir" onClick={handleLeaveGame} />
                     </div>
                   </div>
                 )

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BentoItem } from "../assets/BentoItem";
 import { useAuth } from "../hooks/useAuth";
 import { JoinLobby } from "../JoinLobby";
@@ -10,12 +10,18 @@ export const Home = ({ }) => {
   const navigate = useNavigate()
   const { logout } = useAuth()
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { socket } = useSocket()
+  const { socket, isConnected, connectSocket } = useSocket()
   const userID = localStorage.getItem("userID")
   const userName = localStorage.getItem("userName")
   const userAvatar = localStorage.getItem("userAvatar")
 
   const handleCreateLobby = async () => {
+    if (!isConnected) {
+      console.log("Socket no conectado, intentando reconectar...");
+      connectSocket();
+      return;
+    }
+
     try {
       const response = await fetch(`http://localhost:5000/lobby`, {
         method: "POST",
@@ -24,8 +30,7 @@ export const Home = ({ }) => {
         },
         body: JSON.stringify({
           "hostID": userID,
-          "players": [
-          ],
+          "players": [],
           "maxPlayers": 4
         })
       })
@@ -36,6 +41,13 @@ export const Home = ({ }) => {
       console.log(err)
     }
   }
+
+  useEffect(() => {
+    if (!isConnected) {
+      console.log("Esperando a que el socket se conecte...");
+      connectSocket();
+    }
+  }, [isConnected, connectSocket]);
 
   return (
     <div>
@@ -65,6 +77,5 @@ export const Home = ({ }) => {
         </div>
       </div>
     </div>
-
   )
 }
