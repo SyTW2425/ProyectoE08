@@ -1,0 +1,117 @@
+[
+    {
+        "lemma": "zorro",
+        "category": [
+            "Animales"
+        ]
+    },
+    {
+        "lemma": "aguila",
+        "category": [
+            "Animales"
+        ]
+    },
+    {
+        "lemma": "ardilla",
+        "category": [
+            "Animales"
+        ]
+    },
+    {
+        "lemma": "cabra",
+        "category": [
+            "Animales"
+        ]
+    },
+    {
+        "lemma": "coco",
+        "category": [
+            "Frutas"
+        ]
+    },
+    {
+        "lemma": "fresa",
+        "category": [
+            "Frutas"
+        ]
+    },
+    {
+        "lemma": "lima",
+        "category": [
+            "Frutas"
+        ]
+    },
+    {
+        "lemma": "gris",
+        "category": [
+            "Color"
+        ]
+    },
+    {
+        "lemma": "naranja",
+        "category": [
+            "Color",
+            "Frutas"
+        ]
+    },
+    {
+        "lemma": "rojo",
+        "category": [
+            "Color"
+        ]
+    },
+    {
+        "lemma": "verde",
+        "category": [
+            "Color"
+        ]
+    },
+    {
+        "lemma": "negro",
+        "category": [
+            "Color"
+        ] 
+    },
+    {
+        "lemma": "arpa",
+        "category": [
+            "Instrumentos musicales"
+        ]
+    },
+    {
+        "lemma": "bateria",
+        "category": [
+            "Instrumentos musicales"
+        ]
+    },
+    {
+        "lemma": "flauta",
+        "category": [
+            "Instrumentos musicales"
+        ]
+    },
+    {
+        "lemma": "violin",
+        "category": [
+          "Instrumentos musicales"
+        ]
+    },
+    {
+        "lemma": "archivo",
+        "category": [
+            "Informática"
+        ]
+    },
+    {
+        "lemma": "carpeta",
+        "category": [
+            "Informática"
+        ]
+    },
+    {
+        "lemma": "enlace",
+        "category": [
+            "Informática"
+        ]
+    }
+]
