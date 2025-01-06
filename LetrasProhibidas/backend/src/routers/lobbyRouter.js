@@ -134,7 +134,7 @@ lobbyRouter.get("/lobby/privacy", async (req, res) => {
     const lobbyPrivacy = await lobbyService.getLobbyPrivacy(lobbyID);
     res.status(200).send(lobbyPrivacy);
   } catch (err) {
-    res.status(400).send("Error fetching status");
+    res.status(500).send("Error fetching privacy");
   }
 });
 
@@ -150,7 +150,7 @@ lobbyRouter.patch("/lobby/privacy", async (req, res) => {
     await lobby.save();
     res.status(200).send("Privacidad actualizada correctamente");
   } catch (err) {
-    res.status(400).send("Error updating privacy");
+    res.status(500).send("Error updating privacy");
   }
 });
 

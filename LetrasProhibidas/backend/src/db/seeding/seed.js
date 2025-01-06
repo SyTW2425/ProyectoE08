@@ -65,6 +65,7 @@ const testLobbies = [
     hostID: "b1a1c1d1-e1f1-1234-5678-9abcdef01234",
     players: ["b1a1c1d1-e1f1-1234-5678-9abcdef01234"],
     maxPlayers: 4,
+    private: false,
   },
   {
     lobbyID: "b2a2c2d2-e2f2-1234-5678-9abcdef01234",
@@ -74,12 +75,14 @@ const testLobbies = [
       "b1a1c1d1-e1f1-1234-5678-9abcdef01234",
     ],
     maxPlayers: 4,
+    private: true,
   },
   {
     lobbyID: "b3a3c3d3-e3f3-1234-5678-9abcdef01234",
     hostID: "b3a3c3d3-e3f3-1234-5678-9abcdef01234",
     players: ["b3a3c3d3-e3f3-1234-5678-9abcdef01234"],
     maxPlayers: 4,
+    private: false,
   },
 ];
 

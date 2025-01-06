@@ -237,4 +237,89 @@ describe("Lobby Router", () => {
       getLobbyStatusStub.restore();
     });
   });
+
+  describe("GET /lobby/privacy", () => {
+    it("should return the privacy of the lobby", async () => {
+      const res = await request(app).get("/lobby/privacy").send({
+        lobbyID: "b1a1c1d1-e1f1-1234-5678-9abcdef01234",
+      });
+      expect(res.status).to.equal(200);
+      expect(res.body).to.have.property("private", false);
+    });
+
+    it("should return 400 if no lobbyID is provided", async () => {
+      const res = await request(app).get("/lobby/privacy");
+      expect(res.status).to.equal(400);
+      expect(res.text).to.equal("No se proporcionó el ID del lobby");
+    });
+
+    it("should return 500 if there is an error fetching the privacy", async () => {
+      const getLobbyPrivacyStub = sinon
+        .stub(LobbyServices.prototype, "getLobbyPrivacy")
+        .rejects(new Error("Error fetching privacy"));
+
+      const res = await request(app).get("/lobby/privacy").send({
+        lobbyID: "b1a1c1d1-e1f1-1234-5678-9abcdef01234",
+      });
+      expect(res.status).to.equal(500);
+      expect(res.text).to.equal("Error fetching privacy");
+
+      getLobbyPrivacyStub.restore();
+    });
+  });
+
+  describe("PATCH /lobby/privacy", () => {
+    it("should update the privacy of the lobby and return 200", async () => {
+      const res = await request(app).patch("/lobby/privacy").send({
+        lobbyID: "b3a3c3d3-e3f3-1234-5678-9abcdef01234",
+        lobbyPrivate: true,
+      });
+      expect(res.status).to.equal(200);
+      expect(res.text).to.equal("Privacidad actualizada correctamente");
+    });
+
+    it("should return 400 if no lobbyID is provided", async () => {
+      const res = await request(app).patch("/lobby/privacy").send({
+        lobbyPrivate: true,
+      });
+      expect(res.status).to.equal(404);
+      expect(res.text).to.equal("Lobby no encontrado");
+    });
+
+    it("should return 500 if there is an error updating the privacy", async () => {
+      const setLobbyPrivacyStub = sinon
+        .stub(LobbyServices.prototype, "setLobbyPrivacy")
+        .rejects(new Error("Error updating privacy"));
+
+      const res = await request(app).patch("/lobby/privacy").send({
+        lobbyID: "b3a3c3d3-e3f3-1234-5678-9abcdef01234",
+        private: true,
+      });
+      expect(res.status).to.equal(500);
+      expect(res.text).to.equal("Error updating privacy");
+
+      setLobbyPrivacyStub.restore();
+    });
+  });
+
+  describe("GET /lobby/all/public", () => {
+    it("should return all public lobbies", async () => {
+      const res = await request(app).get("/lobby/all/public");
+      expect(res.status).to.equal(200);
+      expect(res.body).to.be.an("array");
+    });
+
+    it("should return 500 if there is an error fetching public lobbies", async () => {
+      const getAllPublicLobbyStub = sinon
+        .stub(LobbyServices.prototype, "getAllPublicLobby")
+        .rejects(new Error("Error fetching public lobbies"));
+
+      const res = await request(app).get("/lobby/all/public");
+      expect(res.status).to.equal(500);
+      expect(res.text).to.equal("Error al intentar obtener todos los lobbies");
+
+      getAllPublicLobbyStub.restore();
+    });
+  });
+
 });

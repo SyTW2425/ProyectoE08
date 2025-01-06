@@ -6,7 +6,7 @@
     "test": "npm run seed && npm run coverage",
     "start": "node src/index.js",
     "seed": "node src/db/seeding/seed.js",
-    "coverage": "c8 mocha src/test/**/*.js --exit && c8 report --reporter=lcov"
+    "coverage": "c8 --exclude 'src/appTest.js' --exclude 'src/db/*.js' mocha src/test/**/*.js --exit && c8 report --reporter=lcov"
   },
   "keywords": [],
   "author": "",
