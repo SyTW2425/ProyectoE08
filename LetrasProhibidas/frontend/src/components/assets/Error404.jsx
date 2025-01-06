@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react';
 import { StandardButton } from './StandardButton'; // Asumiendo que tienes un componente Button personalizado
 
 export const Error404 = () => {
