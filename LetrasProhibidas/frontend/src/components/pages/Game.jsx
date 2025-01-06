@@ -9,7 +9,10 @@ import { EndPage } from "./EndPage"
 import { WinnerPage } from "./WinnerPage"
 import { Loader } from "../assets/Loader"
 
+
 export const Game = () => {
+  const NUMBER_OF_LIVES = 2
+
   const { id } = useParams()
   const { socket } = useSocket()
   const userID = localStorage.getItem("userID")
@@ -48,7 +51,7 @@ export const Game = () => {
         },
       });
       const data = await response.json();
-      const newPlayers = data.players.map(player => ({ ...player, lives: 3 }));
+      const newPlayers = data.players.map(player => ({ ...player, lives: NUMBER_OF_LIVES }));
       console.log(newPlayers)
       setPlayers(newPlayers);
       console.log("LA LOBBY ES:" + id)

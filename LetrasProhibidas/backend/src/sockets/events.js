@@ -7,6 +7,8 @@ import { getRandomCategory } from "../utils/getRandomCategory.js";
 import { getRandomLetter } from "../utils/getRandomLetter.js";
 import { loadWords } from "../utils/loadWords.js";
 
+const NUMBERS_OF_LIVES = 2;
+
 const lobbyService = LobbyServices.getInstance();
 const gameService = GameServices.getInstance();
 const userService = UserServices.getInstance();
@@ -21,7 +23,7 @@ const resetTimer = (gameID) => {
     clearInterval(timers[gameID]);
   }
 
-  let timeLeft = 20; // 20 segundos
+  let timeLeft = 15; // 20 segundos
   io.to(gameID).emit("updateTimer", { timeLeft });
 
   timers[gameID] = setInterval(() => {
@@ -239,14 +241,14 @@ io.on("connection", (socket) => {
   // Iniciar partida
   const requestStart = async (gameID) => {
     words = loadWords();
-    const newLetter = getRandomLetter();
     const newCategory = getRandomCategory();
+    const newLetter = getRandomLetter();
 
     const game = await gameService.getGameByGameID(gameID);
     gameTurns[gameID] = {
-      players: game.players.map(player => ({ ...player, lives: 3 })), // Inicializar con 3 vidas
+      players: game.players.map(player => ({ ...player, lives: NUMBERS_OF_LIVES })), // Inicializar con 3 vidas
       currentTurn: game.players[0].userID, // Inicializar con el primer jugador
-      forbiddenLetters: [newLetter], // Inicializar con la primera letra prohibida
+      forbiddenLetters: [newLetter.toLowerCase()], // Inicializar con la primera letra prohibida
       someoneGuessedCorrectly: false, // Bandera para rastrear si alguien acertó una palabra en la ronda
       guessedWords: [], // Inicializar con un array vacío de palabras adivinadas
     };
