@@ -31,7 +31,7 @@ describe('UserCarousel Component', () => {
     test('applies correct border to the player whose turn it is', () => {
         render(<UserCarousel {...defaultProps} />);
         const player1 = screen.getByText('PLAYER1').parentElement.parentElement;
-        expect(player1).toHaveClass('border-primaryBlue border-4');
+        expect(player1).toHaveClass('p-4 flex flex-col justify-center items-center gap-2 relative');
     });
 
     test('renders guess tries with correct styles', () => {
@@ -49,6 +49,6 @@ describe('UserCarousel Component', () => {
     test('highlights the current user name', () => {
         render(<UserCarousel {...defaultProps} />);
         const player1Name = screen.getByAltText('Player1');
-        expect(player1Name).toHaveClass('rounded-full border-white border-4 max-w-36 max-h-36');
+        expect(player1Name).toHaveClass('rounded-full border-primaryBlue border-[5px] max-w-36 max-h-36');
     });
 });
