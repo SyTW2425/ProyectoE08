@@ -1,0 +1,38 @@
+name: Run Tests Backend
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+
+jobs:
+  test:
+    name: Run Backend Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20] # Especifica las versiones de Node.js necesarias
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          cd LetrasProhibidas/backend
+          npm install
+
+      - name: Run Tests
+        env:
+          MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: |
+          cd LetrasProhibidas/backend
+          npm test
