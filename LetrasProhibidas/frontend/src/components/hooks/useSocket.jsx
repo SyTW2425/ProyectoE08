@@ -10,10 +10,7 @@ export const SocketProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   const connectSocket = () => {
-    const newSocket = io("http://localhost:5000", {
-      reconnectionAttempts: Infinity, // Intentar reconectar indefinidamente
-      reconnectionDelay: 1000, // Intentar reconectar cada 1 segundo
-    });
+    const newSocket = io("http://localhost:5000", {});
     setSocket(newSocket);
 
     newSocket.on("connect", () => {

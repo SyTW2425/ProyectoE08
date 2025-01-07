@@ -149,12 +149,8 @@ export const Game = () => {
     navigate("/");
   }
 
-  if (winnerID === userID) {
-    return <WinnerPage lobbyID={lobbyID} />; // Renderizar WinnerPage si el usuario ha ganado
-  }
-
   if (gameEnded) {
-    return <EndPage lobbyID={lobbyID} />; // Renderizar EndPage si la partida ha terminado
+    return <WinnerPage lobbyID={lobbyID} winnerID={winnerID} />; // Renderizar EndPage si la partida ha terminado
   }
 
   return (

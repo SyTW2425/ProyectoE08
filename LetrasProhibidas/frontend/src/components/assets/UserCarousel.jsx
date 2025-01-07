@@ -9,7 +9,7 @@ export const UserCarousel = ({ players, turn, guessTries }) => {
         players.map((player) => (
           <div
             key={player.userID}
-            className={`p-4 flex flex-col justify-center items-center gap-2 relative ${turn === player.userID ? "border-primaryBlue border-4" : ""}`}
+            className={`p-4 flex flex-col justify-center items-center gap-2 relative`}
           >
             {
               player.lives > 0 && guessTries.filter(guessTry => guessTry.userID === player.userID).map((guessTry, index) => (
@@ -18,7 +18,7 @@ export const UserCarousel = ({ players, turn, guessTries }) => {
             }
             <img
               src={player.userAvatar} alt={player.userName}
-              className={`rounded-full border-white border-4 max-w-36 max-h-36 ${player.lives === 0 ? "filter grayscale" : ""}`}
+              className={`rounded-full ${turn === player.userID ? "border-primaryBlue" : "border-white"} border-[5px] max-w-36 max-h-36 ${player.lives === 0 ? "filter grayscale" : ""}`}
             />
             <div className={`font-bold text-2xl ${player.userName === userName ? "text-primaryBlue" : ""}`}>
               <h1>{player.userName.toUpperCase()}</h1>
